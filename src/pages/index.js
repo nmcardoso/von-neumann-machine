@@ -7,9 +7,6 @@ import Console from '@/components/Console'
 import RegisterInspector from '@/components/RegisterInspector'
 
 export default function Home() {
-
-  
-
   return (
     <>
       <Head>
