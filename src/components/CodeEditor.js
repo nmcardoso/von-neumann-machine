@@ -1,4 +1,10 @@
-import Editor from "@monaco-editor/react";
+import Editor from "@monaco-editor/react"
+
+const options = {
+  minimap: {
+    enabled: false
+  }
+}
 
 export default function CodeEditor() {
 

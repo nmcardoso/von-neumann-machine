@@ -3,6 +3,8 @@ import AppNavbar from '@/components/AppNavbar'
 import MemoryDumper from '@/components/MemoryDumper'
 import { Col, Container, Row } from 'react-bootstrap'
 import CodeEditor from '@/components/CodeEditor'
+import Console from '@/components/Console'
+import RegisterInspector from '@/components/RegisterInspector'
 
 export default function Home() {
 
@@ -18,19 +20,24 @@ export default function Home() {
       </Head>
       <main>
         <AppNavbar />
-        <Container className='mt-5'>
+        <Container className="mt-3">
           <Row>
-          <Col><CodeEditor /></Col>
-          <Col><MemoryDumper /></Col>
-          </Row>
-          <Row>
-            <Col md={6}>
-              <div className='rounded bg-dark w-100' style={{height: '300px'}}>
-                
+            <Col><CodeEditor /></Col>
+            <Col>
+              <div>
+                <RegisterInspector />
+              </div>
+              <div>
+                <MemoryDumper />
               </div>
             </Col>
           </Row>
-          
+          <Row className="mt-3">
+            <Col>
+              <Console />
+            </Col>
+          </Row>
+
         </Container>
       </main>
     </>
