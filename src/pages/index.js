@@ -4,6 +4,7 @@ import MemoryDumper from '@/components/MemoryDumper'
 import { Col, Container, Row } from 'react-bootstrap'
 import CodeEditor from '@/components/CodeEditor'
 import Console from '@/components/Console'
+import RegisterInspector from '@/components/RegisterInspector'
 
 export default function Home() {
   return (
@@ -16,12 +17,19 @@ export default function Home() {
       </Head>
       <main>
         <AppNavbar />
-        <Container className="mt-5">
+        <Container className="mt-3">
           <Row>
             <Col><CodeEditor /></Col>
-            <Col><MemoryDumper /></Col>
+            <Col>
+              <div>
+                <RegisterInspector />
+              </div>
+              <div>
+                <MemoryDumper />
+              </div>
+            </Col>
           </Row>
-          <Row>
+          <Row className="mt-3">
             <Col md={6}>
               <Console />
             </Col>
