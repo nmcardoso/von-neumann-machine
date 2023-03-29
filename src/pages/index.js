@@ -30,7 +30,7 @@ export default function Home() {
             </Col>
           </Row>
           <Row className="mt-3">
-            <Col md={6}>
+            <Col>
               <Console />
             </Col>
           </Row>
