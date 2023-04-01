@@ -6,6 +6,8 @@ class Word:
     
     
   def __repr__(self):
+    if self.value is None:
+      return '<Empty>'
     return f'<Word {self.value}>'
   
   
