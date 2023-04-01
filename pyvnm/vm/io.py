@@ -64,6 +64,52 @@ class Assembler:
     
 
 
+class Loader:
+  def __init__(self, initial_state: MachineState, bytecode: str, input_base: str = 'x'):
+    self._state = initial_state
+    self._bytecode = bytecode
+    self._input_base = input_base
+    
+    
+  def load(self):
+    words = self._bytecode.split(' ')
+    memory_start = Word.convert_to_int(f'0{self._input_base}{words[0]}')
+    code_entrypoint = Word.convert_to_int(f'0{self._input_base}{words[-1]}')
+    is_instruction = False
+    
+    self._state.memory.write(
+      memory_start, 
+      ControlWord(memory_start, ControlWord.MEMORY_START)
+    )
+    
+    for pos, word in enumerate(words[1:-1], start=memory_start + 1):
+      prefixed_word = f'0{self._input_base}{word}'
+      
+      if is_instruction:
+        if word != ']':
+          w = Instruction(prefixed_word)
+        else:
+          w = ControlWord(']', kind=ControlWord.INSTRUCTIONS_BEGIN)
+          is_instruction = False
+      else:
+        if word != '[':
+          w = Word(prefixed_word)
+        else:
+          w = ControlWord('[', kind=ControlWord.INSTRUCTIONS_END)
+          is_instruction = True
+      
+      self._state.memory.write(pos, w)
+          
+    self._state.memory.write(
+      pos + 1, 
+      ControlWord(code_entrypoint, ControlWord.CODE_ENTRYPOINT)
+    )
+      
+    self._state.pc.value = memory_start + code_entrypoint
+    # print(self._state.memory._data)
+  
+  
+  
 class Dumper:
   def __init__(self):
     pass
