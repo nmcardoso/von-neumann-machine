@@ -7,7 +7,7 @@ from .isa import Word
 class Memory:
   def __init__(self, size: int):
     self._size = size
-    self._data = [None for _ in range(size)]
+    self._data = [Word(None) for _ in range(size)]
     
   
   @property
