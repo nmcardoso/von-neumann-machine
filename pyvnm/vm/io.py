@@ -1,62 +1,67 @@
 import re
-from abc import abstractclassmethod
+from abc import abstractmethod
 from pathlib import Path
 from typing import List
 
-from .isa import Instruction, InstructionSet, Word
+from .isa import ControlWord, Instruction, InstructionSet, Word
 from .state import MachineState
 
 
 class Assembler:
-  pass
-
-
-class Loader:
-  def __init__(self, initial_state: MachineState, input_path: Path):
-    self._state = initial_state
-    self._input_path = input_path
+  def __init__(self, program: str, output_base: str = 'x'):
+    self._program = program
+    self._output_base = output_base
+  
+  
+  def assemble(self) -> str:
+    program_lines = self._program.split('\n')
+    is_instruction = False
     
+    bytecode = self._parse_control_instruction(program_lines[0])
+    for line in program_lines[1:-1]:
+      line = line.strip()
+      parts = re.split(r'\s+', line)
+      
+      if is_instruction:
+        if len(parts) == 2:
+          instr_int = self._parse_instruction(parts[0], parts[1])
+          bytecode += ' ' + format(instr_int, self._output_base)
+        elif len(parts) == 1:
+          if parts[0] == ']':
+            bytecode += ' ]'
+            is_instruction = False
+        else:
+          bytecode += ' 0'
+      else:
+        if parts[0] == '[':
+          bytecode += ' ['
+          is_instruction = True
+        else:
+          bytecode += ' ' + self._parse_data(parts[0])
+    bytecode += ' ' + self._parse_control_instruction(program_lines[-1])
+    return bytecode
+  
     
-  @abstractclassmethod
-  def _parse(self, word: str) -> Instruction:
-    pass
+  def _parse_instruction(self, opcode: str, operand: str) -> int:
+    opcode = InstructionSet.get_opcode(opcode)
+    operand = Word.convert_to_int(operand)
   
-  
-  def load(self):
-    data = self._input_path.read_text().split('\n')
-    memory_start = Word.convert_to_int(data[0])
-    code_entrypoint = Word.convert_to_int(data[-1])
-    
-    for pos, word in enumerate(data[1:-1], start=memory_start):
-      instruction = self._parse(word)
-      self._state.memory.write(pos, instruction)
-      
-    self._state.pc.value = memory_start + code_entrypoint - 1
-    # print(self._state.memory._data)
-      
-      
-      
-class BinaryLoader(Loader):
-  def _parse(self, word: str) -> Instruction:
-    word_bits = Word.int_to_bin(Word.convert_to_int(word))
-    opcode = Word.bin_to_int(word_bits[:4])
-    operand = Word.bin_to_int(word_bits[4:])
-    return Instruction(opcode, operand)
-  
-  
-  
-class SymbolicLoader(Loader):
-  def _parse(self, word: str) -> Instruction:
-    instr_parts = re.split(r'\s+', word)
-    opcode = InstructionSet.get_opcode(instr_parts[0])
-    operand = Word.convert_to_int(instr_parts[1])
     opcode_bits = Word.int_to_bin(opcode, extend=True, word_size=4)
     operand_bits = Word.int_to_bin(operand, extend=True, word_size=12)
+    
     word_bits = opcode_bits + operand_bits
-    word_int = Word.bin_to_int(word_bits)
-    return Instruction(word_int)
+    return Word.bin_to_int(word_bits)
+    
+    
+  def _parse_control_instruction(self, instruction: str) -> int:
+    instr_int = Word.convert_to_int(instruction)
+    return format(instr_int, self._output_base)
   
-
+  
+  def _parse_data(self, data: str) -> int:
+    data_int = Word.convert_to_int(data)
+    return format(data_int, self._output_base)
+    
 
 
 class Dumper:
