@@ -8,6 +8,11 @@ const initialState = {
     accumulator: null,
     pc: null,
   },
+  io: {
+    stdIn: [],
+    stdOut: [],
+    stdErr: [],
+  },
 }
 
 const persistStateAsync = (state) => {

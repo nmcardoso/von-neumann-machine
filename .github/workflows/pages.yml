@@ -19,10 +19,13 @@ jobs:
         cache: npm
 
     - name: Install dependencies
-      run: npm install
+      run: |
+        cd gui
+        npm install
 
     - name: Build app
       run: |
+        cd gui
         npm run build
         npm run export
         touch out/.no-jekyll
@@ -34,4 +37,4 @@ jobs:
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./out
+        publish_dir: ./gui/out

@@ -19,7 +19,9 @@ export default function Home() {
         <AppNavbar />
         <Container className="mt-3">
           <Row>
-            <Col><CodeEditor /></Col>
+            <Col>
+              <CodeEditor />
+            </Col>
             <Col>
               <div>
                 <RegisterInspector />
