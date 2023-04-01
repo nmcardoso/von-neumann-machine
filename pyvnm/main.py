@@ -5,7 +5,7 @@ from vm.vnm import VonNeumannMachine
 
 def main():
   vnm = VonNeumannMachine(memory_size=128)
-  test_file = Path(__file__).parent.parent / 'test' / 'test_01.s'
+  test_file = Path(__file__).parent.parent / 'test' / 'test_03.s'
   vnm.execute_program(test_file)
   
 

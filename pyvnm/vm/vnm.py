@@ -2,7 +2,7 @@ from pathlib import Path
 
 from .control import ControlUnit
 from .device import Devices, Keyboard, Screen
-from .io import SymbolicLoader
+from .io import Assembler, Loader
 from .memory import Memory
 from .state import MachineState
 
@@ -29,6 +29,10 @@ class VonNeumannMachine:
     
   
   def execute_program(self, path: Path):
-    loader = SymbolicLoader(initial_state=self.state, input_path=path)
+    assembler = Assembler(program=path.read_text())
+    bytecode = assembler.assemble()
+    # print(bytecode)
+    loader = Loader(initial_state=self.state, bytecode=bytecode)
     loader.load()
+    # print(self.state.memory._data)
     self.cu.event_loop()
