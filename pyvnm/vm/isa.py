@@ -75,7 +75,7 @@ class Instruction(Word):
     
     
   def __repr__(self):
-    return f'<Instruction {InstructionSet.get_name(self.opcode)}>'
+    return f'<Instruction {InstructionSet.get_name(self.opcode)} {self.operand}>'
     
   
   @property
