@@ -1,4 +1,3 @@
-from abc import abstractmethod
 from typing import Dict
 
 from .isa import Word
@@ -27,7 +26,7 @@ class Keyboard(Device):
 
   
   
-class Devices:
+class DeviceBus:
   def __init__(self):
     self._devices: Dict[int, Device] = {}
     

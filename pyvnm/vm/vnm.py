@@ -1,7 +1,7 @@
 from pathlib import Path
 
 from .control import ControlUnit
-from .device import Devices, Keyboard, Screen
+from .device import DeviceBus, Keyboard, Screen
 from .io import Assembler, Loader
 from .memory import Memory
 from .state import MachineState
@@ -15,7 +15,7 @@ class VonNeumannMachine:
     initial_pc: int = 0
   ):
     memory = Memory(memory_size)
-    devices = Devices()
+    devices = DeviceBus()
     devices.add(0x1, Keyboard())
     devices.add(0x2, Screen())
     
