@@ -2,7 +2,7 @@ from pathlib import Path
 
 from .control import ControlUnit
 from .device import DeviceBus, Keyboard, Screen
-from .io import Assembler, Loader
+from .io import Assembler, Dumper, Loader
 from .memory import Memory
 from .state import MachineState
 
@@ -27,12 +27,17 @@ class VonNeumannMachine:
     )
     self.cu = ControlUnit(self.state)
     
-  
-  def execute_program(self, path: Path):
-    assembler = Assembler(program=path.read_text())
-    bytecode = assembler.assemble()
-    # print(bytecode)
+    
+  def load(self, bytecode: str | Path):
+    bytecode = bytecode if isinstance(bytecode, str) else bytecode.read_text()
     loader = Loader(initial_state=self.state, bytecode=bytecode)
     loader.load()
-    # print(self.state.memory._data)
+    
+    
+  def execute_program(self):
     self.cu.event_loop()
+    
+  
+  def dump(self) -> str:
+    dumper = Dumper(self.state)
+    return dumper.dump()
