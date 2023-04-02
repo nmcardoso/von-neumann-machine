@@ -11,6 +11,10 @@ class Word:
     return f'<Word {self.value}>'
   
   
+  def is_empty(self):
+    return self.value is None
+  
+  
   @property
   def value(self) -> int | None:
     return self._value
@@ -58,33 +62,7 @@ class Word:
     elif value[:2] == '0x':
       return int(value, 16)
     else:
-      return int(value)
-
-
-
-class ControlWord(Word):
-  MEMORY_START = 0x0
-  INSTRUCTIONS_BEGIN = 0x1
-  INSTRUCTIONS_END = 0x2
-  CODE_ENTRYPOINT = 0x3
-  
-  def __init__(self, value: str | int | None, kind: int):
-    super().__init__(value)
-    self._type = kind
-    
-    
-  def __repr__(self):
-    return f'<ControlWord {self.value}>'
-  
-  
-  @property
-  def value(self) -> int | None:
-    return self._value
-  
-  
-  @value.setter
-  def value(self, new_value: str | int | None):
-    self._value = new_value    
+      return int(value) 
 
 
 

@@ -1,9 +1,8 @@
 import re
-from abc import abstractmethod
 from pathlib import Path
 from typing import List
 
-from .isa import ControlWord, Instruction, InstructionSet, Word
+from .isa import Instruction, InstructionSet, Word
 from .state import MachineState
 
 
@@ -65,48 +64,56 @@ class Assembler:
 
 
 class Loader:
-  def __init__(self, initial_state: MachineState, bytecode: str, input_base: str = 'x'):
+  def __init__(self, initial_state: MachineState, bytecode: str | Path, input_base: str = 'x'):
     self._state = initial_state
-    self._bytecode = bytecode
+    self._bytecode = bytecode.read_text() if isinstance(bytecode, Path) else bytecode
     self._input_base = input_base
+    self._words = self._bytecode.split(' ')
+    
+    
+  def _get_instructions_range(self):
+    try:
+      instr_begin = self._words.index('[')
+    except ValueError as _:
+      instr_begin = 0
+    
+    try:
+      instr_end = self._words.index(']')
+    except ValueError as _:
+      instr_end = len(self._words)
+      
+    return instr_begin, instr_end
     
     
   def load(self):
-    words = self._bytecode.split(' ')
-    memory_start = Word.convert_to_int(f'0{self._input_base}{words[0]}')
-    code_entrypoint = Word.convert_to_int(f'0{self._input_base}{words[-1]}')
-    is_instruction = False
+    memory_start = Word.convert_to_int(f'0{self._input_base}{self._words[0]}')
+    code_entrypoint = Word.convert_to_int(f'0{self._input_base}{self._words[-1]}')
+    instruction_begin, instruction_end = self._get_instructions_range()
     
-    self._state.memory.write(
-      memory_start, 
-      ControlWord(memory_start, ControlWord.MEMORY_START)
-    )
-    
-    for pos, word in enumerate(words[1:-1], start=memory_start + 1):
+    for index in range(1, len(self._words) - 1):
+      word = self._words[index]
       prefixed_word = f'0{self._input_base}{word}'
       
-      if is_instruction:
-        if word != ']':
-          w = Instruction(prefixed_word)
-        else:
-          w = ControlWord(']', kind=ControlWord.INSTRUCTIONS_BEGIN)
-          is_instruction = False
+      if index < instruction_begin:
+        w = Word(prefixed_word)
+        shift = -1
+      elif instruction_begin < index < instruction_end:
+        w = Instruction(prefixed_word)
+        shift = -2
+      elif index > instruction_end:
+        w = Word(prefixed_word)
+        shift = -3
       else:
-        if word != '[':
-          w = Word(prefixed_word)
-        else:
-          w = ControlWord('[', kind=ControlWord.INSTRUCTIONS_END)
-          is_instruction = True
+        continue
       
-      self._state.memory.write(pos, w)
-          
-    self._state.memory.write(
-      pos + 1, 
-      ControlWord(code_entrypoint, ControlWord.CODE_ENTRYPOINT)
-    )
+      mem_pos = memory_start + index + shift
+      self._state.memory.write(mem_pos, w)
       
+    self._state.memory_start = memory_start
+    self._state.code_entrypoint = memory_start + code_entrypoint
+    self._state.instructions_begin = memory_start + instruction_begin - 1
+    self._state.instructions_end = memory_start + instruction_end - 3
     self._state.pc.value = memory_start + code_entrypoint
-    # print(self._state.memory._data)
   
   
   

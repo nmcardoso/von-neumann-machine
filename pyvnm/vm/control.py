@@ -25,16 +25,8 @@ class ControlUnit:
     
   
   def event_loop(self):
-    while True:
-      if 0 < self.state.pc.value < self.state.memory.size:
-        curr_inst = self.state.memory.read(self.state.pc.value)
-      else:
-        return
-
-      if not isinstance(curr_inst, Instruction):
-        self._increment_pc()
-        continue
-      
+    while self.state.instructions_begin <= self.state.pc.value <= self.state.instructions_end:
+      curr_inst = self.state.memory.read(self.state.pc.value)
       action = self._action_switcher.get(curr_inst.opcode)
       action(curr_inst.operand)
       self._increment_pc()
