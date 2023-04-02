@@ -1,4 +1,3 @@
-from abc import abstractmethod
 from typing import List
 
 from .isa import Word
@@ -17,7 +16,6 @@ class Memory:
   
   def read(self, position: int) -> Word:
     self._check_valid_position(position)
-    
     return self._data[position]
   
   
@@ -29,6 +27,15 @@ class Memory:
         self._data[i] = d
     else:
       self._data[position] = data
+      
+      
+  def get_first_word_address(self):
+    return next(i for i, word in enumerate(self._data) if not word.is_empty())
+  
+  
+  def get_last_word_address(self):
+    x = next(i for i, word in enumerate(self._data[::-1]) if not word.is_empty())
+    return len(self._data) - x
       
   
   def _check_valid_position(self, position: int):
