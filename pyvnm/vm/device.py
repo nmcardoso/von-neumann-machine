@@ -29,7 +29,7 @@ class Keyboard(Device):
   
 class Devices:
   def __init__(self):
-    self._devices: Dict[Device] = {}
+    self._devices: Dict[int, Device] = {}
     
   
   def add(self, code: int, device: Device):
