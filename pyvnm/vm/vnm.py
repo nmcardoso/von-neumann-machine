@@ -2,7 +2,7 @@ from pathlib import Path
 
 from .control import ControlUnit
 from .device import DeviceBus, Keyboard, Screen
-from .io import Assembler, Dumper, Loader
+from .io import Dumper, Loader
 from .memory import Memory
 from .state import MachineState
 
