@@ -214,20 +214,35 @@ class Instruction(Word):
   
 class InstructionSet:
   JP = 0x0
+  """Instrução JP (Jump uncondicional)"""
   RS = 0x0
+  """Instrução RS (Return from subroutine)"""
   JZ = 0x1
+  """Instrução JZ (Jump if acc = 0)"""
   JN = 0x2
+  """Instrução JN (Jump if acc < 0)"""
   HJ = 0x3
+  """Instrução HJ (Jump after halt)"""
   AD = 0x4
+  """Instrução AD (Adição)"""
   SB = 0x5
+  """Instrução SB (Subtração)"""
   ML = 0x6
+  """Instrução ML (Jump multiplicação)"""
   DV = 0x7
+  """Instrução DV (Divisão)"""
   LD = 0x8
+  """Instrução LD (Load)"""
   ST = 0x9
+  """Instrução ST (Store)"""
   SC = 0xA
+  """Instrução JP (Subroutine Call)"""
   GD = 0xB
+  """Instrução GD (Get Data)"""
   PD = 0xC
+  """Instrução PD (Put Data)"""
   OS = 0xD
+  """Instrução OS (Chamada no sistema operacional)"""
   
   @classmethod
   def get_opcode(cls, symbol: str) -> int:
