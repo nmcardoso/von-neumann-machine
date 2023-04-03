@@ -11,12 +11,3 @@ Welcome to Simulador da Máquina de Von Neumann's documentation!
    :caption: Contents:
    
    reference
-
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
