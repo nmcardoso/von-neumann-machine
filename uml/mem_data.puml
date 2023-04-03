@@ -1,0 +1,13 @@
+@startuml classes
+map "Cadeia de\nObjetos" as vect2 {
+  0 => <Word 0>
+  1 => <Word 0>
+  2 => <Word 0>
+  3 => <Word 002D>
+  4 => <Word 00F0>
+  5 => <Instruction B001>
+  6 => <Instruction 9001>
+  7 => <Instruction C002>
+  8 => <Word 0>
+}
+@enduml

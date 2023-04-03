@@ -1,0 +1,6 @@
+@startuml classes
+!include project.puml
+
+remove *
+restore pyvnm.vm.io.Dumper
+@enduml

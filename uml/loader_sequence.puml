@@ -1,0 +1,42 @@
+@startuml classes
+
+package "Arquivo" as arq <<Rectangle>> {
+  rectangle "0003 002D 00F0 [ B001\n9001 C002 ] 0002" as str {
+  }
+}
+
+package "Loader" as loader <<Rectangle>> {
+  map "Cadeia de\nCaracteres" as vect {
+    0 => 0003
+    1 => 002D
+    2 => 00F0
+    3 => [
+    4 => B001
+    5 => 9001
+    6 => C002
+    7 => ]
+    8 => 0002
+  }
+}
+
+package "Memoria" as mem <<Rectangle>> {
+  map "Cadeia de\nObjetos" as vect2 {
+    0 => <Word 0>
+    1 => <Word 0>
+    2 => <Word 0>
+    3 => <Word 002D>
+    4 => <Word 00F0>
+    5 => <Instruction B001>
+    6 => <Instruction 9001>
+    7 => <Instruction C002>
+    8 => <Word 0>
+  }
+}
+
+str -> vect
+vect::1 -> vect2::3
+vect::2 -> vect2::4
+vect::4 -> vect2::5
+vect::5 -> vect2::6
+vect::6 -> vect2::7
+@enduml

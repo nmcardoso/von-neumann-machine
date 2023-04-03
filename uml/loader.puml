@@ -3,5 +3,4 @@
 
 remove *
 restore pyvnm.vm.io.Loader
-restore pyvnm.vm.io.Dumper
 @enduml
