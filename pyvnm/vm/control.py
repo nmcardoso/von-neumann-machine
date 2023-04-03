@@ -1,4 +1,4 @@
-from .isa import Instruction, InstructionSet, Word
+from .isa import InstructionSet, Word
 from .state import MachineState
 
 
