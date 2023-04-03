@@ -1,0 +1,20 @@
+@startuml classes
+!include classes.iuml
+
+pyvnm.vm.control.ControlUnit <-- pyvnm.vm.isa.InstructionSet
+pyvnm.vm.device.Keyboard --|> pyvnm.vm.device.Device
+pyvnm.vm.device.Screen --|> pyvnm.vm.device.Device
+pyvnm.vm.isa.Instruction --|> pyvnm.vm.isa.Word
+pyvnm.vm.control.ControlUnit --* pyvnm.vm.vnm.VonNeumannMachine : control_unit
+pyvnm.vm.device.DeviceBus --* pyvnm.vm.state.MachineState : devices
+pyvnm.vm.device.Device --* pyvnm.vm.device.DeviceBus : devices
+pyvnm.vm.isa.Word --* pyvnm.vm.state.MachineState : acc
+pyvnm.vm.isa.Word --* pyvnm.vm.state.MachineState : pc
+pyvnm.vm.isa.Word --* pyvnm.vm.memory.Memory : data
+pyvnm.vm.memory.Memory --* pyvnm.vm.state.MachineState : memory
+pyvnm.vm.control.ControlUnit *- pyvnm.vm.state.MachineState : state
+pyvnm.vm.state.MachineState --* pyvnm.vm.io.Dumper : state
+pyvnm.vm.state.MachineState -* pyvnm.vm.io.Loader : state
+pyvnm.vm.state.MachineState --* pyvnm.vm.vnm.VonNeumannMachine : state
+pyvnm.vm.utils.Lock --* pyvnm.vm.state.MachineState : pc_lock
+@enduml

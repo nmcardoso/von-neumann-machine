@@ -1,0 +1,177 @@
+@startuml classes
+set namespaceSeparator none
+
+''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''' PACKAGE: CONTROL ''''''''''''''
+''''''''''''''''''''''''''''''''''''''''''''''
+
+class "ControlUnit" as pyvnm.vm.control.ControlUnit <<Class>> {
+  -action_switcher : Dict[int, Callable]
+  +state : MachineState
+  -action_AD(operand: int)
+  -action_DV(operand: int)
+  -action_GD(operand: int)
+  -action_HJ(operand: int)
+  -action_JN(operand: int)
+  -action_JP(operand: int)
+  -action_JZ(operand: int)
+  -action_LD(operand: int)
+  -action_ML(operand: int)
+  -action_OS(operand: int)
+  -action_PD(operand: int)
+  -action_RS(operand: int)
+  -action_SB(operand: int)
+  -action_SC(operand: int)
+  -action_ST(operand: int)
+  -increment_pc()
+  +event_loop()
+}
+
+
+'''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''' PACKAGE: DEVICE ''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''
+
+interface "Device" as pyvnm.vm.device.Device <<Interface>> {
+  +read() : Word
+  +write(data: Word)
+}
+
+class "Keyboard" as pyvnm.vm.device.Keyboard <<Class>> {
+  +read() -> Word
+}
+
+class "DeviceBus" as pyvnm.vm.device.DeviceBus <<Class>> {
+  -devices : Dict[int, Device]
+  +add(code: int, device: Device)
+  +get(code: int) : Device 
+  +remove(code: int)
+}
+
+class "Screen" as pyvnm.vm.device.Screen <<Class>> {
+  +write(data: Word)
+}
+
+
+'''''''''''''''''''''''''''''''''''''''''
+'''''''''''''' PACKAGE: IO ''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''
+
+class "Loader" as pyvnm.vm.io.Loader <<Class>> {
+  -bytecode : str
+  -input_base : str
+  -state : MachineState
+  -words : List[str]
+  -get_instructions_range()
+  +load()
+}
+
+class "Dumper" as pyvnm.vm.io.Dumper <<Class>> {
+  -output_base : str
+  -output_path : Path
+  -state : MachineState
+  +dump() -> str
+}
+
+
+''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''' PACKAGE: ISA ''''''''''''''
+''''''''''''''''''''''''''''''''''''''''''
+
+class "Word" as pyvnm.vm.isa.Word <<Class>> {
+  +size : int
+  #value : int
+  +bin_to_int(value) : int
+  +convert_to_int(value) : int
+  +get_value() : Word
+  +int_to_bin(value: bool, extend: int, word_size: int) : str
+  +is_empty()
+  +set_value(word: Word)
+  +to_binary() : str
+}
+
+class "Instruction" as pyvnm.vm.isa.Instruction <<Class>> {
+  -opcode : int
+  -operand : int
+  +get_opcode() : int
+  +get_operand() : int
+}
+
+class "InstructionSet" as pyvnm.vm.isa.InstructionSet <<Class>> {
+  +AD : int
+  +DV : int
+  +GD : int
+  +HJ : int
+  +JN : int
+  +JP : int
+  +JZ : int
+  +LD : int
+  +ML : int
+  +OS : int
+  +PD : int
+  +RS : int
+  +SB : int
+  +SC : int
+  +ST : int
+  +get_name(opcode: int) : str
+  +get_opcode(symbol: str) : int
+}
+
+
+'''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''' PACKAGE: UTILS '''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''
+
+class "Lock" as pyvnm.vm.utils.Lock <<Class>> {
+  -locked : bool
+  +aquire()
+  +is_locked()
+  +release()
+}
+
+
+''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''' PACKAGE: STATE ''''''''''''''
+''''''''''''''''''''''''''''''''''''''''''''
+
+entity "MachineState" as pyvnm.vm.state.MachineState <<Entity>> {
+  +acc : Word
+  +code_entrypoint : int
+  +devices : DeviceBus
+  +instructions_begin : int
+  +instructions_end : int
+  +memory : Memory
+  +memory_start : int
+  +pc : Word
+  +pc_lock : Lock
+}
+
+
+'''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''' PACKAGE: MEMORY ''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''
+
+class "Memory" as pyvnm.vm.memory.Memory <<Class>> {
+  #data : List[Word]
+  #size : int
+  -check_valid_adress(adress: int)
+  +get_first_word_address() : int
+  +get_last_word_address() : int
+  +get_size() : int
+  +read(address: int) : Word
+  +write(address: int, data: Word)
+}
+
+
+''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''' PACKAGE: VNM ''''''''''''''
+''''''''''''''''''''''''''''''''''''''''''
+
+class "VonNeumannMachine" as pyvnm.vm.vnm.VonNeumannMachine <<Class>> {
+  +control_unit : ControlUnit
+  +state : MachineState
+  +dump() -> str
+  +execute_program()
+  +load(bytecode: str)
+}
+@enduml

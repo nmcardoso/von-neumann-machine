@@ -1,0 +1,34 @@
+@startuml packages
+set namespaceSeparator none
+package "pyvnm.vm.control" as pyvnm.vm.control <<Node>> {
+}
+package "pyvnm.vm.device" as pyvnm.vm.device <<Node>> {
+}
+package "pyvnm.vm.io" as pyvnm.vm.io <<Node>> {
+}
+package "pyvnm.vm.isa" as pyvnm.vm.isa <<Node>> {
+}
+package "pyvnm.vm.memory" as pyvnm.vm.memory <<Node>> {
+}
+package "pyvnm.vm.state" as pyvnm.vm.state <<Node>> {
+}
+package "pyvnm.vm.utils" as pyvnm.vm.utils <<Node>> {
+}
+package "pyvnm.vm.vnm" as pyvnm.vm.vnm <<Node>> {
+}
+pyvnm.vm.control --> pyvnm.vm.isa
+pyvnm.vm.control --> pyvnm.vm.state
+pyvnm.vm.device --> pyvnm.vm.isa
+pyvnm.vm.io --> pyvnm.vm.isa
+pyvnm.vm.io --> pyvnm.vm.state
+pyvnm.vm.memory --> pyvnm.vm.isa
+pyvnm.vm.state --> pyvnm.vm.device
+pyvnm.vm.state --> pyvnm.vm.isa
+pyvnm.vm.state --> pyvnm.vm.memory
+pyvnm.vm.state --> pyvnm.vm.utils
+pyvnm.vm.vnm --> pyvnm.vm.control
+pyvnm.vm.vnm --> pyvnm.vm.device
+pyvnm.vm.vnm --> pyvnm.vm.io
+pyvnm.vm.vnm --> pyvnm.vm.memory
+pyvnm.vm.vnm --> pyvnm.vm.state
+@enduml
