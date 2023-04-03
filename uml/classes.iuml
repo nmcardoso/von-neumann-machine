@@ -85,7 +85,7 @@ class "Word" as pyvnm.vm.isa.Word <<Class>> {
   +convert_to_int(value) : int
   +get_value() : Word
   +int_to_bin(value: bool, extend: int, word_size: int) : str
-  +is_empty()
+  +is_empty() : bool
   +set_value(word: Word)
   +to_binary() : str
 }
