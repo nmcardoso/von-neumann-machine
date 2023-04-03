@@ -38,7 +38,7 @@ interface "Device" as pyvnm.vm.device.Device <<Interface>> {
 }
 
 class "Keyboard" as pyvnm.vm.device.Keyboard <<Class>> {
-  +read() -> Word
+  +read() : Word
 }
 
 class "DeviceBus" as pyvnm.vm.device.DeviceBus <<Class>> {
@@ -70,7 +70,7 @@ class "Dumper" as pyvnm.vm.io.Dumper <<Class>> {
   -output_base : str
   -output_path : Path
   -state : MachineState
-  +dump() -> str
+  +dump() : str
 }
 
 
@@ -170,7 +170,7 @@ class "Memory" as pyvnm.vm.memory.Memory <<Class>> {
 class "VonNeumannMachine" as pyvnm.vm.vnm.VonNeumannMachine <<Class>> {
   +control_unit : ControlUnit
   +state : MachineState
-  +dump() -> str
+  +dump() : str
   +execute_program()
   +load(bytecode: str)
 }
