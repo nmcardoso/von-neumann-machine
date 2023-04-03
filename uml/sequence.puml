@@ -1,0 +1,26 @@
+@startuml classes
+actor Usuário as u
+participant VonNeumannMachine as vnm
+participant Loader as l
+participant ControlUnit as c
+participant Dumper as d
+participant Memory as m
+
+u -> vnm : programa bytecode
+vnm -> l : aciona
+l -> m : carrega prog. na memória
+l <- m
+vnm <- l
+
+vnm -> c : aciona
+c -> c : executa\ninstruções
+vnm <- c
+
+
+vnm -> d : aciona
+d -> m : acessa
+d <- m
+vnm <- d
+u <- vnm
+
+@enduml
