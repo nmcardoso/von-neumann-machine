@@ -79,14 +79,14 @@ class "Dumper" as pyvnm.vm.io.Dumper <<Class>> {
 ''''''''''''''''''''''''''''''''''''''''''
 
 class "Word" as pyvnm.vm.isa.Word <<Class>> {
-  +size : int
+  +{static}size : int
   #value : int
-  +bin_to_int(value) : int
-  +convert_to_int(value) : int
+  +{static}bin_to_int(value) : int
+  +{static}convert_to_int(value) : int
+  +{static}int_to_bin(value: bool, extend: int, word_size: int) : str
   +get_value() : Word
-  +int_to_bin(value: bool, extend: int, word_size: int) : str
-  +is_empty() : bool
   +set_value(word: Word)
+  +is_empty() : bool
   +to_binary() : str
 }
 
@@ -95,26 +95,27 @@ class "Instruction" as pyvnm.vm.isa.Instruction <<Class>> {
   -operand : int
   +get_opcode() : int
   +get_operand() : int
+  ' +{static}build(opcode: int, operand: int) : Instruction
 }
 
 class "InstructionSet" as pyvnm.vm.isa.InstructionSet <<Class>> {
-  +AD : int
-  +DV : int
-  +GD : int
-  +HJ : int
-  +JN : int
-  +JP : int
-  +JZ : int
-  +LD : int
-  +ML : int
-  +OS : int
-  +PD : int
-  +RS : int
-  +SB : int
-  +SC : int
-  +ST : int
-  +get_name(opcode: int) : str
-  +get_opcode(symbol: str) : int
+  +{static}AD : int
+  +{static}DV : int
+  +{static}GD : int
+  +{static}HJ : int
+  +{static}JN : int
+  +{static}JP : int
+  +{static}JZ : int
+  +{static}LD : int
+  +{static}ML : int
+  +{static}OS : int
+  +{static}PD : int
+  +{static}RS : int
+  +{static}SB : int
+  +{static}SC : int
+  +{static}ST : int
+  +{static}get_name(opcode: int) : str
+  +{static}get_opcode(symbol: str) : int
 }
 
 
@@ -125,7 +126,7 @@ class "InstructionSet" as pyvnm.vm.isa.InstructionSet <<Class>> {
 class "Lock" as pyvnm.vm.utils.Lock <<Class>> {
   -locked : bool
   +aquire()
-  +is_locked()
+  +is_locked() : bool
   +release()
 }
 
