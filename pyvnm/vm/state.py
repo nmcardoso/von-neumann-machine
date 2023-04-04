@@ -36,6 +36,8 @@ class MachineState:
   pc_lock: Lock
     Cadeado usado para implementação da lógica de bloqueio do registrador
     PC (program counter)
+  sig_term: bool
+    Sinal que indica a terminação da execução de um programa em execução
   """
   def __init__(
     self, 
@@ -57,3 +59,4 @@ class MachineState:
     self.instructions_begin = instructions_begin
     self.instructions_end = instructions_end
     self.code_entrypoint = code_entrypoint
+    self.sig_term = False

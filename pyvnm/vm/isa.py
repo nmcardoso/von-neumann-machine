@@ -211,6 +211,14 @@ class Instruction(Word):
     return self._operand
   
   
+  @staticmethod
+  def build(opcode: int, operand: int):
+    opcode_bits = Word.int_to_bin(opcode, extend=True, word_size=4)
+    operand_bits = Word.int_to_bin(operand, extend=True, word_size=12)
+    instruction_bits = opcode_bits + operand_bits
+    return Instruction(instruction_bits)
+  
+  
   
 class InstructionSet:
   JP = 0x0
@@ -243,6 +251,7 @@ class InstructionSet:
   """Instrução PD (Put Data)"""
   OS = 0xD
   """Instrução OS (Chamada no sistema operacional)"""
+  
   
   @classmethod
   def get_opcode(cls, symbol: str) -> int:

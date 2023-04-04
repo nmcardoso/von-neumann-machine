@@ -1,4 +1,4 @@
-from .isa import InstructionSet, Word
+from .isa import Instruction, InstructionSet, Word
 from .state import MachineState
 
 
@@ -38,7 +38,9 @@ class ControlUnit:
     Inicia a execução de um programa a partir da posição indicada pelo
     registrador PC.
     """
-    while self.state.instructions_begin <= self.state.pc.value <= self.state.instructions_end:
+    b = self.state.instructions_begin 
+    e = self.state.instructions_end
+    while not self.state.sig_term and (b <= self.state.pc.value <= e):
       curr_inst = self.state.memory.read(self.state.pc.value)
       action = self._action_switcher.get(curr_inst.opcode)
       action(curr_inst.operand)
@@ -76,7 +78,8 @@ class ControlUnit:
     operand : int
       Endereço da memória
     """
-    pass
+    self.state.pc.value = operand
+    self.state.pc_lock.aquire()
     
     
   def _action_JZ(self, operand: int):
@@ -116,7 +119,9 @@ class ControlUnit:
     operand : int
       Endereço da memória
     """
-    pass
+    self.state.pc = operand
+    self.state.pc_lock.aquire()
+    self.state.sig_term = True
       
       
   def _action_AD(self, operand: int):
@@ -193,14 +198,19 @@ class ControlUnit:
     
   def _action_SC(self, operand: int):
     """
-    Ação realizada pela instrução JP (Subroutine Call)
+    Ação realizada pela instrução SC (Subroutine Call)
 
     Parameters
     ----------
     operand : int
       Endereço da memória
     """
-    pass
+    current_next_instr_addr = self.state.pc.value + 1
+    subroutine_next_instr_addr = operand + 1
+    return_jump = Instruction.build(InstructionSet.JP, current_next_instr_addr)
+    self.state.memory.write(operand, return_jump)
+    self.state.pc.value = subroutine_next_instr_addr
+    self.state.pc_lock.aquire()
   
   
   def _action_GD(self, operand: int):
