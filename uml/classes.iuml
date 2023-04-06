@@ -145,6 +145,7 @@ entity "MachineState" as pyvnm.vm.state.MachineState <<Entity>> {
   +memory_start : int
   +pc : Word
   +pc_lock : Lock
+  +sig_term: bool
 }
 
 

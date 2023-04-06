@@ -1,4 +1,4 @@
-@startuml packages
+@startuml modules
 set namespaceSeparator none
 package "pyvnm.vm.control" as pyvnm.vm.control <<Node>> {
 }

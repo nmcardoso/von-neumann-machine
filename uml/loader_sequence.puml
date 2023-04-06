@@ -1,4 +1,4 @@
-@startuml classes
+@startuml loader_sequence
 
 package "Arquivo" as arq <<Rectangle>> {
   rectangle "0003 002D 00F0 [ B001\n9001 C002 ] 0002" as str {

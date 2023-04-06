@@ -1,6 +1,6 @@
-@startuml classes
+@startuml loader
 !include project.puml
 
-remove *
+remove pyvnm.vm.*
 restore pyvnm.vm.io.Loader
 @enduml

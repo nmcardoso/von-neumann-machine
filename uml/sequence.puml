@@ -1,4 +1,4 @@
-@startuml classes
+@startuml sequence
 actor Usuário as u
 participant VonNeumannMachine as vnm
 participant Loader as l

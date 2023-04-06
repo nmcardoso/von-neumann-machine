@@ -1,4 +1,4 @@
-@startuml classes
+@startuml dumper_sequence
 
 package "Memória" as mem <<Rectangle>> {
   map "Cadeia de\nObjetos" as vect2 {

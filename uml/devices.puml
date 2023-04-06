@@ -1,7 +1,7 @@
-@startuml classes
+@startuml devices
 !include project.puml
 
-remove *
+remove pyvnm.vm.*
 restore pyvnm.vm.device.Device
 restore pyvnm.vm.device.Screen
 restore pyvnm.vm.device.Keyboard

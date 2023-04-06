@@ -1,4 +1,4 @@
-@startuml classes
+@startuml project
 !include classes.iuml
 
 pyvnm.vm.control.ControlUnit <-- pyvnm.vm.isa.InstructionSet

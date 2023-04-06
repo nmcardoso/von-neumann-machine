@@ -1,7 +1,7 @@
-@startuml classes
+@startuml vnm
 !include project.puml
 
-remove *
+remove pyvnm.vm.*
 restore pyvnm.vm.vnm.VonNeumannMachine
 ' restore pyvnm.vm.control.ControlUnit
 ' restore pyvnm.vm.state.MachineState
