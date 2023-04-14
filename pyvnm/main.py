@@ -1,9 +1,9 @@
 import argparse
 from pathlib import Path
 
-from vm.memory import Memory
-from vm.state import MachineState
-from vm.vnm import VonNeumannMachine
+from .vm.memory import Memory
+from .vm.state import MachineState
+from .vm.vnm import VonNeumannMachine
 
 
 class Colors:
