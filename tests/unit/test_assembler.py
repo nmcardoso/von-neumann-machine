@@ -14,8 +14,8 @@ class TestAssember(unittest.TestCase):
   def setUp(self) -> None:
     programs = list(PROGRAMS_PATH.glob('*.s'))
     programs_path = [p.parent / (p.stem + '.s') for p in programs]
-    hexbytecodes_path = [p.parent / (p.stem + '.hexbytecode') for p in programs]
-    binbytecodes_path = [p.parent / (p.stem + '.binbytecode') for p in programs]
+    hexbytecodes_path = [p.parent / (p.stem + '.hex') for p in programs]
+    binbytecodes_path = [p.parent / (p.stem + '.bin') for p in programs]
     self.programs = [p.read_text() for p in programs_path]
     self.hexbytecodes = [p.read_text().strip() for p in hexbytecodes_path]
     self.binbytecodes = [p.read_text().strip() for p in binbytecodes_path]
