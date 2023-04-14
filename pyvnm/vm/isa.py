@@ -156,9 +156,9 @@ class Word:
     if isinstance(value, int):
       return value
     
-    if value[:2] == '0b':
+    if value[:2].lower() == '0b':
       return int(value, 2)
-    elif value[:2] == '0x':
+    elif value[:2].lower() == '0x':
       return int(value, 16)
     else:
       return int(value) 
