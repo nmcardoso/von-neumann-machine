@@ -1,8 +1,9 @@
 from pathlib import Path
 
+from ..system.dumper import Dumper
+from ..system.loader import Loader
 from .control import ControlUnit
 from .device import DeviceBus, Keyboard, Screen
-from .io import Dumper, Loader
 from .memory import Memory
 from .state import MachineState
 
