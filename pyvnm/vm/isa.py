@@ -18,7 +18,7 @@ class Word:
     self.value = value
     
     
-  def __repr__(self):
+  def __repr__(self) -> str:
     if self.value is None:
       return '<Empty>'
     return f'<Word {self.value}>'
