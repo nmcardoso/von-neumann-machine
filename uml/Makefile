@@ -1,6 +1,10 @@
 .PHONY: build
 
 
+pdf: FORMAT = -tpdf
+pdf: build
+
+
 eps: FORMAT = -teps
 eps: build
 
