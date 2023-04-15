@@ -1,12 +1,11 @@
 @startuml event_loop_flow
 !pragma useVerticalIf on
 
-|Unidade de Controle|
 start
 while ((sig_term == false) e (i_begin <= pc <= i_end) ?) is (sim)
   :Acessa posição da memória indicada por
   PC e obtem uma instância de <i>Instruction</i>;
-  
+
   :Obtêm ação do mapa de ações
   pelo valor do opcode;
 
