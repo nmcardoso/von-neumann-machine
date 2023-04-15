@@ -1,7 +1,7 @@
 @startuml memory
 !include classes.iuml
 
-pyvnm.vm.isa.Word --|> pyvnm.vm.isa.Instruction
+pyvnm.vm.isa.Word <|-- pyvnm.vm.isa.Instruction
 pyvnm.vm.memory.Memory *- pyvnm.vm.isa.Word : data
 
 remove pyvnm.vm.*
