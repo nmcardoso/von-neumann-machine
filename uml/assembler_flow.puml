@@ -1,0 +1,42 @@
+@startuml event_loop_flow
+!pragma useVerticalIf on
+
+|Tokenizador|
+start
+:Ler arquivo do
+códugo fonte;
+
+while (Linhas a serem lidas?) is ( sim)
+  :Aplicar expressão
+  regular na linha;
+  
+  :Adicionar objeto tokenizado
+  à lista de instruções;
+endwhile (não )
+
+
+|Validador|
+if (__Rótulo__ definido\nmúltiplas vezes?) then ( sim)
+  end
+( não) elseif (__Mnemônico__ inválido?) then ( sim)
+  end
+( não) elseif (__Operando__ inválido?) then ( sim)
+ end
+endif
+
+
+|Codificador|
+:Substituir os rótulos por
+valores de posição
+absoluta de memória no
+campo de operando;
+
+:Substituir os mnemônicos
+por valores de opcode;
+
+:Escrever arquivo de
+programa objeto;
+
+stop
+
+@enduml
