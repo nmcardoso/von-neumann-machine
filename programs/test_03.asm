@@ -1,13 +1,19 @@
         ORG     0x5
 MAIN    GD      0b1
-        AD      5
-        SB      3
-        DV      4
-        ML      2
+        AD      X
+        SB      Y
+        DV      Z
+        ML      A
         ST      0
         JP      LOOP
-LOOP    SB      1
+LOOP    SB      B
         JZ      ENDLP
         JP      LOOP
 ENDLP   HJ      0x0
+
+X       DATA    5
+Y       DATA    3
+Z       DATA    4
+A       DATA    2
+B       DATA    1
         END
