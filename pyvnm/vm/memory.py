@@ -38,7 +38,7 @@ class Memory:
   
   def read(self, address: int) -> Word:
     """
-    Ler o conteúdo de um endereço específica da memória
+    Ler o conteúdo de um endereço específico da memória
 
     Parameters
     ----------
