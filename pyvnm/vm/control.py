@@ -119,7 +119,7 @@ class ControlUnit:
     operand : int
       Endereço da memória
     """
-    self.state.pc = operand
+    self.state.pc.value = operand
     self.state.pc_lock.aquire()
     self.state.sig_term = True
       
