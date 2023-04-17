@@ -4,7 +4,7 @@
 pyvnm.vm.isa.Word <|-- pyvnm.vm.isa.Instruction
 pyvnm.vm.memory.Memory *- pyvnm.vm.isa.Word : data
 
-remove pyvnm.vm.*
+remove pyvnm.*
 restore pyvnm.vm.memory.Memory
 restore pyvnm.vm.isa.Word
 restore pyvnm.vm.isa.Instruction

@@ -1,7 +1,7 @@
 @startuml control_unit
 !include project.puml
 
-remove pyvnm.vm.*
+remove pyvnm.*
 restore pyvnm.vm.control.ControlUnit
 restore pyvnm.vm.state.MachineState
 @enduml

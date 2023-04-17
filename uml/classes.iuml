@@ -46,6 +46,7 @@ class "Screen" as pyvnm.vm.device.Screen <<Class>> {
 }
 
 class "CharScreen" as pyvnm.vm.device.CharScreen <<Class>> {
+  -buffer : str
   +write(data: Word)
 }
 

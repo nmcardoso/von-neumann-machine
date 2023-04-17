@@ -1,6 +1,6 @@
 @startuml dumper
 !include project.puml
 
-remove pyvnm.vm.*
+remove pyvnm.*
 restore pyvnm.system.loader.Dumper
 @enduml
