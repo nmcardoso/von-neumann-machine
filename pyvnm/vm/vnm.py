@@ -3,7 +3,7 @@ from pathlib import Path
 from ..system.dumper import Dumper
 from ..system.loader import Loader
 from .control import ControlUnit
-from .device import DeviceBus, Keyboard, Screen
+from .device import CharScreen, DeviceBus, Keyboard, Screen
 from .memory import Memory
 from .state import MachineState
 
@@ -33,6 +33,7 @@ class VonNeumannMachine:
     devices = DeviceBus()
     devices.add(0x1, Keyboard())
     devices.add(0x2, Screen())
+    devices.add(0x3, CharScreen())
     
     self.state = MachineState(memory=memory, devices=devices)
     self.control_unit = ControlUnit(self.state)

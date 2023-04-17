@@ -160,6 +160,8 @@ class Word:
       return int(value, 2)
     elif value[:2].lower() == '0x':
       return int(value, 16)
+    elif value[:2].lower() == '0c':
+      return ord(value[2])
     else:
       return int(value) 
 
@@ -236,7 +238,7 @@ class InstructionSet:
   SB = 0x5
   """Instrução SB (Subtração)"""
   ML = 0x6
-  """Instrução ML (Jump multiplicação)"""
+  """Instrução ML (Multiplicação)"""
   DV = 0x7
   """Instrução DV (Divisão)"""
   LD = 0x8

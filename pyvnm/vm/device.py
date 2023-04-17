@@ -35,6 +35,20 @@ class Device:
 class Screen(Device):
   def write(self, data: Word):
     print('>>', data.value)
+    
+    
+    
+class CharScreen(Device):
+  def __init__(self):
+    self._buffer = ''
+   
+    
+  def write(self, data: Word):
+    if data.value == 4:
+      print('>>', self._buffer)
+      self._buffer = ''
+    else:
+      self._buffer += chr(data.value)
 
 
 
