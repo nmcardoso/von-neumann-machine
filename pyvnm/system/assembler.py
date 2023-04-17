@@ -179,7 +179,7 @@ class Assembler:
       
 if __name__ == '__main__':
   from pathlib import Path
-  prog = Path(__file__).parent.parent.parent / 'programs' / 'test_03.asm'
+  prog = Path(__file__).parent.parent.parent / 'programs' / 'test_04.asm'
   prog = prog.read_text()
   a = Assembler(prog, output_base='x')
   obj = a.assemble()
