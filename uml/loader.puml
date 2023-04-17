@@ -2,5 +2,5 @@
 !include project.puml
 
 remove pyvnm.vm.*
-restore pyvnm.vm.io.Loader
+restore pyvnm.system.loader.Loader
 @enduml

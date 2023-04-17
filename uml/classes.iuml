@@ -41,6 +41,14 @@ class "Keyboard" as pyvnm.vm.device.Keyboard <<Class>> {
   +read() : Word
 }
 
+class "Screen" as pyvnm.vm.device.Screen <<Class>> {
+  +write(data: Word)
+}
+
+class "CharScreen" as pyvnm.vm.device.CharScreen <<Class>> {
+  +write(data: Word)
+}
+
 class "DeviceBus" as pyvnm.vm.device.DeviceBus <<Class>> {
   -devices : Dict[int, Device]
   +add(code: int, device: Device)
@@ -48,16 +56,12 @@ class "DeviceBus" as pyvnm.vm.device.DeviceBus <<Class>> {
   +remove(code: int)
 }
 
-class "Screen" as pyvnm.vm.device.Screen <<Class>> {
-  +write(data: Word)
-}
 
+'''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''' PACKAGE: LOADER ''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''
 
-'''''''''''''''''''''''''''''''''''''''''
-'''''''''''''' PACKAGE: IO ''''''''''''''
-'''''''''''''''''''''''''''''''''''''''''
-
-class "Loader" as pyvnm.vm.io.Loader <<Class>> {
+class "Loader" as pyvnm.system.loader.Loader <<Class>> {
   -bytecode : str
   -input_base : str
   -state : MachineState
@@ -66,7 +70,12 @@ class "Loader" as pyvnm.vm.io.Loader <<Class>> {
   +load()
 }
 
-class "Dumper" as pyvnm.vm.io.Dumper <<Class>> {
+
+'''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''' PACKAGE: DUMPER ''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''
+
+class "Dumper" as pyvnm.system.loader.Dumper <<Class>> {
   -output_base : str
   -output_path : Path
   -state : MachineState
