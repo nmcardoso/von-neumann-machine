@@ -248,4 +248,4 @@ class ControlUnit:
     operand : int
       Código
     """
-    pass
+    print(f'Código {operand} enviado ao Sistema Operacional')
