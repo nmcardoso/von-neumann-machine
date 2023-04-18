@@ -86,7 +86,8 @@ def main():
   print()
   
   vnm = VonNeumannMachine(memory_size=int(args.m))
-  vnm.load(program_path)
+  input_base = 'x' if program_path.suffix == '.hex' else 'b'
+  vnm.load(program_path, input_base=input_base)
   
   print(Colors.OKBLUE + '>> Programa carregado na memória com sucesso' + Colors.ENDC)
   print()
