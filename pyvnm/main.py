@@ -1,9 +1,11 @@
 import argparse
+import sys
 from pathlib import Path
 
-from .vm.memory import Memory
-from .vm.state import MachineState
-from .vm.vnm import VonNeumannMachine
+sys.path.append(str(Path(__file__).parent.parent))
+from pyvnm.vm.memory import Memory
+from pyvnm.vm.state import MachineState
+from pyvnm.vm.vnm import VonNeumannMachine
 
 
 class Colors:
@@ -54,12 +56,21 @@ def show_registers(state: MachineState):
 
 
 def cli():
-  p = argparse.ArgumentParser(prog='Simulador da Maquina de Von Neumann')
+  p = argparse.ArgumentParser(prog='python3 main.py', description='Simulador da Máquina de Von Neumann')
   p.add_argument(
     'programa', 
     nargs=1,
     action='store', 
-    help='Caminho relativo ou absoluto do programa a ser executado'
+    help=(
+      'Caminho relativo ou absoluto do programa a ser executado. '
+      'O simulador decide automaticamente o que fazer dependendo '
+      'da extensão do arquivo forneceido. Caso a extensão seja `.hex`, '
+      'o arquivo será considerado um programa-objeto absoluto na '
+      'base hexadicimal e será carregado na memória por um carregador '
+      'hexadecimal. Caso a extensão seja `.bin`, o arquivo será considerado '
+      'um programa-objeto absoluto na base binária e será carregador na '
+      'memória por um carregador binário.'
+    )
   )
   p.add_argument(
     '-m', 
@@ -73,9 +84,6 @@ def cli():
 
 
 def main():
-  # vnm = VonNeumannMachine(memory_size=128)
-  # test_file = Path(__file__).parent.parent / 'programs' / 'test_02.hex'
-  # vnm.execute_program(test_file)
   args = cli()
   
   program_path = Path(args.programa[0])

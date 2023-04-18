@@ -5,7 +5,8 @@ Na pasta von-neumann-machine, executar o comando:
 
 
 ```sh
-python3 -m pyvnm.main -m 32 programs/test_02.hex
+cd pyvnm
+python3 main.py -m 32 programs/test_02.hex
 ```
 
 
