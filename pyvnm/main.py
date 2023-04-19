@@ -78,9 +78,7 @@ def cli():
     '-c',
     action='store_true',
     help=(
-      'Usa cores na saída do terminal para facilitar a legibilidade da saída. '
-      'Esta funcionalidade foi testada apenas no terminal do Linux e é '
-      'compatível com emuladores compatíveis com V-100.'
+      'Usa cores na saída do terminal para facilitar a legibilidade da saída.'
     )
   )
   p.add_argument(
