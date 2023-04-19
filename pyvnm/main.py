@@ -9,15 +9,17 @@ from pyvnm.vm.vnm import VonNeumannMachine
 
 
 class Colors:
-  HEADER = '\033[95m'
-  OKBLUE = '\033[94m'
-  OKCYAN = '\033[96m'
-  OKGREEN = '\033[92m'
-  WARNING = '\033[93m'
-  FAIL = '\033[91m'
-  ENDC = '\033[0m'
-  BOLD = '\033[1m'
-  UNDERLINE = '\033[4m'
+  BLUE = ''
+  CYAN = ''
+  GREEN = ''
+  YELLOW = ''
+  MAGENTA = ''
+  LIGHT_BLUE = ''
+  LIGHT_CYAN = ''
+  LIGHT_GREEN = ''
+  LIGHT_YELLOW = ''
+  LIGHT_MAGENTA = ''
+  RESET = ''
 
 
 
@@ -39,13 +41,13 @@ def heading(msg: str, sep: str = '-'):
     
 def hexdump(mem: Memory):
   for i in range(mem.size // 16):
-    print(Colors.WARNING + format(i*16, '0>4x') + Colors.ENDC, ' ', sep='', end='')
+    print(Colors.LIGHT_YELLOW + format(i*16, '0>4x') + Colors.RESET, ' ', sep='', end='')
     for j in range(16):
       w = mem.read(i*16 + j)
       if w.value is None:
         print(format(0, '0>4x'), ' ', sep='', end='')
       else:
-        print(Colors.BOLD + Colors.OKGREEN + format(w.value, '0>4x') + Colors.ENDC, ' ', sep='', end='')
+        print(Colors.LIGHT_GREEN + format(w.value, '0>4x') + Colors.RESET, ' ', sep='', end='')
     print()
     
     
@@ -73,6 +75,15 @@ def cli():
     )
   )
   p.add_argument(
+    '-c',
+    action='store_true',
+    help=(
+      'Usa cores na saída do terminal para facilitar a legibilidade da saída. '
+      'Esta funcionalidade foi testada apenas no terminal do Linux e é '
+      'compatível com emuladores compatíveis com V-100.'
+    )
+  )
+  p.add_argument(
     '-m', 
     action='store',
     default=4096,
@@ -80,7 +91,6 @@ def cli():
   )
   args = p.parse_args()
   return args
-  
 
 
 def main():
@@ -90,6 +100,25 @@ def main():
   if not program_path.exists():
     return print(f'Arquivo não encontrado: str(program_path)')
   
+  if args.c:
+    try:
+      from colorama import Fore, init
+      init()
+      Colors.BLUE = Fore.BLUE
+      Colors.CYAN = Fore.CYAN
+      Colors.GREEN = Fore.GREEN
+      Colors.YELLOW = Fore.YELLOW
+      Colors.MAGENTA = Fore.MAGENTA
+      Colors.LIGHT_BLUE = Fore.LIGHTBLUE_EX
+      Colors.LIGHT_CYAN = Fore.LIGHTCYAN_EX
+      Colors.LIGHT_GREEN = Fore.LIGHTGREEN_EX
+      Colors.LIGHT_YELLOW = Fore.LIGHTYELLOW_EX
+      Colors.LIGHT_MAGENTA = Fore.LIGHTMAGENTA_EX
+      Colors.RESET = Fore.RESET
+    except:
+      print('A coloração do terminal depende do pacote Colorama')
+      print('Instale executando pip3 install colorama')
+  
   heading('Simulador da Máquina de Von Neumann', '=')
   print()
   
@@ -97,7 +126,7 @@ def main():
   input_base = 'x' if program_path.suffix == '.hex' else 'b'
   vnm.load(program_path, input_base=input_base)
   
-  print(Colors.OKBLUE + '>> Programa carregado na memória com sucesso' + Colors.ENDC)
+  print(Colors.LIGHT_BLUE + '>> Programa carregado na memória com sucesso' + Colors.RESET)
   print()
   heading('Memória')
   hexdump(vnm.state.memory)
@@ -106,13 +135,13 @@ def main():
   show_registers(vnm.state)
   
   print()
-  print(Colors.OKBLUE + '>> Iniciando execução do programa' + Colors.ENDC)
+  print(Colors.LIGHT_BLUE + '>> Iniciando execução do programa' + Colors.RESET)
   print()
   
   vnm.execute_program()
   
   print()
-  print(Colors.OKBLUE + '>> Fim da execução do programa' + Colors.ENDC)
+  print(Colors.LIGHT_BLUE + '>> Fim da execução do programa' + Colors.RESET)
   print()
   heading('Memória')
   hexdump(vnm.state.memory)
@@ -121,7 +150,7 @@ def main():
   show_registers(vnm.state)
   
   print()
-  print(Colors.OKBLUE + '>> Fim da simulação' + Colors.ENDC)
+  print(Colors.LIGHT_BLUE + '>> Fim da simulação' + Colors.RESET)
 
 
 
