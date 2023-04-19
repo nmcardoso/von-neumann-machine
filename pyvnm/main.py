@@ -41,7 +41,7 @@ def heading(msg: str, sep: str = '-'):
     
 def hexdump(mem: Memory):
   for i in range(mem.size // 16):
-    print(Colors.LIGHT_YELLOW + format(i*16, '0>4x') + Colors.RESET, ' ', sep='', end='')
+    print(Colors.LIGHT_YELLOW + format(i*16, '0>4x') + ':' + Colors.RESET, ' ', sep='', end='')
     for j in range(16):
       w = mem.read(i*16 + j)
       if w.value is None:
