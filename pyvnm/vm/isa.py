@@ -102,6 +102,20 @@ class Word:
     int
       Representação da string como número inteiro
     """
+
+    ## Converção bin_to_int em complemento de 2
+    # if (value[:2].lower()=="0b"):
+    #   binario = value[2:]
+    # else:
+    #   binario = value
+    # if(binario[0]=="0"):
+    #   inteiro = int(value,2)
+    # else:
+    #   int_aux = int(binario,2)
+    #   inteiro = -((int_aux^(2**(len(binario))-1))+1)     
+    # return inteiro
+    
+
     return int(value, 2)
   
   
