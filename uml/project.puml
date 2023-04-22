@@ -12,7 +12,7 @@ pyvnm.vm.device.DeviceBus --o pyvnm.vm.state.MachineState : devices
 pyvnm.vm.device.Device --o pyvnm.vm.device.DeviceBus : devices
 pyvnm.vm.isa.Word --o pyvnm.vm.state.MachineState : acc
 pyvnm.vm.isa.Word --o pyvnm.vm.state.MachineState : pc
-pyvnm.vm.isa.Word --* pyvnm.vm.memory.Memory : data
+pyvnm.vm.isa.Word ..> pyvnm.vm.memory.Memory
 pyvnm.vm.memory.Memory --o pyvnm.vm.state.MachineState : memory
 pyvnm.vm.state.MachineState o- pyvnm.vm.control.ControlUnit : state
 ' pyvnm.vm.state.MachineState --o pyvnm.system.loader.Dumper : state
