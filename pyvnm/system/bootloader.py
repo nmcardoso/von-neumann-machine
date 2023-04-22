@@ -58,15 +58,3 @@ class BootLoader:
   def _to_word(self, value) -> Word:
     w = '0x' + value if self._input_base == 'x' else '0b' + value
     return Word(w)
-
-
-  def get_byte(self, index: int = None) -> int:
-    if index is None:
-      b = self._bytes[self._cursor]
-      self._cursor += 1
-    else:
-      b = self._bytes[index]
-      
-    w = '0x' + b if self._input_base == 'x' else '0b' + b
-      
-    return Word(w)
