@@ -55,8 +55,10 @@ class MachineState:
     self.acc = Word(acc)
     self.pc = Word(pc)
     self.pc_lock = Lock()
-    self.memory_start = memory_start
-    self.instructions_begin = instructions_begin
-    self.instructions_end = instructions_end
-    self.code_entrypoint = code_entrypoint
+    # self.memory_start = memory_start
+    # self.instructions_begin = instructions_begin
+    # self.instructions_end = instructions_end
+    # self.code_entrypoint = code_entrypoint
     self.sig_term = False
+    self.loader_addr = None
+    self.dumper_addr = None

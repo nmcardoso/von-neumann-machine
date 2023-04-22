@@ -1,3 +1,6 @@
+import numpy as np
+
+
 class Word:
   """
   Representação de uma palavra na memória e nos registradores.
@@ -64,71 +67,54 @@ class Word:
     """
     if new_value is None:
       self._value = None
+      self.bin = None
+      self.uint = None
+      self.int = None
+      self.hex = None
     else:
-      self._value = Word.bin_to_int(
-        Word.int_to_bin(
-          Word.convert_to_int(new_value)
-        )
-      )
-  
+      int_value = Word.convert_to_int(new_value)
+      if int_value >= 0:
+        uint_value = int_value
+      else: 
+        uint_value = int_value & ((1 << Word.size) - 1)
+      
+      # converte a palavra pra binário e trunca p/ 16 bits menos significativos
+      bin_value = np.binary_repr(uint_value, width=Word.size)[-Word.size:]
+      uint_value = int(bin_value, 2)
+      sint_value = uint_value if uint_value < 2 ** Word.size / 2 else uint_value - 2 ** Word.size 
+      hex_value = np.base_repr(uint_value, base=16)
+      
+      self.bin = bin_value
+      self.uint = uint_value
+      self.int = sint_value
+      self.hex = hex_value
+      self._value = uint_value
+      
   
   @property
-  def binary(self) -> str | None:
+  def opcode(self):
     """
-    Converte a palavra para binário
-
-    Returns
-    -------
-    str | None
-      A representação binária da palavra
-    """
-    if self.value is None:
-      return None
-    return Word.int_to_bin(self._value)
-  
-  
-  @staticmethod
-  def bin_to_int(value: str) -> int:
-    """
-    Converte uma string contendo bits para um número inteiro
-
-    Parameters
-    ----------
-    value : str
-      String de bits
+    Retorna o código da operação da respectiva instrução
 
     Returns
     -------
     int
-      Representação da string como número inteiro
+      Representação inteira do código da operação
     """
-    return int(value, 2)
+    return int(self.bin[:4], 2)
   
   
-  @staticmethod
-  def int_to_bin(value: int, extend: bool = True, word_size: int = None) -> str:
+  @property
+  def operand(self):
     """
-    Converte um número inteiro para string de bits
-
-    Parameters
-    ----------
-    value : int
-      Valor do número inteiro a ser convertido
-    extend : bool, opcional
-      Indica se o valor recebido deve ser extendido com zeros à esquerda até
-      o tamanho da palavra, por padrão ``True``
-    word_size : int, opcional
-      Tamanho da palavra, usado apenas se ``extend == True``, por padrão ``None``
+    Retorna o operando da respectiva instrução
 
     Returns
     -------
-    str
-      A representação binária do número inteiro inserido
+    int
+      Representação inteira do operando
     """
-    if extend:
-      extend_size = Word.size if word_size is None else word_size
-      return format(value, f'0>{extend_size}b')[-extend_size:]
-    return format(value, 'b')
+    return int(self.bin[4:], 2)
   
   
   @staticmethod
@@ -163,62 +149,12 @@ class Word:
     elif value[:2].lower() == '0c':
       return ord(value[2])
     else:
-      return int(value) 
+      return int(value)
 
 
 
-class Instruction(Word):
-  """
-  Representação de uma Instrução na memória
-
-  Parameters
-  ----------
-  value : str | int | None
-    Valor numérico da instrução
-  """
-  def __init__(self, value: str | int | None):
-    super().__init__(value)
-    word_bits = self.binary
-    self._opcode = Word.bin_to_int(word_bits[:4])
-    self._operand = Word.bin_to_int(word_bits[4:])
-    
-    
-  def __repr__(self):
-    return f'<Instruction {InstructionSet.get_name(self.opcode)} {self.operand}>'
-    
-  
-  @property
-  def opcode(self) -> int:
-    """
-    Retorna o código da operação da respectiva instrução
-
-    Returns
-    -------
-    int
-      Representação inteira do código da operação
-    """
-    return self._opcode
-  
-  
-  @property
-  def operand(self) -> int:
-    """
-    Retorna o operando da respectiva instrução
-
-    Returns
-    -------
-    int
-      Representação inteira do operando
-    """
-    return self._operand
-  
-  
-  @staticmethod
-  def build(opcode: int, operand: int):
-    opcode_bits = Word.int_to_bin(opcode, extend=True, word_size=4)
-    operand_bits = Word.int_to_bin(operand, extend=True, word_size=12)
-    instruction_bits = '0b' + opcode_bits + operand_bits
-    return Instruction(instruction_bits)
+class Byte(Word):
+  size = 8
   
   
   
@@ -246,7 +182,7 @@ class InstructionSet:
   ST = 0x9
   """Instrução ST (Store)"""
   SC = 0xA
-  """Instrução JP (Subroutine Call)"""
+  """Instrução SC (Subroutine Call)"""
   GD = 0xB
   """Instrução GD (Get Data)"""
   PD = 0xC
@@ -274,9 +210,9 @@ class InstructionSet:
   
   
   @classmethod
-  def get_name(cls, opcode: int) -> str:
+  def get_mnemonic(cls, opcode: int) -> str:
     """
-    Obtém o símbolo da instrução a partir de seu opcode
+    Obtém o mnemônico da instrução a partir de seu opcode
 
     Parameters
     ----------
@@ -286,7 +222,7 @@ class InstructionSet:
     Returns
     -------
     str
-      O símbolo correspondente
+      O mnemônico correspondente
     """
     for name, code in cls.__dict__.items():
       if code == opcode:

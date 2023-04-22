@@ -1,0 +1,31 @@
+@startuml pseudo_arit
+package "Operações Aritméticas" as p_arit {
+  storage AD
+  storage SB
+  storage ML
+  storage DV
+
+  rectangle "ACC := ACC op MEM(endereco)" as r1
+  note right
+  op é uma das 
+  instruções 
+  aritméticas
+  end note
+
+  rectangle "PC := PC + 1" as r2
+
+  AD --> r1
+  SB --> r1
+  ML --> r1
+  DV --> r1
+  r1 --> r2 
+}
+
+package "Chamada ao S.O." as p_so {
+  storage OS
+
+  rectangle "syscall codigo" as r081
+
+  OS --> r081
+}
+@enduml

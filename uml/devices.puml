@@ -6,5 +6,6 @@ restore pyvnm.vm.device.Device
 restore pyvnm.vm.device.Screen
 restore pyvnm.vm.device.CharScreen
 restore pyvnm.vm.device.Keyboard
+restore pyvnm.vm.device.HardDrive
 restore pyvnm.vm.device.DeviceBus
 @enduml

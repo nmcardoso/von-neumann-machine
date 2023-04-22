@@ -1,6 +1,8 @@
 from typing import List
 
-from .isa import Word
+import numpy as np
+
+from .isa import Byte, Word
 
 
 class Memory:
@@ -20,7 +22,9 @@ class Memory:
   """
   def __init__(self, size: int):
     self._size = size
-    self._data = [Word(None) for _ in range(size)]
+    # self._data = [Word(None) for _ in range(size)]
+    self._data = np.empty(shape=(self._size, 8))
+    self._data.fill(np.nan)
     
   
   @property
@@ -51,10 +55,15 @@ class Memory:
       Conteúdo contido no endereço especificado
     """
     self._check_valid_position(address)
-    return self._data[address]
+    byte = self._data[address : address + 2].flatten()
+    if len(np.argwhere(np.isnan(byte))) != 0:
+      return Word(None)
+    byte_str = ''.join(byte.tolist())
+    return Word('0b' + byte_str)
+    # return self._data[address]
   
   
-  def write(self, position: int, data: Word | List[Word]):
+  def write(self, position: int, data: Word):
     """
     Escrever conteúdo em um endereço específica da memória
 
@@ -66,39 +75,12 @@ class Memory:
       Palavra ou lista de palavras a serem escritas na memória
     """
     self._check_valid_position(position)
-    
-    if isinstance(data, list):
-      for i, d in enumerate(data, start=position):
-        self._data[i] = d
-    else:
-      self._data[position] = data
+    bits = np.array(list(data.bin)).reshape(shape=(2, 8))
+    self._data[position : position+2, : ] = bits
       
       
-  def get_first_word_address(self) -> int:
-    """
-    Método de utilidade que retorna a posição na memória da primeira palavra
-    não nula
-
-    Returns
-    -------
-    int
-      Endereço da memória da primeira palavra não nula
-    """
-    return next(i for i, word in enumerate(self._data) if not word.is_empty())
-  
-  
-  def get_last_word_address(self) -> int:
-    """
-    Método de utilidade que retorna a posição na memória da última palavra
-    não nula
-
-    Returns
-    -------
-    int
-      Endereço da memória da última palavra não nula
-    """
-    x = next(i for i, word in enumerate(self._data[::-1]) if not word.is_empty())
-    return len(self._data) - x
+  def write_byte(self, position: int, data: Byte):
+    self._data[position, : ] = list(data.bin)
       
   
   def _check_valid_position(self, address: int):

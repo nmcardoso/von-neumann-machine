@@ -57,8 +57,21 @@ class Keyboard(Device):
     data = input('>> Digite um numero: ')
     return Word(data)
 
-  
-  
+
+
+class HardDisk(Device):
+  def __init__(self, data: str):
+    self._data = data
+    self._pointer = 0
+    
+    
+  def read(self) -> Word:
+    if self._pointer < len(self._data):
+      self._pointer += 1
+      return Word(self._data[self._pointer : self._pointer + 1])
+
+
+
 class DeviceBus:
   """
   Abstração de um bus de dispositivos. É possível acessar qualquer um dos
