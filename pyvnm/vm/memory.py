@@ -96,12 +96,14 @@ class Word:
       else: 
         uint_value = int_value & ((1 << self.size) - 1)
       
-      # converte a palavra pra binário e trunca p/ 16 bits menos significativos
+      # converte a palavra pra binário, trunca p/ 16 bits menos significativos
+      # e faz a conversão para todas as outras bases de acordo com a palavra
+      # truncada em bits
       bin_value = np.binary_repr(uint_value, width=self.size)[-self.size:]
       uint_value = int(bin_value, 2)
       sint_value = uint_value if uint_value < 2 ** self.size / 2 else uint_value - 2 **self.size 
       hex_value = np.base_repr(uint_value, base=16)
-      hex_value = '0' *  (int(self.size / 4) - len(hex_value)) + hex_value
+      hex_value = '0' * (int(self.size / 4) - len(hex_value)) + hex_value
       
       self.bin = bin_value
       self.uint = uint_value
@@ -199,6 +201,7 @@ class Word:
 
 class Byte(Word):
   size = 8
+
 
 
 class Memory:
