@@ -1,0 +1,52 @@
+@startuml pseudo_devio
+package "Desvio Incondicional" as p_di {
+  storage JP
+  storage RS
+
+  rectangle "PC := endereco" as r001
+
+  rectangle "Bloqueia PC" as r002
+
+  RS --> r001
+  JP --> r001
+  r001 --> r002 
+}
+
+package "Desvio Condicional" as p_dc {
+  storage JZ
+  storage JN
+
+  hexagon Teste as r010
+
+  rectangle "PC := endereco" as r011
+
+  rectangle "Bloqueia PC" as r012
+
+  JN --> r010
+  JZ --> r010
+  r010 --> r011 : " True"
+  r011 --> r012 
+}
+
+package "Desvio Halt" as p_hj {
+  storage HJ
+
+  rectangle "PC := endereco" as r021
+
+  rectangle "sig_term = 1" as r022
+
+  HJ --> r021
+  r021 --> r022
+}
+
+package "Chamada de Subrotina" as p_sc {
+  storage SC
+
+  rectangle "MEM(endereco) := JP PC + 1" as r031
+
+  rectangle "PC := endereco + 1" as r032
+
+  SC --> r031
+  r031 --> r032
+}
+@enduml

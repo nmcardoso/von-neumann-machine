@@ -1,11 +1,9 @@
 from pathlib import Path
 
-from ..system.dumper import Dumper
-from ..system.loader import Loader
-from .control import ControlUnit
-from .device import CharScreen, DeviceBus, Keyboard, Screen
+from ..system.bootloader import BootLoader
+from .cpu import CPU, CPUState
+from .device import CharScreen, DeviceBus, HardDisk, Keyboard, Screen
 from .memory import Memory
-from .state import MachineState
 
 
 class VonNeumannMachine:
@@ -21,40 +19,39 @@ class VonNeumannMachine:
   Parameters
   ----------
   memory_size: int
-    Quantidade de posições de memória da Maquina criada, cada palavra da
-    memória possui, por padrão, 16 bits.
-  initial_acc: int
-    Valor inicial do registrador acumulador
+    Quantidade de posições de memória da Maquina criada
   initial_pc: int
     Valor inicial do contador de programa
   """
-  def __init__(self, memory_size: int):
+  def __init__(self, memory_size: int, load_path: Path, dump_path: Path = None):
+    self._load_path = load_path
+    self._dump_path = dump_path
     memory = Memory(memory_size)
     devices = DeviceBus()
     devices.add(0x1, Keyboard())
     devices.add(0x2, Screen())
     devices.add(0x3, CharScreen())
+    devices.add(0x4, HardDisk(input_path=load_path, output_path=dump_path))
     
-    self.state = MachineState(memory=memory, devices=devices)
-    self.control_unit = ControlUnit(self.state)
+    self.state = CPUState(memory=memory, devices=devices)
+    self.control_unit = CPU(self.state)
     
     
-  def load(self, bytecode: str | Path, input_base: str = 'x'):
+  def boot(self):
     """
-    Carrega o bytecode fornecido na memória da máquina
-
-    Parameters
-    ----------
-    bytecode : str | Path
-      Bytecode a ser carregado
-    input_base: str, opcional
-      Base numérica que em que se encontra o bytecode a ser carregado.
-      Valores usados: ``'x'`` para hexadecimal e ``'b'`` para binário.
-      Valor padrão: ``'x'``
+    Carregamento inicial dos principais programas de sistema na máquina
     """
-    bytecode = bytecode if isinstance(bytecode, str) else bytecode.read_text()
-    loader = Loader(initial_state=self.state, bytecode=bytecode, input_base=input_base)
-    loader.load()
+    # loader_path = Path(__file__).parent.parent / 'system' / 'loader.hex'
+    loader_path = Path(__file__).parent.parent.parent / 'programs' / 'test_07.hex'
+    # dumper_path = Path(__file__).parent.parent / 'system' / 'dumper.hex'
+    bl = BootLoader(initial_state=self.state, input_base='x')
+    self.state.loader_addr = bl.load(loader_path.read_text())
+    # self.state.dumper_addr = bl.load(dumper_path.read_text())
+    
+    
+  def load(self):
+    self.state.pc = self.state.loader_addr
+    self.execute_program()
     
     
   def execute_program(self):
@@ -83,5 +80,7 @@ class VonNeumannMachine:
     str
       Valor da memória codificado na base especificada
     """
-    dumper = Dumper(self.state, output_path=output_path, output_base=output_base)
-    return dumper.dump()
+    self.state.pc = self.state.dumper_addr
+    self.execute_program()
+    hd = self.state.devices.get(4)
+    hd.output_path.write_text(hd.output_data)

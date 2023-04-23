@@ -1,0 +1,34 @@
+@startuml pseudo_es
+
+package "Load" as p_ld {
+  storage LD
+
+  rectangle "ACC := MEM(endereco)" as r031
+
+  LD --> r031
+}
+
+package "Store" as p_st {
+  storage ST
+
+  rectangle "MEM(endereco) := acc" as r041
+
+  ST --> r041
+}
+
+package "Get Data" as p_gd {
+  storage GD
+
+  rectangle "acc << BUS[dispositivo]" as r051
+
+  GD --> r051
+}
+
+package "Put Data" as p_pd {
+  storage PD
+
+  rectangle "acc >> BUS[dispositivo]" as r061
+
+  PD --> r061
+}
+@enduml

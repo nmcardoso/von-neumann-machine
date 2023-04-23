@@ -1,5 +1,6 @@
                     
-            LD      NUM_1                   @
+            ORG     0
+MAIN        LD      NUM_1                   @
             ST      POSICAO_ARQUIVO         @ POSICAO_ARQUIVO = endereço da memória onde ficará guardado o valor da variável que varre os bytes do arquivo
 
             RD      POSICAO_ARQUIVO         @ lê o primeiro byte da fita (POSICAO = 1) 
@@ -105,6 +106,6 @@ BYTES_TOTAIS        DATA 104
 BYTES_CODIGO        DATA 105
 CHECK_SUM_FORNECIDO DATA 106
 CHECK_SUM_CALCULADO DATA 107
-NUM_1               DATA
-NUM_3               DATA
-NUM_256             DATA
+NUM_1               DATA 1
+NUM_3               DATA 3
+NUM_256             DATA 256

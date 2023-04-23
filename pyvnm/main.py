@@ -3,8 +3,7 @@ import sys
 from pathlib import Path
 
 sys.path.append(str(Path(__file__).parent.parent))
-from pyvnm.vm.memory import Memory
-from pyvnm.vm.state import MachineState
+from pyvnm.vm.cpu import CPUState
 from pyvnm.vm.vnm import VonNeumannMachine
 
 
@@ -39,20 +38,7 @@ def heading(msg: str, sep: str = '-'):
     
     
     
-def hexdump(mem: Memory):
-  for i in range(mem.size // 16):
-    print(Colors.LIGHT_YELLOW + format(i*16, '0>4x') + ':' + Colors.RESET, ' ', sep='', end='')
-    for j in range(16):
-      w = mem.read(i*16 + j)
-      if w.value is None:
-        print(format(0, '0>4x'), ' ', sep='', end='')
-      else:
-        print(Colors.LIGHT_GREEN + format(w.value, '0>4x') + Colors.RESET, ' ', sep='', end='')
-    print()
-    
-    
-    
-def show_registers(state: MachineState):
+def show_registers(state: CPUState):
   print('Acumulador:\t', format(state.acc.value or 0, '0>4x'))
   print('PC:\t\t', format(state.pc.value or 0, '0>4x'))
 
@@ -120,14 +106,14 @@ def main():
   heading('Simulador da Máquina de Von Neumann', '=')
   print()
   
-  vnm = VonNeumannMachine(memory_size=int(args.m))
+  vnm = VonNeumannMachine(memory_size=int(args.m), load_path=program_path)
   input_base = 'x' if program_path.suffix == '.hex' else 'b'
-  vnm.load(program_path, input_base=input_base)
+  vnm.boot()
   
   print(Colors.LIGHT_BLUE + '>> Programa carregado na memória com sucesso' + Colors.RESET)
   print()
   heading('Memória')
-  hexdump(vnm.state.memory)
+  vnm.state.memory.hexdump(Colors())
   print()
   heading('Registradores')
   show_registers(vnm.state)
@@ -142,7 +128,7 @@ def main():
   print(Colors.LIGHT_BLUE + '>> Fim da execução do programa' + Colors.RESET)
   print()
   heading('Memória')
-  hexdump(vnm.state.memory)
+  vnm.state.memory.hexdump(Colors())
   print()
   heading('Registradores')
   show_registers(vnm.state)

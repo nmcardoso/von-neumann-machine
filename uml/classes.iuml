@@ -50,6 +50,13 @@ class "CharScreen" as pyvnm.vm.device.CharScreen <<Class>> {
   +write(data: Word)
 }
 
+class "HardDrive" as pyvnm.vm.device.HardDrive <<Class>> {
+  -input_file : str
+  -output_file : str
+  +read(data: Word)
+  +write(data: Word)
+}
+
 class "DeviceBus" as pyvnm.vm.device.DeviceBus <<Class>> {
   -devices : Dict[int, Device]
   +add(code: int, device: Device)
@@ -62,25 +69,36 @@ class "DeviceBus" as pyvnm.vm.device.DeviceBus <<Class>> {
 '''''''''''''' PACKAGE: LOADER ''''''''''''''
 '''''''''''''''''''''''''''''''''''''''''''''
 
-class "Loader" as pyvnm.system.loader.Loader <<Class>> {
-  -bytecode : str
-  -input_base : str
-  -state : MachineState
-  -words : List[str]
-  -get_instructions_range()
-  +load()
-}
+' class "Loader" as pyvnm.system.loader.Loader <<Class>> {
+'   -bytecode : str
+'   -input_base : str
+'   -state : MachineState
+'   -words : List[str]
+'   -get_instructions_range()
+'   +load()
+' }
 
 
 '''''''''''''''''''''''''''''''''''''''''''''
 '''''''''''''' PACKAGE: DUMPER ''''''''''''''
 '''''''''''''''''''''''''''''''''''''''''''''
 
-class "Dumper" as pyvnm.system.loader.Dumper <<Class>> {
-  -output_base : str
-  -output_path : Path
-  -state : MachineState
-  +dump() : str
+' class "Dumper" as pyvnm.system.loader.Dumper <<Class>> {
+'   -output_base : str
+'   -output_path : Path
+'   -state : MachineState
+'   +dump() : str
+' }
+
+
+'''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''' PACKAGE: BOOTLOADER ''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''
+
+class "Bootloader" as pyvnm.system.bootloader.Bootloader <<Class>> {
+  -program_obj: str
+  -cursor: int
+  +get_byte() : Byte
 }
 
 
@@ -90,23 +108,24 @@ class "Dumper" as pyvnm.system.loader.Dumper <<Class>> {
 
 class "Word" as pyvnm.vm.isa.Word <<Class>> {
   +{static}size : int
-  #value : int
-  +{static}bin_to_int(value) : int
+  -value : int
+  +bin : str
+  +hex : str
+  +uint : int
+  +int : int
   +{static}convert_to_int(value) : int
-  +{static}int_to_bin(value: bool, extend: int, word_size: int) : str
-  +get_value() : Word
+  +get_value() : int
   +set_value(word: Word)
   +is_empty() : bool
-  +to_binary() : str
 }
 
-class "Instruction" as pyvnm.vm.isa.Instruction <<Class>> {
-  -opcode : int
-  -operand : int
-  +get_opcode() : int
-  +get_operand() : int
-  ' +{static}build(opcode: int, operand: int) : Instruction
-}
+' class "Instruction" as pyvnm.vm.isa.Instruction <<Class>> {
+'   -opcode : int
+'   -operand : int
+'   +get_opcode() : int
+'   +get_operand() : int
+'   ' +{static}build(opcode: int, operand: int) : Instruction
+' }
 
 class "InstructionSet" as pyvnm.vm.isa.InstructionSet <<Class>> {
   +{static}AD : int
@@ -164,11 +183,9 @@ entity "MachineState" as pyvnm.vm.state.MachineState <<Entity>> {
 '''''''''''''''''''''''''''''''''''''''''''''
 
 class "Memory" as pyvnm.vm.memory.Memory <<Class>> {
-  #data : List[Word]
+  #data : List[List[int]]
   #size : int
   -check_valid_adress(adress: int)
-  +get_first_word_address() : int
-  +get_last_word_address() : int
   +get_size() : int
   +read(address: int) : Word
   +write(address: int, data: Word)
