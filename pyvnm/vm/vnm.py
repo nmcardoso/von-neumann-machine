@@ -1,10 +1,9 @@
 from pathlib import Path
 
 from ..system.bootloader import BootLoader
-from .control import ControlUnit
-from .device import CharScreen, DeviceBus, HardDrive, Keyboard, Screen
+from .cpu import CPU, CPUState
+from .device import CharScreen, DeviceBus, HardDisk, Keyboard, Screen
 from .memory import Memory
-from .state import MachineState
 
 
 class VonNeumannMachine:
@@ -20,39 +19,38 @@ class VonNeumannMachine:
   Parameters
   ----------
   memory_size: int
-    Quantidade de posições de memória da Maquina criada, cada palavra da
-    memória possui, por padrão, 16 bits.
-  initial_acc: int
-    Valor inicial do registrador acumulador
+    Quantidade de posições de memória da Maquina criada
   initial_pc: int
     Valor inicial do contador de programa
   """
-  def __init__(self, memory_size: int):
+  def __init__(self, memory_size: int, load_path: Path, dump_path: Path = None):
+    self._load_path = load_path
+    self._dump_path = dump_path
     memory = Memory(memory_size)
     devices = DeviceBus()
     devices.add(0x1, Keyboard())
     devices.add(0x2, Screen())
     devices.add(0x3, CharScreen())
-    devices.add(0x4, HardDrive())
+    devices.add(0x4, HardDisk(input_path=load_path, output_path=dump_path))
     
-    self.state = MachineState(memory=memory, devices=devices)
-    self.control_unit = ControlUnit(self.state)
+    self.state = CPUState(memory=memory, devices=devices)
+    self.control_unit = CPU(self.state)
     
     
   def boot(self):
     """
     Carregamento inicial dos principais programas de sistema na máquina
     """
-    loader_path = Path(__file__).parent.parent / 'system' / 'loader.hex'
-    dumper_path = Path(__file__).parent.parent / 'system' / 'dumper.hex'
+    # loader_path = Path(__file__).parent.parent / 'system' / 'loader.hex'
+    loader_path = Path(__file__).parent.parent.parent / 'programs' / 'test_07.hex'
+    # dumper_path = Path(__file__).parent.parent / 'system' / 'dumper.hex'
     bl = BootLoader(initial_state=self.state, input_base='x')
     self.state.loader_addr = bl.load(loader_path.read_text())
-    self.state.dumper_addr = bl.load(dumper_path.read_text())
+    # self.state.dumper_addr = bl.load(dumper_path.read_text())
     
     
-  def load(self, input_path: str | Path):
+  def load(self):
     self.state.pc = self.state.loader_addr
-    self.state.devices.get(4).input_path = input_path
     self.execute_program()
     
     
@@ -83,4 +81,6 @@ class VonNeumannMachine:
       Valor da memória codificado na base especificada
     """
     self.state.pc = self.state.dumper_addr
-    self.state.devices.get(4).output_path = output_path
+    self.execute_program()
+    hd = self.state.devices.get(4)
+    hd.output_path.write_text(hd.output_data)

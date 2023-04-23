@@ -1,18 +1,59 @@
-from .isa import Instruction, InstructionSet, Word
-from .state import MachineState
+from .device import DeviceBus
+from .memory import Memory, Word
+from .utils import Lock
 
 
-class ControlUnit:
+class CPUState:
   """
-  Unidade de Controle: entidade responsavel por executar um código carregado
-  na memória
+  Entidade que armazena o estado da Unidade Central de Processamento da
+  Máquina de Von Neumann
+
+  Parameters
+  ----------
+  memory: Memory
+    A memória da máquina
+  devices: DeviceBus
+    O bus de dispositivos da máquina
+  acc: int, opcional
+    O valor inicial do registrador acumulador, valor padrão: 0
+  pc: int, opcional
+    O valor inicial do registrador PC, valor padrão: 0
+    
+  Attributes
+  ----------
+  pc_lock: Lock
+    Cadeado usado para implementação da lógica de bloqueio do registrador
+    PC (program counter)
+  sig_term: bool
+    Sinal que indica a terminação da execução de um programa em execução
+  """
+  def __init__(
+    self, 
+    memory: Memory, 
+    devices: DeviceBus, 
+    acc: int = 0, 
+    pc: int = 0
+  ):
+    self.memory = memory
+    self.devices = devices
+    self.acc = Word(acc)
+    self.pc = Word(pc)
+    self.pc_lock = Lock()
+    self.sig_term = False
+    self.loader_addr = None
+    self.dumper_addr = None
+
+
+class CPU:
+  """
+  Responsavel por executar um código carregado na memória
   
   Parameters
   ----------
   initial_state: MachineState
     Estado inicial da máquina, usualmente gerado pelo carregador
   """
-  def __init__(self, initial_state: MachineState):
+  def __init__(self, initial_state: CPUState):
     self._action_switcher = {
       InstructionSet.JP: self._action_JP,
       InstructionSet.RS: self._action_RS,
@@ -31,6 +72,7 @@ class ControlUnit:
       InstructionSet.OS: self._action_OS,
     }
     self.state = initial_state
+    self.os_flags = OSFlags.MEM_ACCESS_DIRECT
     
   
   def event_loop(self):
@@ -38,10 +80,10 @@ class ControlUnit:
     Inicia a execução de um programa a partir da posição indicada pelo
     registrador PC.
     """
-    b = self.state.instructions_begin 
-    e = self.state.instructions_end
-    while not self.state.sig_term and (b <= self.state.pc.value <= e):
+    while not self.state.sig_term:
       curr_inst = self.state.memory.read(self.state.pc.value)
+      if not curr_inst.is_instruction():
+        break
       action = self._action_switcher.get(curr_inst.opcode)
       action(curr_inst.operand)
       self._increment_pc()
@@ -54,7 +96,20 @@ class ControlUnit:
     if not self.state.pc_lock.is_locked():
       self.state.pc.value += 1
     self.state.pc_lock.release()
+    
   
+  def _read_mem(self, address: int) -> Word:
+    if self.os_flags == OSFlags.MEM_ACCESS_DIRECT:
+      return self.state.memory.read(address)
+    return self.state.memory.read(self.state.memory.read(address))
+  
+  
+  def _write_mem(self, address: int, data: Word):
+    if self.os_flags == OSFlags.MEM_ACCESS_DIRECT:
+      self.state.memory.write(address, data)
+    else:
+      self.state.memory.write(self.state.memory.read(address).value, data)
+    
   
   def _action_JP(self, operand: int):
     """
@@ -133,7 +188,7 @@ class ControlUnit:
     operand : int
       Endereço da memória
     """
-    self.state.acc.value += self.state.memory.read(operand).value
+    self.state.acc.value += self._read_mem(operand).value
     
     
   def _action_SB(self, operand: int):
@@ -145,7 +200,7 @@ class ControlUnit:
     operand : int
       Endereço da memória
     """
-    self.state.acc.value -= self.state.memory.read(operand).value
+    self.state.acc.value -= self._read_mem(operand).value
     
     
   def _action_ML(self, operand: int):
@@ -157,7 +212,7 @@ class ControlUnit:
     operand : int
       Endereço da memória
     """
-    self.state.acc.value *= self.state.memory.read(operand).value
+    self.state.acc.value *= self._read_mem(operand).value
     
     
   def _action_DV(self, operand: int):
@@ -169,7 +224,7 @@ class ControlUnit:
     operand : int
       Endereço da memória
     """
-    self.state.acc.value //= self.state.memory.read(operand).value
+    self.state.acc.value //= self._read_mem(operand).value
     
     
   def _action_LD(self, operand: int):
@@ -181,7 +236,7 @@ class ControlUnit:
     operand : int
       Endereço da memória
     """
-    self.state.acc.value = self.state.memory.read(operand).value
+    self.state.acc.value = self._read_mem(operand).value
     
     
   def _action_ST(self, operand: int):
@@ -193,7 +248,7 @@ class ControlUnit:
     operand : int
       Endereço da memória
     """
-    self.state.memory.write(operand, Word(self.state.acc.value))
+    self._write_mem(operand, Word(self.state.acc.value))
     
     
   def _action_SC(self, operand: int):
@@ -207,8 +262,8 @@ class ControlUnit:
     """
     current_next_instr_addr = self.state.pc.value + 1
     subroutine_next_instr_addr = operand + 1
-    return_jump = Instruction.build(InstructionSet.JP, current_next_instr_addr)
-    self.state.memory.write(operand, return_jump)
+    return_jump = Word.from_instruction(InstructionSet.JP, current_next_instr_addr)
+    self._write_mem(operand, return_jump)
     self.state.pc.value = subroutine_next_instr_addr
     self.state.pc_lock.aquire()
   
@@ -248,4 +303,84 @@ class ControlUnit:
     operand : int
       Código
     """
-    print(f'Código {operand} enviado ao Sistema Operacional')
+    if operand == 1:
+      self.os_flags = OSFlags.MEM_ACCESS_INDIRECT
+    else:
+      self.os_flags = OSFlags.MEM_ACCESS_DIRECT
+      
+
+class OSFlags:
+  MEM_ACCESS_DIRECT = 0
+  MEM_ACCESS_INDIRECT = 1  
+ 
+  
+class InstructionSet:
+  JP = 0x0
+  """Instrução JP (Jump uncondicional)"""
+  RS = 0x0
+  """Instrução RS (Return from subroutine)"""
+  JZ = 0x1
+  """Instrução JZ (Jump if acc = 0)"""
+  JN = 0x2
+  """Instrução JN (Jump if acc < 0)"""
+  HJ = 0x3
+  """Instrução HJ (Jump after halt)"""
+  AD = 0x4
+  """Instrução AD (Adição)"""
+  SB = 0x5
+  """Instrução SB (Subtração)"""
+  ML = 0x6
+  """Instrução ML (Multiplicação)"""
+  DV = 0x7
+  """Instrução DV (Divisão)"""
+  LD = 0x8
+  """Instrução LD (Load)"""
+  ST = 0x9
+  """Instrução ST (Store)"""
+  SC = 0xA
+  """Instrução SC (Subroutine Call)"""
+  GD = 0xB
+  """Instrução GD (Get Data)"""
+  PD = 0xC
+  """Instrução PD (Put Data)"""
+  OS = 0xD
+  """Instrução OS (Chamada no sistema operacional)"""
+  
+  
+  @classmethod
+  def get_opcode(cls, mnemonic: str) -> int:
+    """
+    Obtém o código da operação (opcode) a partir de seu símbolo
+
+    Parameters
+    ----------
+    mnemonic : str
+      Mnemonico do opcode buscado
+
+    Returns
+    -------
+    int
+      Valor do opcode
+    """
+    return cls.__dict__.get(mnemonic, None)
+  
+  
+  @classmethod
+  def get_mnemonic(cls, opcode: int) -> str:
+    """
+    Obtém o mnemônico da instrução a partir de seu opcode
+
+    Parameters
+    ----------
+    opcode : int
+      O código da operação
+
+    Returns
+    -------
+    str
+      O mnemônico correspondente
+    """
+    for name, code in cls.__dict__.items():
+      if code == opcode:
+        return name
+    return None

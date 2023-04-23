@@ -1,8 +1,8 @@
 from pathlib import Path
 from typing import Tuple
 
-from ..vm.isa import Byte, Word
-from ..vm.state import MachineState
+from ..vm.cpu import CPUState
+from ..vm.memory import Byte, Word
 
 
 class BootLoader:
@@ -22,7 +22,7 @@ class BootLoader:
   """
   def __init__(
     self, 
-    initial_state: MachineState,
+    initial_state: CPUState,
     input_base: str = 'x'
   ):
     self._state = initial_state
@@ -43,9 +43,16 @@ class BootLoader:
     initial_addr = self._to_word(''.join(program_bytes[:2])).uint
     addr = initial_addr
     
-    for i in range(3, len(program_bytes) - 2):
+    for i in range(4, len(program_bytes) - 1):
       self._state.memory.write_byte(addr, self._to_byte(program_bytes[i]))
       addr += 1
+
+    # for k in self._state.memory._data:
+    #   try:
+    #     k.index(None)
+    #   except:
+    #     s = ''.join(map(str, k))
+    #     print(format(int(s, 2), 'x'), Byte('0b' + s).hex)
       
     return initial_addr
     

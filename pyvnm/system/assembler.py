@@ -1,10 +1,10 @@
 import re
-from collections import namedtuple
 from dataclasses import dataclass
 from pathlib import Path
-from typing import List, Literal, NamedTuple, Tuple
+from typing import List, Literal, Tuple
 
-from ..vm.isa import Instruction, InstructionSet, Word
+from ..vm.cpu import InstructionSet
+from ..vm.memory import Byte, Word
 
 LINE_PATTERN = r'^[ \t\f]*@.*$|(\w+)?[ \t\f]+(\w+)[ \t\f]*(\w+)?.*$'
 LINE_PATTERN = r'^[ \t\f]*@.*$|^(?:(\w+)?[ \t\f]*)?(?:(\w+)[ \t\f]*)?(\w+)?.*$'
@@ -48,42 +48,63 @@ class Assembler:
     labels, instructions = self._tokenize() # primeiro passo
     self._decode_operands(lbl_tokens=labels, inst_tokens=instructions) # segundo passo
     
-    origin = instructions[0].mem_addr
-    instr_end = False
+    origin = Word(instructions[0].mem_addr)
     
     # geração do programa objeto
-    program_object = format(origin, self._output_base) + ' ['
+    program_object = ''
+    n_bytes = 0
+    
     for instruction in instructions:
       mnemonic = instruction.mnemonic
       operand = instruction.operand
+      label = instruction.label
       
       if operand is not None:
         if mnemonic == AssemblerInstructions.DATA:
-          if not instr_end:
-            instr_end = True
-            program_object += ' ]'
-          program_object += ' ' + format(operand, self._output_base)
+          w = Word(operand)
+          program_object += (
+            ' ' + w.first_byte.to(self._output_base) + 
+            ' ' + w.second_byte.to(self._output_base)
+          )
+          n_bytes += 2
         elif mnemonic == AssemblerInstructions.AREA:
-          if not instr_end:
-            instr_end = True
-            program_object += ' ]'
-          program_object += ' 0' * operand
+          program_object += ' 00' * operand
+          n_bytes += operand
         else:
           opcode = InstructionSet.get_opcode(mnemonic)
-          inst_value = Instruction.build(opcode, operand).value
-          program_object += ' ' + format(inst_value, self._output_base)
+          inst = Word.from_instruction(opcode, operand)
+          program_object += (
+            ' ' + inst.first_byte.to(self._output_base) + 
+            ' ' + inst.second_byte.to(self._output_base)
+          )
+          n_bytes += 2
       else:
-        if mnemonic is None:
-          program_object += ' 0'
-        elif mnemonic == AssemblerInstructions.END:
-          if instr_end:
-            program_object += ' 0'
-          else:
-            program_object += ' ] 0'
-        
-    print(*instructions, sep='\n')
+        if mnemonic is None and label is not None: # ignora linhas em branco
+          program_object += ' 00 00'
+          n_bytes += 2
+    
+    # inclusão da posição inicial e do número de bytes
+    n_bytes = Word(n_bytes)
+    program_object = (
+      origin.first_byte.to(self._output_base) + ' ' + 
+      origin.second_byte.to(self._output_base) + ' ' + 
+      n_bytes.first_byte.to(self._output_base) + ' ' + 
+      n_bytes.second_byte.to(self._output_base) +
+      program_object
+    )
+    
+    # inclusão do checksum
+    cs = self._compute_checksum(program_object)
+    program_object += ' ' + cs.to(self._output_base)
         
     return program_object
+  
+  
+  def _compute_checksum(self, program: str) -> Byte:
+    s = 0
+    for byte in program.split(' '):
+      s += Byte('0x' + byte).uint
+    return Byte(Byte(s).two_complement)
     
     
   def _tokenize(self) -> Tuple[List[LineTokens], List[LineTokens]]:
@@ -97,15 +118,22 @@ class Assembler:
     )
     memory_offset = Word.convert_to_int(orig_token.operand)
     
-    for i, line in enumerate(self._program_lines[1:]):
+    line_index = 0
+    for line in self._program_lines[1:]:
       tokens = self._tokenize_line(
         line=line, 
-        line_index=i, 
+        line_index=line_index, 
         memory_offset=memory_offset
       )
-      instructions.append(tokens)
+      
+      if tokens.label is None and tokens.mnemonic is None: 
+        continue # ignora linhas em branco
+      
       if tokens.label:
         labels.append(tokens)
+        
+      instructions.append(tokens)
+      line_index += 1
     
     return (labels, instructions)
   
@@ -179,7 +207,9 @@ class Assembler:
       
 if __name__ == '__main__':
   from pathlib import Path
-  prog = Path(__file__).parent.parent.parent / 'programs' / 'test_05.asm'
+
+  prog = Path(__file__).parent.parent.parent / 'programs' / 'test_07.asm'
+  # prog = Path(__file__).parent / 'loader.asm'
   prog = prog.read_text()
   a = Assembler(prog, output_base='x')
   obj = a.assemble()

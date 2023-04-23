@@ -1,6 +1,7 @@
+from pathlib import Path
 from typing import Dict
 
-from .isa import Word
+from .memory import Byte, Word
 
 
 class Device:
@@ -34,7 +35,7 @@ class Device:
   
 class Screen(Device):
   def write(self, data: Word):
-    print('>>', data.value)
+    print('>> Saída:', data.value)
     
     
     
@@ -60,15 +61,24 @@ class Keyboard(Device):
 
 
 class HardDisk(Device):
-  def __init__(self, data: str):
-    self._data = data
-    self._pointer = 0
+  def __init__(self, input_path: Path = None, output_path: Path = None):
+    self.input_path = input_path
+    self.output_path = output_path
+    self.input_data = None if not input_path else input_path.read_text()
+    self.output_data = ''
+    self._input_cursor = 0
     
     
   def read(self) -> Word:
-    if self._pointer < len(self._data):
-      self._pointer += 1
-      return Word(self._data[self._pointer : self._pointer + 1])
+    if self._input_cursor < len(self._input_data):
+      b = Byte('0x' + self._input_data[self._input_cursor])
+      self._input_cursor += 1
+      return b
+    
+    
+  def write(self, data: Word):
+    self._output_data += data.second_byte.hex
+    
 
 
 
