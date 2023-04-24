@@ -1,3 +1,4 @@
+from ..system.os import OS
 from .device import DeviceBus
 from .memory import Memory, Word
 from .utils import Lock
@@ -39,7 +40,6 @@ class CPUState:
     self.acc = Word(acc)
     self.pc = Word(pc)
     self.pc_lock = Lock()
-    self.sig_term = False
     self.loader_addr = None
     self.dumper_addr = None
 
@@ -72,7 +72,7 @@ class CPU:
       InstructionSet.OS: self._action_OS,
     }
     self.state = initial_state
-    self.os_flags = OSFlags.MEM_ACCESS_DIRECT
+    OS.flags.add(OS.MEM_ACCESS_DIRECT)
     
   
   def event_loop(self):
@@ -80,7 +80,7 @@ class CPU:
     Inicia a execução de um programa a partir da posição indicada pelo
     registrador PC.
     """
-    while not self.state.sig_term:
+    while not OS.SIG_TERM in OS.flags:
       curr_inst = self.state.memory.read(self.state.pc.value)
       if not curr_inst.is_instruction():
         break
@@ -99,13 +99,13 @@ class CPU:
     
   
   def _read_mem(self, address: int) -> Word:
-    if self.os_flags == OSFlags.MEM_ACCESS_DIRECT:
+    if OS.MEM_ACCESS_DIRECT in OS.flags:
       return self.state.memory.read(address)
     return self.state.memory.read(self.state.memory.read(address))
   
   
   def _write_mem(self, address: int, data: Word):
-    if self.os_flags == OSFlags.MEM_ACCESS_DIRECT:
+    if OS.MEM_ACCESS_DIRECT in OS.flags:
       self.state.memory.write(address, data)
     else:
       self.state.memory.write(self.state.memory.read(address).value, data)
@@ -176,7 +176,7 @@ class CPU:
     """
     self.state.pc.value = operand
     self.state.pc_lock.aquire()
-    self.state.sig_term = True
+    OS.flags.add(OS.SIG_TERM)
       
       
   def _action_AD(self, operand: int):
@@ -303,16 +303,13 @@ class CPU:
     operand : int
       Código
     """
-    if operand == 1:
-      self.os_flags = OSFlags.MEM_ACCESS_INDIRECT
-    else:
-      self.os_flags = OSFlags.MEM_ACCESS_DIRECT
-      
+    if operand == OS.MEM_ACCESS_INDIRECT:
+      OS.flags.remove(OS.MEM_ACCESS_DIRECT)
+      OS.flags.add(OS.MEM_ACCESS_INDIRECT)
+    elif operand == OS.MEM_ACCESS_DIRECT:
+      OS.flags.remove(OS.MEM_ACCESS_INDIRECT)
+      OS.flags.add(OS.MEM_ACCESS_DIRECT)
 
-class OSFlags:
-  MEM_ACCESS_DIRECT = 0
-  MEM_ACCESS_INDIRECT = 1  
- 
   
 class InstructionSet:
   JP = 0x0
