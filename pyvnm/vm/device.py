@@ -64,20 +64,26 @@ class HardDisk(Device):
   def __init__(self, input_path: Path = None, output_path: Path = None):
     self.input_path = input_path
     self.output_path = output_path
-    self.input_data = None if not input_path else input_path.read_text()
+    self.input_data = None if not input_path else input_path.read_text().split(' ')
     self.output_data = ''
-    self._input_cursor = 0
+    self._cursor = 0
     
     
   def read(self) -> Word:
-    if self._input_cursor < len(self._input_data):
-      b = Byte('0x' + self._input_data[self._input_cursor])
-      self._input_cursor += 1
+    if self._cursor < len(self.input_data):
+      b = Byte('0x' + self.input_data[self._cursor])
+      self._cursor += 1
       return b
     
     
   def write(self, data: Word):
-    self._output_data += data.second_byte.hex
+    if len(self.output_data) > 0:
+      self.output_data += ' '
+    self.output_data += data.second_byte.hex
+    
+    
+  def save(self):
+    self.output_path.write_text(self.output_data.strip())
     
 
 

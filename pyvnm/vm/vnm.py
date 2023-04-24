@@ -83,4 +83,4 @@ class VonNeumannMachine:
     self.state.pc = self.state.dumper_addr
     self.execute_program()
     hd = self.state.devices.get(4)
-    hd.output_path.write_text(hd.output_data)
+    hd.save()

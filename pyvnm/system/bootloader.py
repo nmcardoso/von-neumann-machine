@@ -29,13 +29,18 @@ class BootLoader:
     self._input_base = input_base
 
     
-  def load(self, program_obj: str | Path):
+  def load(self, program_obj: str | Path) -> int:
     """Carrega os principais programas de sistema na memória
 
     Parameters
     ----------
     program_obj : str | Path
       Caminho ou conteúdo do programa objeto a ser carregado
+      
+    Returns
+    -------
+    int
+      O endereço da memória onde o programa foi carregado
     """
     program_obj = program_obj.read_text() if isinstance(program_obj, Path) else program_obj
     program_bytes = program_obj.split(' ')
