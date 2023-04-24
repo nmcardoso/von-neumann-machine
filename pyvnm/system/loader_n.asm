@@ -1,5 +1,6 @@
+@ este programa não funciona
           ORG     0
-INICIO    GD      4
+INICIO    GD      4           @ lê um byte do arquivo
           LD      MEM_POS
           GD      4
           LD      PROG_LEN
@@ -8,7 +9,6 @@ LOAD_LP   LD      DIFF
           JZ      END_LP
           GD      4
           PD      4
-          LD      TMP
 
           LD      CI
           AD      ONE
