@@ -61,7 +61,7 @@ class VonNeumannMachine:
     self.control_unit.event_loop()
     
   
-  def dump(self, output_path: str | Path = None, output_base: str = 'x') -> str:
+  def dump(self) -> str:
     """
     Aciona o Dumper para a persistência dos dados carregados na memória
     para outra mídia
