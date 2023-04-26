@@ -1,80 +1,45 @@
-                    
             ORG     0
-MAIN        LD      NUM_1                   @
-            ST      POSICAO_ARQUIVO         @ POSICAO_ARQUIVO = endereço da memória onde ficará guardado o valor da variável que varre os bytes do arquivo
-
-            RD      POSICAO_ARQUIVO         @ lê o primeiro byte da fita (POSICAO = 1) 
+MAIN        LD      NUM_0
+            ST      CHECK_SUM_CALCULADO
+            GD      0x4                     @ lê o primeiro byte da fita 
             ST      PRIMEIRO_BYTE           @ PRIMEIRO_BYTE = endereço da memória onde ficará guardada o valor da variável PRIMEIRO_BYTE
-            ST      CHECK_SUM_CALCULADO
-
-            LD      POSICAO_ARQUIVO         @ carrego no acumulador 
-            AD      NUM_1                   @ avança para o próximo byte
-            ST      POSICAO_ARQUIVO         @
-
-            RD      POSICAO_ARQUIVO         @ lê o segundo byte da fita (POSICAO = 2)
+            SC      SOMA_CHECK_SUM          @ 
+            GD      0x4                     @ lê o segundo byte da fita
             ST      SEGUNDO_BYTE            @ SEGUNDO_BYTE = endereço da memória onde ficará guardada o valor da variável SEGUNDO_BYTE
-            LD      CHECK_SUM_CALCULADO
-            AD      SEGUNDO_BYTE
-            ST      CHECK_SUM_CALCULADO
-
+            SC      SOMA_CHECK_SUM
             SC      CONCATENA_INSTRU_LONGA  @ chama a subrotina concatena instruçao longa
             LD      INSTRU_LONGA
             ST      INICIO_MEMORIA          @ INICIO_MEMORIA = endereço da memória onde ficara guardado o endereço de inicio de gravaçao na memória
 
-            LD      POSICAO_ARQUIVO
-            AD      NUM_1
-            ST      POSICAO_ARQUIVO
-
-            RD      POSICAO_ARQUIVO         @ lê o terceiro byte da fita (POSICAO = 3)
+            GD      0x4                     @ lê o terceiro byte da fita
             ST      BYTES_TOTAIS            @ BYTES_TOTAIS = enderço da memória onde ficará guardada a quantidade total de bytes da fita
-            LD      CHECK_SUM_CALCULADO
-            AD      BYTES_TOTAIS
-            ST      CHECK_SUM_CALCULADO
+            SC      SOMA_CHECK_SUM
 
             LD      BYTES_TOTAIS            @ 
             SB      NUM_3                   @
-            ST      BYTES_CODIGO            @ BYTES_CODIGO = endereço da memória onde ficará guardada a quantidade de bytes referente ao programa
+            ST      BYTES_RESTANTES         @ BYTES_RESTANTES = 
 
-            LD      INICIO_MEMORIA
-            ST      POSICAO_MEMORIA
+            LD      ST_OC
+            ML      2^12
+            AD      INICIO_MEMORIA
+            ST      INSTRUCAO
 
-            LD      POSICAO_ARQUIVO         @ -
-            AD      NUM_1                   @ preparação para entrar no loop (posiciona no próximo byte da fita a ser lido)
-            ST      POSICAO_ARQUIVO         @ -
-
-LOOP        LD      BYTES_TOTAIS
-            SB      POSICAO_ARQUIVO
-            SB      NUM_1
+LOOP        LD      BYTES_RESTANTES
             JZ      END_LOOP
-
-            RD      POSICAO_ARQUIVO                       
+            GD      0x4
             ST      PRIMEIRO_BYTE
-            LD      CHECK_SUM_CALCULADO
-            AD      PRIMEIRO_BYTE
-            ST      CHECK_SUM_CALCULADO                 
-            LD      POSICAO_ARQUIVO                       
-            AD      NUM_1                         
-            ST      POSICAO_ARQUIVO                       
-            RD      POSICAO_ARQUIVO                       
+            SC      SOMA_CHECK_SUM
+            SC      DEC_BYTES_RESTANTES
+            GD      0x4
             ST      SEGUNDO_BYTE
-            LD      CHECK_SUM_CALCULADO
-            AD      SEGUNDO_BYTE
-            ST      CHECK_SUM_CALCULADO                  
-            SC      CONCATENA_INSTRU_LONGA        
+            SC      SOMA_CHECK_SUM
+            SC      DEC_BYTES_RESTANTES
+            SC      CONCATENA_INSTRU_LONGA
             LD      INSTRU_LONGA
-            ST      POSICAO_MEMORIA
-
-            LD      POSICAO_MEMORIA
-            AD      NUM_1
-            ST      POSICAO_MEMORIA
-
-            LD      POSICAO_ARQUIVO
-            AD      NUM_1
-            ST      POSICAO_ARQUIVO
-
+            SC      GRAVA_INSTRUCAO
             JP      LOOP
-
-END_LOOP    RD      POSICAO_ARQUIVO             @ nessa posiçao o valor guardado em POSICAO_ARQUIVO deve ser igual ao valor guardado em BYTES_TOTAIS
+END_LOOP    
+            GD      0x4
             ST      CHECK_SUM_FORNECIDO
             LD      CHECK_SUM_CALCULADO
             ML      NUM_256                     @ ---
@@ -82,8 +47,17 @@ END_LOOP    RD      POSICAO_ARQUIVO             @ nessa posiçao o valor guardad
             AD      CHECK_SUM_FORNECIDO         @ o checksum fornecido estará em complemento de 2, por isso a adição funciona
             ML      NUM_256
             DV      NUM_256
-            JZ      END
+            JZ      FIM
             SC      ERRO_DE_CHECK_SUM
+
+ERRO_DE_CHECK_SUM
+            OS      0x0
+            RS      ERRO_DE_CHECK_SUM
+
+GRAVA_INSTRUCAO
+INSTRUCAO   
+            SC      INC_INSTRUCAO
+            RS      GRAVA_INSTRUCAO
 
 CONCATENA_INSTRU_LONGA
             LD      PRIMEIRO_BYTE
@@ -92,20 +66,36 @@ CONCATENA_INSTRU_LONGA
             ST      INSTRU_LONGA
             RS      CONCATENA_INSTRU_LONGA
 
-ERRO_DE_CHECK_SUM
-            ...
-            RS      ERRO_DE_CHECK_SUM
+DEC_BYTES_RESTANTES
+            LD      BYTES_RESTANTES
+            SB      NUM_1
+            ST      BYTES_RESTANTES
+            RS      DEC_BYTES_RESTANTES
 
-POSICAO_ARQUIVO     DATA 98
-POSICAO_MEMORIA     DATA 99
-PRIMEIRO_BYTE       DATA 100
-SEGUNDO_BYTE        DATA 101
-INSTRU_LONGA        DATA 102
-INICIO_MEMORIA      DATA 103
-BYTES_TOTAIS        DATA 104
-BYTES_CODIGO        DATA 105
-CHECK_SUM_FORNECIDO DATA 106
-CHECK_SUM_CALCULADO DATA 107
-NUM_1               DATA 1
-NUM_3               DATA 3
-NUM_256             DATA 256
+INC_INSTRUCAO
+            LD      INSTRUCAO
+            AD      NUM_1
+            ST      INSTRUCAO
+            RS      INC_INSTRUCAO
+
+SOMA_CHECK_SUM
+            AD      CHECK_SUM_CALCULADO
+            ST      CHECK_SUM_CALCULADO
+            RS      SOMA_CHECK_SUM
+
+NUM_0       DATA    0
+NUM_1       DATA    1
+NUM_3       DATA    3
+NUM_256     DATA    256
+NUM_4096    DATA    4096
+ST_OC       DATA    9
+
+CHECK_SUM_CALCULADO
+CHECK_SUM_FORNECIDO
+PRIMEIRO_BYTE
+SEGUNDO_BYTE
+INSTRU_LONGA
+INICIO_MEMORIA
+BYTES_TOTAIS
+BYTES_RESTANTES
+FIM         END
