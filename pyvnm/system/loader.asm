@@ -20,7 +20,7 @@ MAIN        LD      NUM_0
             ST      BYTES_RESTANTES         @ BYTES_RESTANTES = 
 
             LD      ST_OC
-            ML      2^12
+            ML      NUM_4096
             AD      INICIO_MEMORIA
             ST      INSTRUCAO
 
@@ -55,7 +55,7 @@ ERRO_DE_CHECK_SUM
             RS      ERRO_DE_CHECK_SUM
 
 GRAVA_INSTRUCAO
-INSTRUCAO   
+INSTRUCAO
             SC      INC_INSTRUCAO
             RS      GRAVA_INSTRUCAO
 
@@ -83,6 +83,8 @@ SOMA_CHECK_SUM
             ST      CHECK_SUM_CALCULADO
             RS      SOMA_CHECK_SUM
 
+FIM         HJ      0x0
+
 NUM_0       DATA    0
 NUM_1       DATA    1
 NUM_3       DATA    3
@@ -98,4 +100,4 @@ INSTRU_LONGA
 INICIO_MEMORIA
 BYTES_TOTAIS
 BYTES_RESTANTES
-FIM         END
+            END
