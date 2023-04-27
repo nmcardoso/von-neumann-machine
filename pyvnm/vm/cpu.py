@@ -82,10 +82,12 @@ class CPU:
     """
     while not OS.SIG_TERM in OS.flags:
       curr_inst = self.state.memory.read(self.state.pc.value)
+      print(InstructionSet.get_mnemonic(curr_inst.opcode), curr_inst.operand, end='')
       if not curr_inst.is_instruction():
         break
       action = self._action_switcher.get(curr_inst.opcode)
       action(curr_inst.operand)
+      print(' acc:', self.state.acc.int)
       self._increment_pc()
   
   
@@ -94,7 +96,7 @@ class CPU:
     Incrementa o registrador PC em uma unidade
     """
     if not self.state.pc_lock.is_locked():
-      self.state.pc.value += 1
+      self.state.pc.value += 2
     self.state.pc_lock.release()
     
   
@@ -260,8 +262,8 @@ class CPU:
     operand : int
       Endereço da memória
     """
-    current_next_instr_addr = self.state.pc.value + 1
-    subroutine_next_instr_addr = operand + 1
+    current_next_instr_addr = self.state.pc.value + 2
+    subroutine_next_instr_addr = operand + 2
     return_jump = Word.from_instruction(InstructionSet.JP, current_next_instr_addr)
     self._write_mem(operand, return_jump)
     self.state.pc.value = subroutine_next_instr_addr

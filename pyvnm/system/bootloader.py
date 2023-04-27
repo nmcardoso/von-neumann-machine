@@ -48,9 +48,9 @@ class BootLoader:
     initial_addr = self._to_word(''.join(program_bytes[:2])).uint
     addr = initial_addr
     
-    # ignora os 4 primeiros bytes (endereço inicial e número de bytes) 
+    # ignora os 3 primeiros bytes (endereço inicial e número de bytes) 
     # e o último byte (checksum)
-    for i in range(4, len(program_bytes) - 1):
+    for i in range(3, len(program_bytes) - 1):
       self._state.memory.write_byte(addr, self._to_byte(program_bytes[i]))
       addr += 1
       

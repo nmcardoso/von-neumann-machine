@@ -3,7 +3,7 @@ from pathlib import Path
 from ..system.bootloader import BootLoader
 from .cpu import CPU, CPUState
 from .device import CharScreen, DeviceBus, HardDisk, Keyboard, Screen
-from .memory import Memory
+from .memory import Byte, Memory
 
 
 class VonNeumannMachine:
@@ -41,8 +41,8 @@ class VonNeumannMachine:
     """
     Carregamento inicial dos principais programas de sistema na máquina
     """
-    # loader_path = Path(__file__).parent.parent / 'system' / 'loader.hex'
-    loader_path = Path(__file__).parent.parent.parent / 'programs' / 'test_07.hex'
+    loader_path = Path(__file__).parent.parent / 'system' / 'loader.hex'
+    # loader_path = Path(__file__).parent.parent.parent / 'programs' / 'test_07.hex'
     # dumper_path = Path(__file__).parent.parent / 'system' / 'dumper.hex'
     bl = BootLoader(initial_state=self.state, input_base='x')
     self.state.loader_addr = bl.load(loader_path.read_text())

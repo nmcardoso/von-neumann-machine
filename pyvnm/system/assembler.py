@@ -84,12 +84,11 @@ class Assembler:
           n_bytes += 2
     
     # inclusão da posição inicial e do número de bytes
-    n_bytes = Word(n_bytes)
+    n_bytes = Byte(n_bytes)
     program_object = (
       origin.first_byte.to(self._output_base) + ' ' + 
       origin.second_byte.to(self._output_base) + ' ' + 
-      n_bytes.first_byte.to(self._output_base) + ' ' + 
-      n_bytes.second_byte.to(self._output_base) +
+      n_bytes.to(self._output_base) +
       program_object
     )
     
@@ -119,7 +118,7 @@ class Assembler:
     memory_offset = Word.convert_to_int(orig_token.operand)
     
     line_index = 0
-    for line in self._program_lines[1:]:
+    for line in self._program_lines[1:]: # discarta ORG
       tokens = self._tokenize_line(
         line=line, 
         line_index=line_index, 
@@ -133,7 +132,7 @@ class Assembler:
         labels.append(tokens)
         
       instructions.append(tokens)
-      line_index += 1
+      line_index += 2
     
     return (labels, instructions)
   
@@ -208,10 +207,9 @@ class Assembler:
 if __name__ == '__main__':
   from pathlib import Path
 
-  prog = Path(__file__).parent.parent.parent / 'programs' / 'test_07.asm'
-  # prog = Path(__file__).parent / 'loader.asm'
+  # prog = Path(__file__).parent.parent.parent / 'programs' / 'test_07.asm'
+  prog = Path(__file__).parent / 'loader.asm'
   prog = prog.read_text()
   a = Assembler(prog, output_base='x')
   obj = a.assemble()
-  print()
   print(obj)

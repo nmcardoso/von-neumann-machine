@@ -253,7 +253,7 @@ class Memory:
       Conteúdo contido no endereço especificado
     """
     self._check_valid_position(address)
-    byte = list(itertools.chain(*self._data[2*address : 2*address+2]))
+    byte = list(itertools.chain(*self._data[address : address+2]))
     try:
       byte.index(None)
       return Word(None)
@@ -275,8 +275,8 @@ class Memory:
       Palavra ou lista de palavras a serem escritas na memória
     """
     self._check_valid_position(address)
-    self._data[2*address] = list(map(int, data.first_byte.bin))
-    self._data[2*address+1] = list(map(int, data.second_byte.bin))
+    self._data[address] = list(map(int, data.first_byte.bin))
+    self._data[address+1] = list(map(int, data.second_byte.bin))
       
       
   def write_byte(self, address: int, data: Byte):
@@ -286,7 +286,7 @@ class Memory:
   def hexdump(self, colors):
     for i in range(self.size // 32):
       print(colors.LIGHT_YELLOW + format(i*16, '0>4x') + ':' + colors.RESET, ' ', sep='', end='')
-      for j in range(16):
+      for j in range(0, 16 * 2, 2):
         w = self.read(i*16 + j)
         if w.value is None:
           print(format(0, '0>4x'), ' ', sep='', end='')

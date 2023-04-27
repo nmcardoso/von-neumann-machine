@@ -69,7 +69,7 @@ class HardDisk(Device):
     self._cursor = 0
     
     
-  def read(self) -> Word:
+  def read(self) -> Byte:
     if self._cursor < len(self.input_data):
       b = Byte('0x' + self.input_data[self._cursor])
       self._cursor += 1

@@ -1,4 +1,4 @@
-        ORG     0x3
+        ORG     256
 MAIN    GD      1
         ST      1
         GD      1
