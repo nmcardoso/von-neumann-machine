@@ -95,7 +95,7 @@ class Assembler:
     # inclusão do checksum
     cs = self._compute_checksum(program_object)
     program_object += ' ' + cs.to(self._output_base)
-        
+
     return program_object
   
   

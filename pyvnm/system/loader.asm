@@ -7,23 +7,16 @@ MAIN        LD      NUM_0
             GD      0x4                     @ lê o segundo byte da fita
             ST      SEGUNDO_BYTE            @ SEGUNDO_BYTE = endereço da memória onde ficará guardada o valor da variável SEGUNDO_BYTE
             SC      SOMA_CHECK_SUM
-            SC      CONCATENA_INSTRU_LONGA  @ chama a subrotina concatena instruçao longa
-            LD      INSTRU_LONGA
+            SC      CONCATENA_BYTES         @ chama a subrotina concatena instruçao longa
+            LD      WORD
             ST      INICIO_MEMORIA          @ INICIO_MEMORIA = endereço da memória onde ficara guardado o endereço de inicio de gravaçao na memória
-
             GD      0x4                     @ lê o terceiro byte da fita
             ST      BYTES_TOTAIS            @ BYTES_TOTAIS = enderço da memória onde ficará guardada a quantidade total de bytes da fita
             SC      SOMA_CHECK_SUM
-
             LD      BYTES_TOTAIS            @ 
             SB      NUM_4                   @
             ST      BYTES_RESTANTES         @ BYTES_RESTANTES = 
-
-            LD      ST_OC
-            ML      NUM_4096
-            AD      INICIO_MEMORIA
-            ST      INSTRUCAO
-
+            SC      CRIA_INSTRUCAO
 LOOP        LD      BYTES_RESTANTES
             JZ      END_LOOP
             GD      0x4
@@ -34,8 +27,8 @@ LOOP        LD      BYTES_RESTANTES
             ST      SEGUNDO_BYTE
             SC      SOMA_CHECK_SUM
             SC      DEC_BYTES_RESTANTES
-            SC      CONCATENA_INSTRU_LONGA
-            LD      INSTRU_LONGA
+            SC      CONCATENA_BYTES
+            LD      WORD
             SC      GRAVA_INSTRUCAO
             JP      LOOP
 END_LOOP    
@@ -49,55 +42,52 @@ END_LOOP
             DV      NUM_256
             JZ      FIM
             SC      ERRO_DE_CHECK_SUM
-
-ERRO_DE_CHECK_SUM
-            OS      0x0
-            RS      ERRO_DE_CHECK_SUM
-
 GRAVA_INSTRUCAO
-INSTRUCAO
+INSTRUCAO   DATA    0
             SC      INC_INSTRUCAO
             RS      GRAVA_INSTRUCAO
-
-CONCATENA_INSTRU_LONGA
+CONCATENA_BYTES
             LD      PRIMEIRO_BYTE
             ML      NUM_256          @ multiplica por 256=2^8, equivalente a 8 shift left
             AD      SEGUNDO_BYTE
-            ST      INSTRU_LONGA
-            RS      CONCATENA_INSTRU_LONGA
-
-DEC_BYTES_RESTANTES
-            LD      BYTES_RESTANTES
-            SB      NUM_1
-            ST      BYTES_RESTANTES
-            RS      DEC_BYTES_RESTANTES
-
+            ST      WORD
+            RS      CONCATENA_BYTES
+CRIA_INSTRUCAO
+            LD      OPCODE_ST
+            ML      NUM_4096
+            AD      INICIO_MEMORIA
+            ST      INSTRUCAO
+            RS      CRIA_INSTRUCAO
 INC_INSTRUCAO
             LD      INSTRUCAO
             AD      NUM_1
             ST      INSTRUCAO
             RS      INC_INSTRUCAO
-
+DEC_BYTES_RESTANTES
+            LD      BYTES_RESTANTES
+            SB      NUM_1
+            ST      BYTES_RESTANTES
+            RS      DEC_BYTES_RESTANTES
 SOMA_CHECK_SUM
             AD      CHECK_SUM_CALCULADO
             ST      CHECK_SUM_CALCULADO
             RS      SOMA_CHECK_SUM
-
+ERRO_DE_CHECK_SUM
+            OS      600
+            RS      ERRO_DE_CHECK_SUM
 FIM         HJ      0x0
-
 NUM_0       DATA    0
 NUM_1       DATA    1
 NUM_4       DATA    4
 NUM_256     DATA    256
 NUM_4096    DATA    4096
-ST_OC       DATA    9
-
-CHECK_SUM_CALCULADO
-CHECK_SUM_FORNECIDO
-PRIMEIRO_BYTE
-SEGUNDO_BYTE
-INSTRU_LONGA
-INICIO_MEMORIA
-BYTES_TOTAIS
-BYTES_RESTANTES
+OPCODE_ST   DATA    9
+CHECK_SUM_CALCULADO DATA 2
+CHECK_SUM_FORNECIDO DATA 2
+PRIMEIRO_BYTE DATA 2
+SEGUNDO_BYTE DATA 2
+INICIO_MEMORIA DATA 2
+BYTES_TOTAIS DATA 2
+BYTES_RESTANTES DATA 2
+WORD DATA 4
             END

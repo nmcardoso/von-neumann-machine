@@ -100,8 +100,9 @@ class Word:
       # e faz a conversão para todas as outras bases de acordo com a palavra
       # truncada em bits
       bin_value = np.binary_repr(uint_value, width=self.size)[-self.size:]
+      # print('W:', uint_value, bin_value, self.size)
       uint_value = int(bin_value, 2)
-      sint_value = uint_value if uint_value < 2 ** self.size / 2 else uint_value - 2 **self.size 
+      sint_value = uint_value if uint_value < 2 ** self.size / 2 else uint_value - 2 ** self.size 
       hex_value = np.base_repr(uint_value, base=16)
       hex_value = '0' * (int(self.size / 4) - len(hex_value)) + hex_value
       
@@ -200,8 +201,9 @@ class Word:
 
 
 class Byte(Word):
-  size = 8
-
+  def __init__(self, value: str | int | None = None):
+    self.size = 8
+    super().__init__(value)
 
 
 class Memory:
@@ -252,6 +254,7 @@ class Memory:
     Word
       Conteúdo contido no endereço especificado
     """
+    if isinstance(address, Word): address = address.value
     self._check_valid_position(address)
     byte = list(itertools.chain(*self._data[address : address+2]))
     try:
