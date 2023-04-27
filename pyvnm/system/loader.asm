@@ -16,7 +16,7 @@ MAIN        LD      NUM_0
             SC      SOMA_CHECK_SUM
 
             LD      BYTES_TOTAIS            @ 
-            SB      NUM_3                   @
+            SB      NUM_4                   @
             ST      BYTES_RESTANTES         @ BYTES_RESTANTES = 
 
             LD      ST_OC
@@ -87,7 +87,7 @@ FIM         HJ      0x0
 
 NUM_0       DATA    0
 NUM_1       DATA    1
-NUM_3       DATA    3
+NUM_4       DATA    4
 NUM_256     DATA    256
 NUM_4096    DATA    4096
 ST_OC       DATA    9
