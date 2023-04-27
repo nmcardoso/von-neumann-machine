@@ -80,14 +80,15 @@ class CPU:
     Inicia a execução de um programa a partir da posição indicada pelo
     registrador PC.
     """
+    print(self.state.memory.read(83 * 2 - 0).int)
     while not OS.SIG_TERM in OS.flags:
       curr_inst = self.state.memory.read(self.state.pc.value)
-      print(InstructionSet.get_mnemonic(curr_inst.opcode), curr_inst.operand, end='')
+      print(self.state.pc.value // 2 + 2, '\t', InstructionSet.get_mnemonic(curr_inst.opcode), curr_inst.operand // 2 + 2, end='')
       if not curr_inst.is_instruction():
         break
       action = self._action_switcher.get(curr_inst.opcode)
       action(curr_inst.operand)
-      print(' acc:', self.state.acc.int)
+      print('\t\tacc:', self.state.acc.int)
       self._increment_pc()
   
   
@@ -214,7 +215,9 @@ class CPU:
     operand : int
       Endereço da memória
     """
+    # print('\n', self.state.acc.value, '*', self._read_mem(operand).value, '=', self.state.acc.value * self._read_mem(operand).value)
     self.state.acc.value *= self._read_mem(operand).value
+    # print(Word(self.state.acc.value * self._read_mem(operand).value).bin)
     
     
   def _action_DV(self, operand: int):
@@ -280,7 +283,7 @@ class CPU:
       Endereço do dispositivo
     """
     dev = self.state.devices.get(operand)
-    self.state.acc = dev.read()
+    self.state.acc.value = dev.read().value
   
   
   def _action_PD(self, operand: int):
