@@ -35,7 +35,7 @@ class Device:
   
 class Screen(Device):
   def write(self, data: Word):
-    print('>> Saída:', data.value)
+    print('>> Saída:', data.int)
     
     
     
