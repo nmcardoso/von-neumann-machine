@@ -254,7 +254,6 @@ class Memory:
     Word
       Conteúdo contido no endereço especificado
     """
-    if isinstance(address, Word): address = address.value
     self._check_valid_position(address)
     byte = list(itertools.chain(*self._data[address : address+2]))
     try:

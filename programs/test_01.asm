@@ -1,4 +1,4 @@
-        ORG     256
+        ORG     224
 MAIN    GD      1
         ST      1
         GD      1

@@ -31,8 +31,7 @@ LOOP        LD      BYTES_RESTANTES
             LD      WORD
             SC      GRAVA_INSTRUCAO
             JP      LOOP
-END_LOOP    
-            GD      0x4
+END_LOOP    GD      0x4
             ST      CHECK_SUM_FORNECIDO
             LD      CHECK_SUM_CALCULADO
             ML      NUM_256                     @ ---
@@ -40,8 +39,7 @@ END_LOOP
             AD      CHECK_SUM_FORNECIDO         @ o checksum fornecido estará em complemento de 2, por isso a adição funciona
             ML      NUM_256
             DV      NUM_256
-            JZ      FIM
-            SC      ERRO_DE_CHECK_SUM
+            HJ      0x0
 GRAVA_INSTRUCAO
 INSTRUCAO   DATA    0
             SC      INC_INSTRUCAO
@@ -60,7 +58,7 @@ CRIA_INSTRUCAO
             RS      CRIA_INSTRUCAO
 INC_INSTRUCAO
             LD      INSTRUCAO
-            AD      NUM_1
+            AD      NUM_2
             ST      INSTRUCAO
             RS      INC_INSTRUCAO
 DEC_BYTES_RESTANTES
@@ -75,19 +73,19 @@ SOMA_CHECK_SUM
 ERRO_DE_CHECK_SUM
             OS      600
             RS      ERRO_DE_CHECK_SUM
-FIM         HJ      0x0
 NUM_0       DATA    0
 NUM_1       DATA    1
+NUM_2       DATA    2
 NUM_4       DATA    4
 NUM_256     DATA    256
 NUM_4096    DATA    4096
 OPCODE_ST   DATA    9
-CHECK_SUM_CALCULADO DATA 2
-CHECK_SUM_FORNECIDO DATA 2
-PRIMEIRO_BYTE DATA 2
-SEGUNDO_BYTE DATA 2
-INICIO_MEMORIA DATA 2
-BYTES_TOTAIS DATA 2
-BYTES_RESTANTES DATA 2
-WORD DATA 4
+CHECK_SUM_CALCULADO DATA 0
+CHECK_SUM_FORNECIDO DATA 0
+PRIMEIRO_BYTE DATA 0
+SEGUNDO_BYTE DATA 0
+INICIO_MEMORIA DATA 0
+BYTES_TOTAIS DATA 0
+BYTES_RESTANTES DATA 0
+WORD DATA 0
             END

@@ -82,6 +82,8 @@ class Assembler:
         if mnemonic is None and label is not None: # ignora linhas em branco
           program_object += ' 00 00'
           n_bytes += 2
+          
+    n_bytes += 4 # end inicial (2), # of bytes (1), checksum (1)
     
     # inclusão da posição inicial e do número de bytes
     n_bytes = Byte(n_bytes)
@@ -207,7 +209,7 @@ class Assembler:
 if __name__ == '__main__':
   from pathlib import Path
 
-  # prog = Path(__file__).parent.parent.parent / 'programs' / 'test_07.asm'
+  # prog = Path(__file__).parent.parent.parent / 'programs' / 'test_01.asm'
   prog = Path(__file__).parent / 'loader.asm'
   prog = prog.read_text()
   a = Assembler(prog, output_base='x')
