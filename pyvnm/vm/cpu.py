@@ -72,7 +72,6 @@ class CPU:
       InstructionSet.OS: self._action_OS,
     }
     self.state = initial_state
-    OS.flags.add(OS.MEM_ACCESS_DIRECT)
     
   
   def event_loop(self):
@@ -99,19 +98,6 @@ class CPU:
     if not self.state.pc_lock.is_locked():
       self.state.pc.value += 2
     self.state.pc_lock.release()
-    
-  
-  def _read_mem(self, address: int) -> Word:
-    if OS.MEM_ACCESS_DIRECT in OS.flags:
-      return self.state.memory.read(address)
-    return self.state.memory.read(self.state.memory.read(address))
-  
-  
-  def _write_mem(self, address: int, data: Word):
-    if OS.MEM_ACCESS_DIRECT in OS.flags:
-      self.state.memory.write(address, data)
-    else:
-      self.state.memory.write(self.state.memory.read(address).value, data)
     
   
   def _action_JP(self, operand: int):
@@ -191,7 +177,7 @@ class CPU:
     operand : int
       Endereço da memória
     """
-    self.state.acc.value += self._read_mem(operand).value
+    self.state.acc.value += self.state.memory.read(operand).value
     
     
   def _action_SB(self, operand: int):
@@ -203,7 +189,7 @@ class CPU:
     operand : int
       Endereço da memória
     """
-    self.state.acc.value -= self._read_mem(operand).value
+    self.state.acc.value -= self.state.memory.read(operand).value
     
     
   def _action_ML(self, operand: int):
@@ -215,9 +201,9 @@ class CPU:
     operand : int
       Endereço da memória
     """
-    # print('\n', self.state.acc.value, '*', self._read_mem(operand).value, '=', self.state.acc.value * self._read_mem(operand).value)
-    self.state.acc.value *= self._read_mem(operand).value
-    # print(Word(self.state.acc.value * self._read_mem(operand).value).bin)
+    # print('\n', self.state.acc.value, '*', self.state.memory.read(operand).value, '=', self.state.acc.value * self.state.memory.read(operand).value)
+    self.state.acc.value *= self.state.memory.read(operand).value
+    # print(Word(self.state.acc.value * self.state.memory.read(operand).value).bin)
     
     
   def _action_DV(self, operand: int):
@@ -229,7 +215,7 @@ class CPU:
     operand : int
       Endereço da memória
     """
-    self.state.acc.value //= self._read_mem(operand).value
+    self.state.acc.value //= self.state.memory.read(operand).value
     
     
   def _action_LD(self, operand: int):
@@ -241,7 +227,7 @@ class CPU:
     operand : int
       Endereço da memória
     """
-    self.state.acc.value = self._read_mem(operand).value
+    self.state.acc.value = self.state.memory.read(operand).value
     
     
   def _action_ST(self, operand: int):
@@ -253,7 +239,7 @@ class CPU:
     operand : int
       Endereço da memória
     """
-    self._write_mem(operand, Word(self.state.acc.value))
+    self.state.memory.write(operand, Word(self.state.acc.value))
     
     
   def _action_SC(self, operand: int):
@@ -268,7 +254,7 @@ class CPU:
     current_next_instr_addr = self.state.pc.value + 2
     subroutine_next_instr_addr = operand + 2
     return_jump = Word.from_instruction(InstructionSet.JP, current_next_instr_addr)
-    self._write_mem(operand, return_jump)
+    self.state.memory.write(operand, return_jump)
     self.state.pc.value = subroutine_next_instr_addr
     self.state.pc_lock.aquire()
   
@@ -308,12 +294,7 @@ class CPU:
     operand : int
       Código
     """
-    if operand == OS.MEM_ACCESS_INDIRECT:
-      OS.flags.remove(OS.MEM_ACCESS_DIRECT)
-      OS.flags.add(OS.MEM_ACCESS_INDIRECT)
-    elif operand == OS.MEM_ACCESS_DIRECT:
-      OS.flags.remove(OS.MEM_ACCESS_INDIRECT)
-      OS.flags.add(OS.MEM_ACCESS_DIRECT)
+    print(f'Chamada ao sistema com código {operand}')
 
   
 class InstructionSet:
