@@ -105,7 +105,7 @@ class Assembler:
     s = 0
     for byte in program.split(' '):
       s += Byte('0x' + byte).uint
-    return Byte(Byte(s).two_complement)
+    return Byte(-Byte(s).int)
     
     
   def _tokenize(self) -> Tuple[List[LineTokens], List[LineTokens]]:
@@ -209,8 +209,8 @@ class Assembler:
 if __name__ == '__main__':
   from pathlib import Path
 
-  # prog = Path(__file__).parent.parent.parent / 'programs' / 'test_01.asm'
-  prog = Path(__file__).parent / 'loader.asm'
+  prog = Path(__file__).parent.parent.parent / 'programs' / 'test_01.asm'
+  # prog = Path(__file__).parent / 'loader.asm'
   prog = prog.read_text()
   a = Assembler(prog, output_base='x')
   obj = a.assemble()
