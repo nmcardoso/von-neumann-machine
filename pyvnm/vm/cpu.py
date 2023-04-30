@@ -294,7 +294,7 @@ class CPU:
     operand : int
       Código
     """
-    print(f'Chamada ao sistema com código {operand}')
+    print(f'\n\nChamada ao sistema com código {operand}\n')
 
   
 class InstructionSet:
