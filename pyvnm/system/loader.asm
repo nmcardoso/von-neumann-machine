@@ -73,7 +73,8 @@ SOMA_CHECK_SUM
             ST      CHECK_SUM_CALCULADO
             RS      SOMA_CHECK_SUM
 ERRO_DE_CHECK_SUM
-            OS      600
+            OS      400
+            OS      401
             RS      ERRO_DE_CHECK_SUM
 NUM_0       DATA    0
 NUM_1       DATA    1
