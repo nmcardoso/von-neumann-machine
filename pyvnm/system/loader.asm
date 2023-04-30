@@ -74,7 +74,7 @@ SOMA_CHECK_SUM
             RS      SOMA_CHECK_SUM
 ERRO_DE_CHECK_SUM
             OS      400
-            OS      401
+            OS      5
             RS      ERRO_DE_CHECK_SUM
 NUM_0       DATA    0
 NUM_1       DATA    1

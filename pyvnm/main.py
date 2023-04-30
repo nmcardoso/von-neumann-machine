@@ -3,6 +3,7 @@ import sys
 from pathlib import Path
 
 sys.path.append(str(Path(__file__).parent.parent))
+from pyvnm.system.os import OS
 from pyvnm.vm.cpu import CPUState
 from pyvnm.vm.vnm import VonNeumannMachine
 
@@ -123,6 +124,12 @@ def main():
   print()
   
   vnm.execute_program()
+  
+  if OS.SIG_TRAP in OS.flags:
+    print(Colors.MAGENTA + '>> O programa terminou com uma excessão' + Colors.RESET)
+    
+    if OS.LOADER_CHECKSUM_MISSMATCH in OS.flags:
+      print(Colors.MAGENTA + '>> O programa não pôde ser carregado pois o checksum calculado não corresponde ao informado' + Colors.RESET)
   
   print()
   print(Colors.LIGHT_BLUE + '>> Fim da execução do programa' + Colors.RESET)

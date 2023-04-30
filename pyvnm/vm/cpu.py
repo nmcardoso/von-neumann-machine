@@ -79,8 +79,8 @@ class CPU:
     Inicia a execução de um programa a partir da posição indicada pelo
     registrador PC.
     """
-    print(self.state.memory.read(83 * 2 - 0).int)
-    while not OS.SIG_TERM in OS.flags:
+    stop_signals = {OS.SIG_TERM, OS.SIG_TRAP}
+    while len(stop_signals & OS.flags) == 0:
       curr_inst = self.state.memory.read(self.state.pc.value)
       print(self.state.pc.value // 2 + 2, '\t', InstructionSet.get_mnemonic(curr_inst.opcode), curr_inst.operand // 2 + 2, end='')
       if not curr_inst.is_instruction():
@@ -294,7 +294,7 @@ class CPU:
     operand : int
       Código
     """
-    print(f'\n\nChamada ao sistema com código {operand}\n')
+    OS.flags.add(int(operand))
 
   
 class InstructionSet:
