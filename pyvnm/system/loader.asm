@@ -1,47 +1,47 @@
             ORG     0
 MAIN        LD      NUM_0
             ST      CHECK_SUM_CALCULADO     @ zera o check_sum_calculado
-            GD      0x4                     @ lê o primeiro byte da fita 
+            GD      0x4                     @ le o primeiro byte da fita 
             ST      PRIMEIRO_BYTE           @ guarda o primeiro byte para concatena-lo
             SC      SOMA_CHECK_SUM          @ soma o byte lido ao check_sum
-            GD      0x4                     @ lê o segundo byte da fita
+            GD      0x4                     @ le o segundo byte da fita
             ST      SEGUNDO_BYTE            @ guarda o segundo byte para concatena-lo
             SC      SOMA_CHECK_SUM          @ soma o byte lido ao check_sum
             SC      CONCATENA_BYTES         @ chama a subrotina que concatena dois bytes
             LD      WORD                    @ carrega os dois bytes concatenados
-            ST      INICIO_MEMORIA          @ guarda o endereço de inicio de gravaçao na memória em INICIO_MEMORIA
-            GD      0x4                     @ lê o terceiro byte da fita
+            ST      INICIO_MEMORIA          @ guarda o endereco de inicio de gravacao na memoria em INICIO_MEMORIA
+            GD      0x4                     @ le o terceiro byte da fita
             ST      BYTES_TOTAIS            @ guarda a quantidade total de bytes da fita em BYTES_TOTAIS
             SC      SOMA_CHECK_SUM          @ soma o byte lido ao check_sum
             LD      BYTES_TOTAIS             
             SB      NUM_4                    
-            ST      BYTES_RESTANTES         @ guarda a quantidade de bytes restantes referentes ao código a ser carregado 
-            SC      CRIA_INSTRUCAO          @ subrotina que cria a instrução de gravação que será incrementada a cada gravação na memória
+            ST      BYTES_RESTANTES         @ guarda a quantidade de bytes restantes referentes ao codigo a ser carregado 
+            SC      CRIA_INSTRUCAO          @ subrotina que cria a instrucao de gravacao que sera incrementada a cada gravacao na memoria
 LOOP        LD      BYTES_RESTANTES
-            JZ      END_LOOP                @ verifica se é o final do arquivo
-            GD      0x4                     @ lê um byte do programa
+            JZ      END_LOOP                @ verifica se e o final do arquivo
+            GD      0x4                     @ le um byte do programa
             ST      PRIMEIRO_BYTE           @ guarda o byte para ser concatenado
             SC      SOMA_CHECK_SUM          @ soma o byte lido ao check_sum
             SC      DEC_BYTES_RESTANTES     @ decrementa a quantidade de bytes restantes
-            GD      0x4                     @ lê o próximo byte
+            GD      0x4                     @ le o proximo byte
             ST      SEGUNDO_BYTE            @ guarda o byte para ser concatenado
             SC      SOMA_CHECK_SUM          @ soma o byte lido ao check_sum
             SC      DEC_BYTES_RESTANTES     @ decrementa a quantidade de bytes restantes
             SC      CONCATENA_BYTES         @ chama a subrotina que concatena dois bytes
             LD      WORD                    @ carrega os dois bytes concatenados
-            SC      GRAVA_INSTRUCAO         @ subrotina que grava os dois bytes lidos na memória
-            JP      LOOP                    @ pula pro iníncio do loop
-END_LOOP    GD      0x4                     @ lê o byte do check_sum do arquivo
+            SC      GRAVA_INSTRUCAO         @ subrotina que grava os dois bytes lidos na memoria
+            JP      LOOP                    @ pula pro inincio do loop
+END_LOOP    GD      0x4                     @ le o byte do check_sum do arquivo
             ST      CHECK_SUM_FORNECIDO     @ guarda o byte de check_sum fornecido no arquivo
             LD      CHECK_SUM_CALCULADO     @ carrega o check_sum calculado ao longo da leitura do arquivo
             ML      NUM_256                 @ ---
-            DV      NUM_256                 @ com essa multiplicação e essa divisao eu pego os 8 bits menos significativos      
-            AD      CHECK_SUM_FORNECIDO     @ o checksum fornecido estará em complemento de 2, por isso a adição zera o resultado
+            DV      NUM_256                 @ com essa multiplicacao e essa divisao eu pego os 8 bits menos significativos      
+            AD      CHECK_SUM_FORNECIDO     @ o checksum fornecido estara em complemento de 2, por isso a adicao zera o resultado
             ML      NUM_256                 @ ---
-            DV      NUM_256                 @ com essa multiplicação e essa divisao eu pego os 8 bits menos significativos
+            DV      NUM_256                 @ com essa multiplicacao e essa divisao eu pego os 8 bits menos significativos
             JZ      FIM                     @ pula para fim se o check_sum estiver OK
             SC      ERRO_DE_CHECK_SUM       @ chama a subrotina q identifica o erro de check_sum
-FIM         HJ      0x0                     @ para a máquina
+FIM         HJ      0x0                     @ para a maquina
 GRAVA_INSTRUCAO
 INSTRUCAO   DATA    0
             SC      INC_INSTRUCAO
