@@ -41,14 +41,14 @@ END_LOOP    GD      0x4                     @ lê o byte do check_sum do arquivo
             DV      NUM_256                 @ com essa multiplicação e essa divisao eu pego os 8 bits menos significativos
             JZ      FIM                     @ pula para fim se o check_sum estiver OK
             SC      ERRO_DE_CHECK_SUM       @ chama a subrotina q identifica o erro de check_sum
-FIM         HJ      0x0
+FIM         HJ      0x0                     @ para a máquina
 GRAVA_INSTRUCAO
 INSTRUCAO   DATA    0
             SC      INC_INSTRUCAO
             RS      GRAVA_INSTRUCAO
 CONCATENA_BYTES
             LD      PRIMEIRO_BYTE
-            ML      NUM_256          @ multiplica por 256=2^8, equivalente a 8 shift left
+            ML      NUM_256                 @ multiplica por 256=2^8, equivalente a 8 shift left
             AD      SEGUNDO_BYTE
             ST      WORD
             RS      CONCATENA_BYTES
