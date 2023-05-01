@@ -27,7 +27,7 @@ class Colors:
   
 class DebugCallback(CPUCallback):
   def _hexdump_line(self, state: CPUState, line: int, highlight: int):
-    print(Colors.LIGHT_YELLOW + Word(line * 16).hex + ': ' + Colors.RESET, end='')
+    print(Colors.LIGHT_YELLOW + Word(line * 16).hex + ':' + Colors.RESET + ' ', end='')
     for i in range(0, 16, 2):
       addr = line * 16 + i
       w = state.memory.read(addr)
@@ -156,6 +156,22 @@ def main():
     except:
       print('A coloração do terminal depende do pacote Colorama')
       print('Instale executando pip3 install colorama')
+      
+      
+  if args.latex:
+    Colors.RED = '|*\color{red}'
+    Colors.BLUE = '|*\color{blue!60!white}'
+    Colors.CYAN = '|*\color{cyan}'
+    Colors.GREEN = '|*\color{green}'
+    Colors.YELLOW = '|*\color{yellow}'
+    Colors.MAGENTA = '|*\color{magenta}'
+    Colors.LIGHT_RED = '|*\color{red}'
+    Colors.LIGHT_BLUE = '|*\color{blue!60!white}'
+    Colors.LIGHT_CYAN = '|*\color{cyan}'
+    Colors.LIGHT_GREEN = '|*\color{green}'
+    Colors.LIGHT_YELLOW = '|*\color{yellow}'
+    Colors.LIGHT_MAGENTA = '|*\color{magenta}'
+    Colors.RESET = '*|'
       
   if args.debug:
     callback = DebugCallback()
