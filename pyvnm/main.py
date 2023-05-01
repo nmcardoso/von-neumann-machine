@@ -42,7 +42,11 @@ class DebugCallback(CPUCallback):
     
     
   def on_event_loop_begin(self, state: CPUState):
-    heading('Depuração', '~')
+    heading('Depuração', '*')
+    
+  
+  def on_event_loop_end(self, state: CPUState):
+    print()
 
   
   def on_instruction_begin(self, state: CPUState):
@@ -95,7 +99,7 @@ def machine_summary(state: CPUState):
 def cli():
   p = argparse.ArgumentParser(prog='python3 main.py', description='Simulador da Máquina de Von Neumann')
   p.add_argument(
-    'programa', 
+    '-e', '--exec', 
     nargs=1,
     action='store', 
     help=(
@@ -162,7 +166,7 @@ def cli():
 def main():
   args = cli()
   
-  program_path = Path(args.programa[0])
+  program_path = Path(args.exec[0])
   if not program_path.exists():
     return print(f'Arquivo não encontrado: str(program_path)')
   
@@ -233,7 +237,6 @@ def main():
   vnm.boot()
   
   print(Colors.LIGHT_BLUE + '>> Programas de sistema carregados com sucesso na memória' + Colors.RESET)
-  print()
   
   machine_summary(vnm.cpu.state)
   
@@ -242,7 +245,6 @@ def main():
   
   vnm.load()
   
-  print()
   print(Colors.LIGHT_BLUE + '>> Programa carregado na memória com sucesso' + Colors.RESET)
   
   machine_summary(vnm.cpu.state)
@@ -265,17 +267,14 @@ def main():
   machine_summary(vnm.cpu.state)
   
   if args.dump:
-    print()
     print(Colors.LIGHT_BLUE + f'>> Iniciando dump da memória' + Colors.RESET)
     print()
     
     vnm.dump()
     
-    print()
     print(Colors.LIGHT_BLUE + f'>> Memória descarregada com sucesso em {args.dump}' + Colors.RESET)
     print()
   
-  print()
   print(Colors.LIGHT_BLUE + '>> Fim da simulação' + Colors.RESET)
 
 
