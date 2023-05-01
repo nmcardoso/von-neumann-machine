@@ -142,17 +142,20 @@ class CPU:
     """
     stop_signals = {OS.SIG_TERM, OS.SIG_TRAP}
     self.callback.on_event_loop_begin(self.state)
+    
     while len(stop_signals & OS.flags) == 0:
       curr_inst = self.state.memory.read(self.state.pc.value)
-      # print(self.state.pc.value // 2 + 2, '\t', InstructionSet.get_mnemonic(curr_inst.opcode), curr_inst.operand // 2 + 2, end='')
       if not curr_inst.is_instruction():
         break
+      
       self.callback.on_instruction_begin(self.state)
+      
       action = self._action_switcher.get(curr_inst.opcode)
       action(curr_inst.operand)
+      
       self.callback.on_instruction_end(self.state)
-      # print('\t\tacc:', self.state.acc.int)
       self._increment_pc()
+    
     self.callback.on_event_loop_end(self.state)
   
   
