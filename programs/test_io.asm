@@ -9,6 +9,7 @@ MAIN    LD       A      @ carrega dado de A no acumulador
         PD       3      @ adiciona letra S ao buffer do Monitor
         LD       EOT    @ carrega caractere de controle EOT no acc
         PD       3      @ envia EOT para monitor e encerra stream
+        HJ       0
 
 A       DATA     80
 B       DATA     1
