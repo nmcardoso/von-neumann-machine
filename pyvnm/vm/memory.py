@@ -288,7 +288,7 @@ class Memory:
   def hexdump(self, colors):
     print(' '*6, sep='', end='')
     for i in range(16):
-      print(colors.LIGHT_YELLOW + format(i, '0>1x') + '  ' + colors.RESET, sep='', end='')
+      print(colors.LIGHT_YELLOW + format(i, '0>1x') + colors.RESET + '  ', sep='', end='')
     print()
     for i in range(self.size // 32):
       print(colors.LIGHT_YELLOW + format(i*16, '0>4x') + ':' + colors.RESET, ' ', sep='', end='')
@@ -299,7 +299,11 @@ class Memory:
           print(instruction[:2] + ' ' + instruction[2:], ' ', sep='', end='')
         else:
           instruction = format(w.value, '0>4x')
-          print(colors.LIGHT_GREEN + instruction[:2] + ' ' + instruction[2:] + colors.RESET, '', sep=' ', end='')
+          print(
+            colors.LIGHT_GREEN + instruction[:2] + colors.RESET + ' ' +
+            colors.LIGHT_GREEN + instruction[2:] + colors.RESET, '', 
+            sep=' ', end=''
+          )
       print()
       
   
