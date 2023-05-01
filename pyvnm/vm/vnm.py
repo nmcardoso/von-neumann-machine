@@ -1,6 +1,7 @@
 from pathlib import Path
 
 from ..system.bootloader import BootLoader
+from ..system.os import OS
 from .cpu import CPU, CPUCallback, CPUState
 from .device import CharScreen, DeviceBus, HardDisk, Keyboard, Screen
 from .memory import Byte, Memory
@@ -26,12 +27,12 @@ class VonNeumannMachine:
   def __init__(
     self, 
     memory_size: int, 
-    load_path: Path, 
-    dump_path: Path = None, 
+    load_path: str | Path, 
+    dump_path: str | Path = None, 
     cpu_callback: CPUCallback = CPUCallback()
   ):
-    self._load_path = load_path
-    self._dump_path = dump_path
+    load_path = Path(load_path) if load_path else load_path
+    dump_path = Path(dump_path) if dump_path else dump_path
     
     # inicializa memória
     memory = Memory(memory_size)
@@ -54,10 +55,10 @@ class VonNeumannMachine:
     """
     loader_path = Path(__file__).parent.parent / 'system' / 'loader.hex'
     # loader_path = Path(__file__).parent.parent.parent / 'programs' / 'test_07.hex'
-    # dumper_path = Path(__file__).parent.parent / 'system' / 'dumper.hex'
+    dumper_path = Path(__file__).parent.parent / 'system' / 'dumper.hex'
     bl = BootLoader(initial_state=self.cpu.state, input_base='x')
     self.cpu.state.loader_addr = bl.load(loader_path.read_text())
-    # self.cpu.state.dumper_addr = bl.load(dumper_path.read_text())
+    self.cpu.state.dumper_addr = bl.load(dumper_path.read_text())
     
     
   def load(self):
@@ -69,6 +70,7 @@ class VonNeumannMachine:
     """
     Aciona a Unidade de Controle para o início da execução do programa
     """
+    OS.flags.clear()
     self.cpu.event_loop()
     
   
@@ -91,7 +93,7 @@ class VonNeumannMachine:
     str
       Valor da memória codificado na base especificada
     """
-    self.cpu.state.pc = self.cpu.state.dumper_addr
+    self.cpu.state.pc.value = self.cpu.state.dumper_addr
     self.execute_program()
     hd = self.cpu.state.devices.get(4)
     hd.save()

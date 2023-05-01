@@ -51,7 +51,7 @@ class DebugCallback(CPUCallback):
   def on_instruction_end(self, state: CPUState):
     instruction = state.memory.read(state.pc.uint)
     print(f'    PC: {state.pc.uint}\tACC: {state.acc.int} (0x{state.acc.hex})')
-    if instruction.opcode == InstructionSet.ST:
+    if instruction.opcode == InstructionSet.ST or instruction.opcode == InstructionSet.LD:
       line = int(np.floor(instruction.operand / 16))
       highlight = instruction.operand
       print('    MEM: ', end='')
@@ -111,7 +111,16 @@ def cli():
     help='Número de posições na memória. Padrão: 4096'
   )
   p.add_argument(
-    '-d', '--debug',
+    '-d', '--dump',
+    action='store',
+    default=None,
+    help=(
+      'Caminho absoluto ou relativo para onde o dump da memória deve ser '
+      'salvo após a execução do programa'
+    )
+  )
+  p.add_argument(
+    '-b', '--debug',
     action='store_true',
     help=(
       'Executa o programa no modo depuração. Este modo exibe detalhadamente '
@@ -183,7 +192,8 @@ def main():
   
   vnm = VonNeumannMachine(
     memory_size=int(args.m), 
-    load_path=program_path, 
+    load_path=program_path,
+    dump_path=args.dump,
     cpu_callback=callback
   )
   input_base = 'x' if program_path.suffix == '.hex' else 'b'
@@ -218,6 +228,10 @@ def main():
   print()
   heading('Registradores')
   show_registers(vnm.cpu.state)
+  
+  
+  if args.dump:
+    vnm.dump()
   
   print()
   print(Colors.LIGHT_BLUE + '>> Fim da simulação' + Colors.RESET)
