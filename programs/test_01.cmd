@@ -1,0 +1,1 @@
+python3 main.py -m 1024 --debug --sysdebug -c --latex --dump ../programs/test_01.dump.hex -e ../programs/test_01.hex > ../programs/test_01.out < ../programs/test_01.in

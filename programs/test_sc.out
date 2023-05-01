@@ -1,0 +1,186 @@
+Simulador da Máquina de Von Neumann
+===================================
+
+|*\color{blue!60!white}>> Iniciando boot do sistema*|
+
+|*\color{blue!60!white}>> Programas de sistema carregados com sucesso na memória*|
+
+Memória
+-------
+      |*\color{yellow}0*|  |*\color{yellow}1*|  |*\color{yellow}2*|  |*\color{yellow}3*|  |*\color{yellow}4*|  |*\color{yellow}5*|  |*\color{yellow}6*|  |*\color{yellow}7*|  |*\color{yellow}8*|  |*\color{yellow}9*|  |*\color{yellow}a*|  |*\color{yellow}b*|  |*\color{yellow}c*|  |*\color{yellow}d*|  |*\color{yellow}e*|  |*\color{yellow}f*|  
+|*\color{yellow}0000:*| |*\color{green}80*| |*\color{green}9a*| |*\color{green}90*| |*\color{green}a8*| |*\color{green}b0*| |*\color{green}04*| |*\color{green}90*| |*\color{green}ac*| |*\color{green}a0*| |*\color{green}8a*| |*\color{green}b0*| |*\color{green}04*| |*\color{green}90*| |*\color{green}ae*| |*\color{green}a0*| |*\color{green}8a*| 
+|*\color{yellow}0010:*| |*\color{green}a0*| |*\color{green}5e*| |*\color{green}80*| |*\color{green}b2*| |*\color{green}90*| |*\color{green}b6*| |*\color{green}b0*| |*\color{green}04*| |*\color{green}90*| |*\color{green}b4*| |*\color{green}a0*| |*\color{green}8a*| |*\color{green}80*| |*\color{green}b4*| |*\color{green}50*| |*\color{green}a0*| 
+|*\color{yellow}0020:*| |*\color{green}90*| |*\color{green}b0*| |*\color{green}a0*| |*\color{green}6a*| |*\color{green}80*| |*\color{green}b0*| |*\color{green}10*| |*\color{green}40*| |*\color{green}b0*| |*\color{green}04*| |*\color{green}90*| |*\color{green}ac*| |*\color{green}a0*| |*\color{green}8a*| |*\color{green}a0*| |*\color{green}80*| 
+|*\color{yellow}0030:*| |*\color{green}b0*| |*\color{green}04*| |*\color{green}90*| |*\color{green}ae*| |*\color{green}a0*| |*\color{green}8a*| |*\color{green}a0*| |*\color{green}80*| |*\color{green}a0*| |*\color{green}5e*| |*\color{green}80*| |*\color{green}b2*| |*\color{green}a0*| |*\color{green}56*| |*\color{green}00*| |*\color{green}24*| 
+|*\color{yellow}0040:*| |*\color{green}b0*| |*\color{green}04*| |*\color{green}90*| |*\color{green}aa*| |*\color{green}80*| |*\color{green}a8*| |*\color{green}60*| |*\color{green}a2*| |*\color{green}70*| |*\color{green}a2*| |*\color{green}40*| |*\color{green}aa*| |*\color{green}60*| |*\color{green}a2*| |*\color{green}70*| |*\color{green}a2*| 
+|*\color{yellow}0050:*| |*\color{green}10*| |*\color{green}54*| |*\color{green}a0*| |*\color{green}92*| |*\color{green}30*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}a0*| |*\color{green}76*| |*\color{green}00*| |*\color{green}56*| |*\color{green}00*| |*\color{green}00*| 
+|*\color{yellow}0060:*| |*\color{green}80*| |*\color{green}ac*| |*\color{green}60*| |*\color{green}a2*| |*\color{green}40*| |*\color{green}ae*| |*\color{green}90*| |*\color{green}b2*| |*\color{green}00*| |*\color{green}5e*| |*\color{green}00*| |*\color{green}00*| |*\color{green}80*| |*\color{green}a6*| |*\color{green}60*| |*\color{green}a4*| 
+|*\color{yellow}0070:*| |*\color{green}40*| |*\color{green}b6*| |*\color{green}90*| |*\color{green}58*| |*\color{green}00*| |*\color{green}6a*| |*\color{green}00*| |*\color{green}00*| |*\color{green}80*| |*\color{green}58*| |*\color{green}40*| |*\color{green}9e*| |*\color{green}90*| |*\color{green}58*| |*\color{green}00*| |*\color{green}76*| 
+|*\color{yellow}0080:*| |*\color{green}00*| |*\color{green}00*| |*\color{green}80*| |*\color{green}b0*| |*\color{green}50*| |*\color{green}9c*| |*\color{green}90*| |*\color{green}b0*| |*\color{green}00*| |*\color{green}80*| |*\color{green}00*| |*\color{green}00*| |*\color{green}40*| |*\color{green}a8*| |*\color{green}90*| |*\color{green}a8*| 
+|*\color{yellow}0090:*| |*\color{green}00*| |*\color{green}8a*| |*\color{green}00*| |*\color{green}00*| |*\color{green}d1*| |*\color{green}90*| |*\color{green}d0*| |*\color{green}05*| |*\color{green}00*| |*\color{green}92*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}01*| |*\color{green}00*| |*\color{green}02*| 
+|*\color{yellow}00a0:*| |*\color{green}00*| |*\color{green}04*| |*\color{green}01*| |*\color{green}00*| |*\color{green}10*| |*\color{green}00*| |*\color{green}00*| |*\color{green}09*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| 
+|*\color{yellow}00b0:*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| 00 00 00 00 00 00 00 00 
+|*\color{yellow}00c0:*| 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+|*\color{yellow}00d0:*| |*\color{green}81*| |*\color{green}40*| |*\color{green}a1*| |*\color{green}12*| |*\color{green}a1*| |*\color{green}20*| |*\color{green}a1*| |*\color{green}34*| |*\color{green}a1*| |*\color{green}26*| |*\color{green}80*| |*\color{green}b4*| |*\color{green}a1*| |*\color{green}34*| |*\color{green}c0*| |*\color{green}04*| 
+|*\color{yellow}00e0:*| |*\color{green}51*| |*\color{green}50*| |*\color{green}51*| |*\color{green}4e*| |*\color{green}51*| |*\color{green}4e*| |*\color{green}91*| |*\color{green}44*| |*\color{green}80*| |*\color{green}b6*| |*\color{green}a1*| |*\color{green}12*| |*\color{green}a1*| |*\color{green}20*| |*\color{green}a1*| |*\color{green}26*| 
+|*\color{yellow}00f0:*| |*\color{green}a1*| |*\color{green}34*| |*\color{green}81*| |*\color{green}22*| |*\color{green}41*| |*\color{green}50*| |*\color{green}91*| |*\color{green}22*| |*\color{green}81*| |*\color{green}44*| |*\color{green}51*| |*\color{green}50*| |*\color{green}91*| |*\color{green}44*| |*\color{green}11*| |*\color{green}02*| 
+|*\color{yellow}0100:*| |*\color{green}00*| |*\color{green}ec*| |*\color{green}81*| |*\color{green}46*| |*\color{green}61*| |*\color{green}52*| |*\color{green}71*| |*\color{green}52*| |*\color{green}91*| |*\color{green}48*| |*\color{green}81*| |*\color{green}4c*| |*\color{green}51*| |*\color{green}48*| |*\color{green}c0*| |*\color{green}04*| 
+|*\color{yellow}0110:*| |*\color{green}30*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}91*| |*\color{green}56*| |*\color{green}81*| |*\color{green}4a*| |*\color{green}61*| |*\color{green}54*| |*\color{green}41*| |*\color{green}56*| |*\color{green}91*| |*\color{green}22*| |*\color{green}01*| |*\color{green}12*| 
+|*\color{yellow}0120:*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}01*| |*\color{green}20*| |*\color{green}00*| |*\color{green}00*| |*\color{green}91*| |*\color{green}56*| |*\color{green}71*| |*\color{green}52*| |*\color{green}c0*| |*\color{green}04*| |*\color{green}81*| |*\color{green}56*| 
+|*\color{yellow}0130:*| |*\color{green}c0*| |*\color{green}04*| |*\color{green}01*| |*\color{green}26*| |*\color{green}00*| |*\color{green}00*| |*\color{green}91*| |*\color{green}56*| |*\color{green}41*| |*\color{green}46*| |*\color{green}91*| |*\color{green}46*| |*\color{green}81*| |*\color{green}56*| |*\color{green}01*| |*\color{green}34*| 
+|*\color{yellow}0140:*| |*\color{green}00*| |*\color{green}b6*| |*\color{green}00*| |*\color{green}b4*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}08*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}01*| 
+|*\color{yellow}0150:*| |*\color{green}00*| |*\color{green}02*| |*\color{green}01*| |*\color{green}00*| |*\color{green}10*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| 00 00 00 00 00 00 00 00 
+|*\color{yellow}0160:*| 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+|*\color{yellow}0170:*| 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+|*\color{yellow}0180:*| 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+|*\color{yellow}0190:*| 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+|*\color{yellow}01a0:*| 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+|*\color{yellow}01b0:*| 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+|*\color{yellow}01c0:*| 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+|*\color{yellow}01d0:*| 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+|*\color{yellow}01e0:*| 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+|*\color{yellow}01f0:*| 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+
+Registradores
+-------------
+Acumulador:	 0000
+PC:		 0000
+
+|*\color{blue!60!white}>> Iniciando carregamento do programa na memória*|
+
+|*\color{blue!60!white}>> Programa carregado na memória com sucesso*|
+
+Memória
+-------
+      |*\color{yellow}0*|  |*\color{yellow}1*|  |*\color{yellow}2*|  |*\color{yellow}3*|  |*\color{yellow}4*|  |*\color{yellow}5*|  |*\color{yellow}6*|  |*\color{yellow}7*|  |*\color{yellow}8*|  |*\color{yellow}9*|  |*\color{yellow}a*|  |*\color{yellow}b*|  |*\color{yellow}c*|  |*\color{yellow}d*|  |*\color{yellow}e*|  |*\color{yellow}f*|  
+|*\color{yellow}0000:*| |*\color{green}80*| |*\color{green}9a*| |*\color{green}90*| |*\color{green}a8*| |*\color{green}b0*| |*\color{green}04*| |*\color{green}90*| |*\color{green}ac*| |*\color{green}a0*| |*\color{green}8a*| |*\color{green}b0*| |*\color{green}04*| |*\color{green}90*| |*\color{green}ae*| |*\color{green}a0*| |*\color{green}8a*| 
+|*\color{yellow}0010:*| |*\color{green}a0*| |*\color{green}5e*| |*\color{green}80*| |*\color{green}b2*| |*\color{green}90*| |*\color{green}b6*| |*\color{green}b0*| |*\color{green}04*| |*\color{green}90*| |*\color{green}b4*| |*\color{green}a0*| |*\color{green}8a*| |*\color{green}80*| |*\color{green}b4*| |*\color{green}50*| |*\color{green}a0*| 
+|*\color{yellow}0020:*| |*\color{green}90*| |*\color{green}b0*| |*\color{green}a0*| |*\color{green}6a*| |*\color{green}80*| |*\color{green}b0*| |*\color{green}10*| |*\color{green}40*| |*\color{green}b0*| |*\color{green}04*| |*\color{green}90*| |*\color{green}ac*| |*\color{green}a0*| |*\color{green}8a*| |*\color{green}a0*| |*\color{green}80*| 
+|*\color{yellow}0030:*| |*\color{green}b0*| |*\color{green}04*| |*\color{green}90*| |*\color{green}ae*| |*\color{green}a0*| |*\color{green}8a*| |*\color{green}a0*| |*\color{green}80*| |*\color{green}a0*| |*\color{green}5e*| |*\color{green}80*| |*\color{green}b2*| |*\color{green}a0*| |*\color{green}56*| |*\color{green}00*| |*\color{green}24*| 
+|*\color{yellow}0040:*| |*\color{green}b0*| |*\color{green}04*| |*\color{green}90*| |*\color{green}aa*| |*\color{green}80*| |*\color{green}a8*| |*\color{green}60*| |*\color{green}a2*| |*\color{green}70*| |*\color{green}a2*| |*\color{green}40*| |*\color{green}aa*| |*\color{green}60*| |*\color{green}a2*| |*\color{green}70*| |*\color{green}a2*| 
+|*\color{yellow}0050:*| |*\color{green}10*| |*\color{green}54*| |*\color{green}a0*| |*\color{green}92*| |*\color{green}30*| |*\color{green}00*| |*\color{green}00*| |*\color{green}3e*| |*\color{green}91*| |*\color{green}aa*| |*\color{green}a0*| |*\color{green}76*| |*\color{green}00*| |*\color{green}56*| |*\color{green}00*| |*\color{green}3a*| 
+|*\color{yellow}0060:*| |*\color{green}80*| |*\color{green}ac*| |*\color{green}60*| |*\color{green}a2*| |*\color{green}40*| |*\color{green}ae*| |*\color{green}90*| |*\color{green}b2*| |*\color{green}00*| |*\color{green}5e*| |*\color{green}00*| |*\color{green}24*| |*\color{green}80*| |*\color{green}a6*| |*\color{green}60*| |*\color{green}a4*| 
+|*\color{yellow}0070:*| |*\color{green}40*| |*\color{green}b6*| |*\color{green}90*| |*\color{green}58*| |*\color{green}00*| |*\color{green}6a*| |*\color{green}00*| |*\color{green}5c*| |*\color{green}80*| |*\color{green}58*| |*\color{green}40*| |*\color{green}9e*| |*\color{green}90*| |*\color{green}58*| |*\color{green}00*| |*\color{green}76*| 
+|*\color{yellow}0080:*| |*\color{green}00*| |*\color{green}38*| |*\color{green}80*| |*\color{green}b0*| |*\color{green}50*| |*\color{green}9c*| |*\color{green}90*| |*\color{green}b0*| |*\color{green}00*| |*\color{green}80*| |*\color{green}00*| |*\color{green}36*| |*\color{green}40*| |*\color{green}a8*| |*\color{green}90*| |*\color{green}a8*| 
+|*\color{yellow}0090:*| |*\color{green}00*| |*\color{green}8a*| |*\color{green}00*| |*\color{green}00*| |*\color{green}d1*| |*\color{green}90*| |*\color{green}d0*| |*\color{green}05*| |*\color{green}00*| |*\color{green}92*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}01*| |*\color{green}00*| |*\color{green}02*| 
+|*\color{yellow}00a0:*| |*\color{green}00*| |*\color{green}04*| |*\color{green}01*| |*\color{green}00*| |*\color{green}10*| |*\color{green}00*| |*\color{green}00*| |*\color{green}09*| |*\color{green}08*| |*\color{green}7a*| |*\color{green}00*| |*\color{green}86*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}14*| 
+|*\color{yellow}00b0:*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}14*| |*\color{green}00*| |*\color{green}1e*| |*\color{green}01*| |*\color{green}90*| 00 00 00 00 00 00 00 00 
+|*\color{yellow}00c0:*| 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+|*\color{yellow}00d0:*| |*\color{green}81*| |*\color{green}40*| |*\color{green}a1*| |*\color{green}12*| |*\color{green}a1*| |*\color{green}20*| |*\color{green}a1*| |*\color{green}34*| |*\color{green}a1*| |*\color{green}26*| |*\color{green}80*| |*\color{green}b4*| |*\color{green}a1*| |*\color{green}34*| |*\color{green}c0*| |*\color{green}04*| 
+|*\color{yellow}00e0:*| |*\color{green}51*| |*\color{green}50*| |*\color{green}51*| |*\color{green}4e*| |*\color{green}51*| |*\color{green}4e*| |*\color{green}91*| |*\color{green}44*| |*\color{green}80*| |*\color{green}b6*| |*\color{green}a1*| |*\color{green}12*| |*\color{green}a1*| |*\color{green}20*| |*\color{green}a1*| |*\color{green}26*| 
+|*\color{yellow}00f0:*| |*\color{green}a1*| |*\color{green}34*| |*\color{green}81*| |*\color{green}22*| |*\color{green}41*| |*\color{green}50*| |*\color{green}91*| |*\color{green}22*| |*\color{green}81*| |*\color{green}44*| |*\color{green}51*| |*\color{green}50*| |*\color{green}91*| |*\color{green}44*| |*\color{green}11*| |*\color{green}02*| 
+|*\color{yellow}0100:*| |*\color{green}00*| |*\color{green}ec*| |*\color{green}81*| |*\color{green}46*| |*\color{green}61*| |*\color{green}52*| |*\color{green}71*| |*\color{green}52*| |*\color{green}91*| |*\color{green}48*| |*\color{green}81*| |*\color{green}4c*| |*\color{green}51*| |*\color{green}48*| |*\color{green}c0*| |*\color{green}04*| 
+|*\color{yellow}0110:*| |*\color{green}30*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}91*| |*\color{green}56*| |*\color{green}81*| |*\color{green}4a*| |*\color{green}61*| |*\color{green}54*| |*\color{green}41*| |*\color{green}56*| |*\color{green}91*| |*\color{green}22*| |*\color{green}01*| |*\color{green}12*| 
+|*\color{yellow}0120:*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}01*| |*\color{green}20*| |*\color{green}00*| |*\color{green}00*| |*\color{green}91*| |*\color{green}56*| |*\color{green}71*| |*\color{green}52*| |*\color{green}c0*| |*\color{green}04*| |*\color{green}81*| |*\color{green}56*| 
+|*\color{yellow}0130:*| |*\color{green}c0*| |*\color{green}04*| |*\color{green}01*| |*\color{green}26*| |*\color{green}00*| |*\color{green}00*| |*\color{green}91*| |*\color{green}56*| |*\color{green}41*| |*\color{green}46*| |*\color{green}91*| |*\color{green}46*| |*\color{green}81*| |*\color{green}56*| |*\color{green}01*| |*\color{green}34*| 
+|*\color{yellow}0140:*| |*\color{green}00*| |*\color{green}b6*| |*\color{green}00*| |*\color{green}b4*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}08*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}01*| 
+|*\color{yellow}0150:*| |*\color{green}00*| |*\color{green}02*| |*\color{green}01*| |*\color{green}00*| |*\color{green}10*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| 00 00 00 00 00 00 00 00 
+|*\color{yellow}0160:*| 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+|*\color{yellow}0170:*| 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+|*\color{yellow}0180:*| 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+|*\color{yellow}0190:*| |*\color{green}a1*| |*\color{green}94*| |*\color{green}30*| |*\color{green}01*| |*\color{green}00*| |*\color{green}00*| |*\color{green}a1*| |*\color{green}9e*| |*\color{green}81*| |*\color{green}a6*| |*\color{green}c0*| |*\color{green}02*| |*\color{green}01*| |*\color{green}94*| |*\color{green}00*| |*\color{green}00*| 
+|*\color{yellow}01a0:*| |*\color{green}81*| |*\color{green}a8*| |*\color{green}c0*| |*\color{green}02*| |*\color{green}01*| |*\color{green}9e*| |*\color{green}00*| |*\color{green}0a*| |*\color{green}00*| |*\color{green}14*| 00 00 00 00 00 00 
+|*\color{yellow}01b0:*| 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+|*\color{yellow}01c0:*| 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+|*\color{yellow}01d0:*| 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+|*\color{yellow}01e0:*| 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+|*\color{yellow}01f0:*| 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+
+Registradores
+-------------
+Acumulador:	 0000
+PC:		 0000
+
+|*\color{blue!60!white}>> Iniciando execução do programa*|
+
+Depuração
+*********
+
+Instrução: |*\color{cyan}SC 194*|
+    PC: 406	ACC: 0 (0x0000)
+
+Instrução: |*\color{cyan}SC 19E*|
+    PC: 416	ACC: 0 (0x0000)
+    MEM: |*\color{yellow}01A0:*| 81 A8 C0 02 01 9E 00 0A |*\color{green}00 14 *|00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}LD 1A8*|
+    PC: 416	ACC: 20 (0x0014)
+    MEM: |*\color{yellow}01A0:*| 81 A8 C0 02 01 9E 00 0A |*\color{green}00 14 *|00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}PD 002*|
+>> Saída: 20
+    PC: 418	ACC: 20 (0x0014)
+
+Instrução: |*\color{cyan}JP 19E*|
+    PC: 414	ACC: 20 (0x0014)
+
+Instrução: |*\color{cyan}JP 198*|
+    PC: 408	ACC: 20 (0x0014)
+    MEM: |*\color{yellow}01A0:*| 81 A8 C0 02 01 9E |*\color{green}00 0A *|00 14 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}LD 1A6*|
+    PC: 408	ACC: 10 (0x000A)
+    MEM: |*\color{yellow}01A0:*| 81 A8 C0 02 01 9E |*\color{green}00 0A *|00 14 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}PD 002*|
+>> Saída: 10
+    PC: 410	ACC: 10 (0x000A)
+
+Instrução: |*\color{cyan}JP 194*|
+    PC: 404	ACC: 10 (0x000A)
+
+Instrução: |*\color{cyan}JP 192*|
+    PC: 402	ACC: 10 (0x000A)
+
+Instrução: |*\color{cyan}HJ 001*|
+    PC: 1	ACC: 10 (0x000A)
+
+
+|*\color{blue!60!white}>> Fim da execução do programa*|
+
+Memória
+-------
+      |*\color{yellow}0*|  |*\color{yellow}1*|  |*\color{yellow}2*|  |*\color{yellow}3*|  |*\color{yellow}4*|  |*\color{yellow}5*|  |*\color{yellow}6*|  |*\color{yellow}7*|  |*\color{yellow}8*|  |*\color{yellow}9*|  |*\color{yellow}a*|  |*\color{yellow}b*|  |*\color{yellow}c*|  |*\color{yellow}d*|  |*\color{yellow}e*|  |*\color{yellow}f*|  
+|*\color{yellow}0000:*| |*\color{green}80*| |*\color{green}9a*| |*\color{green}90*| |*\color{green}a8*| |*\color{green}b0*| |*\color{green}04*| |*\color{green}90*| |*\color{green}ac*| |*\color{green}a0*| |*\color{green}8a*| |*\color{green}b0*| |*\color{green}04*| |*\color{green}90*| |*\color{green}ae*| |*\color{green}a0*| |*\color{green}8a*| 
+|*\color{yellow}0010:*| |*\color{green}a0*| |*\color{green}5e*| |*\color{green}80*| |*\color{green}b2*| |*\color{green}90*| |*\color{green}b6*| |*\color{green}b0*| |*\color{green}04*| |*\color{green}90*| |*\color{green}b4*| |*\color{green}a0*| |*\color{green}8a*| |*\color{green}80*| |*\color{green}b4*| |*\color{green}50*| |*\color{green}a0*| 
+|*\color{yellow}0020:*| |*\color{green}90*| |*\color{green}b0*| |*\color{green}a0*| |*\color{green}6a*| |*\color{green}80*| |*\color{green}b0*| |*\color{green}10*| |*\color{green}40*| |*\color{green}b0*| |*\color{green}04*| |*\color{green}90*| |*\color{green}ac*| |*\color{green}a0*| |*\color{green}8a*| |*\color{green}a0*| |*\color{green}80*| 
+|*\color{yellow}0030:*| |*\color{green}b0*| |*\color{green}04*| |*\color{green}90*| |*\color{green}ae*| |*\color{green}a0*| |*\color{green}8a*| |*\color{green}a0*| |*\color{green}80*| |*\color{green}a0*| |*\color{green}5e*| |*\color{green}80*| |*\color{green}b2*| |*\color{green}a0*| |*\color{green}56*| |*\color{green}00*| |*\color{green}24*| 
+|*\color{yellow}0040:*| |*\color{green}b0*| |*\color{green}04*| |*\color{green}90*| |*\color{green}aa*| |*\color{green}80*| |*\color{green}a8*| |*\color{green}60*| |*\color{green}a2*| |*\color{green}70*| |*\color{green}a2*| |*\color{green}40*| |*\color{green}aa*| |*\color{green}60*| |*\color{green}a2*| |*\color{green}70*| |*\color{green}a2*| 
+|*\color{yellow}0050:*| |*\color{green}10*| |*\color{green}54*| |*\color{green}a0*| |*\color{green}92*| |*\color{green}30*| |*\color{green}00*| |*\color{green}00*| |*\color{green}3e*| |*\color{green}91*| |*\color{green}aa*| |*\color{green}a0*| |*\color{green}76*| |*\color{green}00*| |*\color{green}56*| |*\color{green}00*| |*\color{green}3a*| 
+|*\color{yellow}0060:*| |*\color{green}80*| |*\color{green}ac*| |*\color{green}60*| |*\color{green}a2*| |*\color{green}40*| |*\color{green}ae*| |*\color{green}90*| |*\color{green}b2*| |*\color{green}00*| |*\color{green}5e*| |*\color{green}00*| |*\color{green}24*| |*\color{green}80*| |*\color{green}a6*| |*\color{green}60*| |*\color{green}a4*| 
+|*\color{yellow}0070:*| |*\color{green}40*| |*\color{green}b6*| |*\color{green}90*| |*\color{green}58*| |*\color{green}00*| |*\color{green}6a*| |*\color{green}00*| |*\color{green}5c*| |*\color{green}80*| |*\color{green}58*| |*\color{green}40*| |*\color{green}9e*| |*\color{green}90*| |*\color{green}58*| |*\color{green}00*| |*\color{green}76*| 
+|*\color{yellow}0080:*| |*\color{green}00*| |*\color{green}38*| |*\color{green}80*| |*\color{green}b0*| |*\color{green}50*| |*\color{green}9c*| |*\color{green}90*| |*\color{green}b0*| |*\color{green}00*| |*\color{green}80*| |*\color{green}00*| |*\color{green}36*| |*\color{green}40*| |*\color{green}a8*| |*\color{green}90*| |*\color{green}a8*| 
+|*\color{yellow}0090:*| |*\color{green}00*| |*\color{green}8a*| |*\color{green}00*| |*\color{green}00*| |*\color{green}d1*| |*\color{green}90*| |*\color{green}d0*| |*\color{green}05*| |*\color{green}00*| |*\color{green}92*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}01*| |*\color{green}00*| |*\color{green}02*| 
+|*\color{yellow}00a0:*| |*\color{green}00*| |*\color{green}04*| |*\color{green}01*| |*\color{green}00*| |*\color{green}10*| |*\color{green}00*| |*\color{green}00*| |*\color{green}09*| |*\color{green}08*| |*\color{green}7a*| |*\color{green}00*| |*\color{green}86*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}14*| 
+|*\color{yellow}00b0:*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}14*| |*\color{green}00*| |*\color{green}1e*| |*\color{green}01*| |*\color{green}90*| 00 00 00 00 00 00 00 00 
+|*\color{yellow}00c0:*| 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+|*\color{yellow}00d0:*| |*\color{green}81*| |*\color{green}40*| |*\color{green}a1*| |*\color{green}12*| |*\color{green}a1*| |*\color{green}20*| |*\color{green}a1*| |*\color{green}34*| |*\color{green}a1*| |*\color{green}26*| |*\color{green}80*| |*\color{green}b4*| |*\color{green}a1*| |*\color{green}34*| |*\color{green}c0*| |*\color{green}04*| 
+|*\color{yellow}00e0:*| |*\color{green}51*| |*\color{green}50*| |*\color{green}51*| |*\color{green}4e*| |*\color{green}51*| |*\color{green}4e*| |*\color{green}91*| |*\color{green}44*| |*\color{green}80*| |*\color{green}b6*| |*\color{green}a1*| |*\color{green}12*| |*\color{green}a1*| |*\color{green}20*| |*\color{green}a1*| |*\color{green}26*| 
+|*\color{yellow}00f0:*| |*\color{green}a1*| |*\color{green}34*| |*\color{green}81*| |*\color{green}22*| |*\color{green}41*| |*\color{green}50*| |*\color{green}91*| |*\color{green}22*| |*\color{green}81*| |*\color{green}44*| |*\color{green}51*| |*\color{green}50*| |*\color{green}91*| |*\color{green}44*| |*\color{green}11*| |*\color{green}02*| 
+|*\color{yellow}0100:*| |*\color{green}00*| |*\color{green}ec*| |*\color{green}81*| |*\color{green}46*| |*\color{green}61*| |*\color{green}52*| |*\color{green}71*| |*\color{green}52*| |*\color{green}91*| |*\color{green}48*| |*\color{green}81*| |*\color{green}4c*| |*\color{green}51*| |*\color{green}48*| |*\color{green}c0*| |*\color{green}04*| 
+|*\color{yellow}0110:*| |*\color{green}30*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}91*| |*\color{green}56*| |*\color{green}81*| |*\color{green}4a*| |*\color{green}61*| |*\color{green}54*| |*\color{green}41*| |*\color{green}56*| |*\color{green}91*| |*\color{green}22*| |*\color{green}01*| |*\color{green}12*| 
+|*\color{yellow}0120:*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}01*| |*\color{green}20*| |*\color{green}00*| |*\color{green}00*| |*\color{green}91*| |*\color{green}56*| |*\color{green}71*| |*\color{green}52*| |*\color{green}c0*| |*\color{green}04*| |*\color{green}81*| |*\color{green}56*| 
+|*\color{yellow}0130:*| |*\color{green}c0*| |*\color{green}04*| |*\color{green}01*| |*\color{green}26*| |*\color{green}00*| |*\color{green}00*| |*\color{green}91*| |*\color{green}56*| |*\color{green}41*| |*\color{green}46*| |*\color{green}91*| |*\color{green}46*| |*\color{green}81*| |*\color{green}56*| |*\color{green}01*| |*\color{green}34*| 
+|*\color{yellow}0140:*| |*\color{green}00*| |*\color{green}b6*| |*\color{green}00*| |*\color{green}b4*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}08*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}01*| 
+|*\color{yellow}0150:*| |*\color{green}00*| |*\color{green}02*| |*\color{green}01*| |*\color{green}00*| |*\color{green}10*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| 00 00 00 00 00 00 00 00 
+|*\color{yellow}0160:*| 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+|*\color{yellow}0170:*| 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+|*\color{yellow}0180:*| 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+|*\color{yellow}0190:*| |*\color{green}a1*| |*\color{green}94*| |*\color{green}30*| |*\color{green}01*| |*\color{green}01*| |*\color{green}92*| |*\color{green}a1*| |*\color{green}9e*| |*\color{green}81*| |*\color{green}a6*| |*\color{green}c0*| |*\color{green}02*| |*\color{green}01*| |*\color{green}94*| |*\color{green}01*| |*\color{green}98*| 
+|*\color{yellow}01a0:*| |*\color{green}81*| |*\color{green}a8*| |*\color{green}c0*| |*\color{green}02*| |*\color{green}01*| |*\color{green}9e*| |*\color{green}00*| |*\color{green}0a*| |*\color{green}00*| |*\color{green}14*| 00 00 00 00 00 00 
+|*\color{yellow}01b0:*| 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+|*\color{yellow}01c0:*| 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+|*\color{yellow}01d0:*| 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+|*\color{yellow}01e0:*| 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+|*\color{yellow}01f0:*| 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+
+Registradores
+-------------
+Acumulador:	 000a
+PC:		 0001
+
+|*\color{blue!60!white}>> Iniciando dump da memória*|
+
+|*\color{blue!60!white}>> Memória descarregada com sucesso*|
+
+|*\color{blue!60!white}>> Fim da simulação*|

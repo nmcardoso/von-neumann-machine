@@ -1,0 +1,2369 @@
+Simulador da Máquina de Von Neumann
+===================================
+
+|*\color{blue!60!white}>> Iniciando boot do sistema*|
+
+|*\color{blue!60!white}>> Programas de sistema carregados com sucesso na memória*|
+
+Memória
+-------
+      |*\color{yellow}0*|  |*\color{yellow}1*|  |*\color{yellow}2*|  |*\color{yellow}3*|  |*\color{yellow}4*|  |*\color{yellow}5*|  |*\color{yellow}6*|  |*\color{yellow}7*|  |*\color{yellow}8*|  |*\color{yellow}9*|  |*\color{yellow}a*|  |*\color{yellow}b*|  |*\color{yellow}c*|  |*\color{yellow}d*|  |*\color{yellow}e*|  |*\color{yellow}f*|  
+|*\color{yellow}0000:*| |*\color{green}80*| |*\color{green}9a*| |*\color{green}90*| |*\color{green}a8*| |*\color{green}b0*| |*\color{green}04*| |*\color{green}90*| |*\color{green}ac*| |*\color{green}a0*| |*\color{green}8a*| |*\color{green}b0*| |*\color{green}04*| |*\color{green}90*| |*\color{green}ae*| |*\color{green}a0*| |*\color{green}8a*| 
+|*\color{yellow}0010:*| |*\color{green}a0*| |*\color{green}5e*| |*\color{green}80*| |*\color{green}b2*| |*\color{green}90*| |*\color{green}b6*| |*\color{green}b0*| |*\color{green}04*| |*\color{green}90*| |*\color{green}b4*| |*\color{green}a0*| |*\color{green}8a*| |*\color{green}80*| |*\color{green}b4*| |*\color{green}50*| |*\color{green}a0*| 
+|*\color{yellow}0020:*| |*\color{green}90*| |*\color{green}b0*| |*\color{green}a0*| |*\color{green}6a*| |*\color{green}80*| |*\color{green}b0*| |*\color{green}10*| |*\color{green}40*| |*\color{green}b0*| |*\color{green}04*| |*\color{green}90*| |*\color{green}ac*| |*\color{green}a0*| |*\color{green}8a*| |*\color{green}a0*| |*\color{green}80*| 
+|*\color{yellow}0030:*| |*\color{green}b0*| |*\color{green}04*| |*\color{green}90*| |*\color{green}ae*| |*\color{green}a0*| |*\color{green}8a*| |*\color{green}a0*| |*\color{green}80*| |*\color{green}a0*| |*\color{green}5e*| |*\color{green}80*| |*\color{green}b2*| |*\color{green}a0*| |*\color{green}56*| |*\color{green}00*| |*\color{green}24*| 
+|*\color{yellow}0040:*| |*\color{green}b0*| |*\color{green}04*| |*\color{green}90*| |*\color{green}aa*| |*\color{green}80*| |*\color{green}a8*| |*\color{green}60*| |*\color{green}a2*| |*\color{green}70*| |*\color{green}a2*| |*\color{green}40*| |*\color{green}aa*| |*\color{green}60*| |*\color{green}a2*| |*\color{green}70*| |*\color{green}a2*| 
+|*\color{yellow}0050:*| |*\color{green}10*| |*\color{green}54*| |*\color{green}a0*| |*\color{green}92*| |*\color{green}30*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}a0*| |*\color{green}76*| |*\color{green}00*| |*\color{green}56*| |*\color{green}00*| |*\color{green}00*| 
+|*\color{yellow}0060:*| |*\color{green}80*| |*\color{green}ac*| |*\color{green}60*| |*\color{green}a2*| |*\color{green}40*| |*\color{green}ae*| |*\color{green}90*| |*\color{green}b2*| |*\color{green}00*| |*\color{green}5e*| |*\color{green}00*| |*\color{green}00*| |*\color{green}80*| |*\color{green}a6*| |*\color{green}60*| |*\color{green}a4*| 
+|*\color{yellow}0070:*| |*\color{green}40*| |*\color{green}b6*| |*\color{green}90*| |*\color{green}58*| |*\color{green}00*| |*\color{green}6a*| |*\color{green}00*| |*\color{green}00*| |*\color{green}80*| |*\color{green}58*| |*\color{green}40*| |*\color{green}9e*| |*\color{green}90*| |*\color{green}58*| |*\color{green}00*| |*\color{green}76*| 
+|*\color{yellow}0080:*| |*\color{green}00*| |*\color{green}00*| |*\color{green}80*| |*\color{green}b0*| |*\color{green}50*| |*\color{green}9c*| |*\color{green}90*| |*\color{green}b0*| |*\color{green}00*| |*\color{green}80*| |*\color{green}00*| |*\color{green}00*| |*\color{green}40*| |*\color{green}a8*| |*\color{green}90*| |*\color{green}a8*| 
+|*\color{yellow}0090:*| |*\color{green}00*| |*\color{green}8a*| |*\color{green}00*| |*\color{green}00*| |*\color{green}d1*| |*\color{green}90*| |*\color{green}d0*| |*\color{green}05*| |*\color{green}00*| |*\color{green}92*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}01*| |*\color{green}00*| |*\color{green}02*| 
+|*\color{yellow}00a0:*| |*\color{green}00*| |*\color{green}04*| |*\color{green}01*| |*\color{green}00*| |*\color{green}10*| |*\color{green}00*| |*\color{green}00*| |*\color{green}09*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| 
+|*\color{yellow}00b0:*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| 00 00 00 00 00 00 00 00 
+|*\color{yellow}00c0:*| 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+|*\color{yellow}00d0:*| |*\color{green}81*| |*\color{green}40*| |*\color{green}a1*| |*\color{green}12*| |*\color{green}a1*| |*\color{green}20*| |*\color{green}a1*| |*\color{green}34*| |*\color{green}a1*| |*\color{green}26*| |*\color{green}80*| |*\color{green}b4*| |*\color{green}a1*| |*\color{green}34*| |*\color{green}c0*| |*\color{green}04*| 
+|*\color{yellow}00e0:*| |*\color{green}51*| |*\color{green}50*| |*\color{green}51*| |*\color{green}4e*| |*\color{green}51*| |*\color{green}4e*| |*\color{green}91*| |*\color{green}44*| |*\color{green}80*| |*\color{green}b6*| |*\color{green}a1*| |*\color{green}12*| |*\color{green}a1*| |*\color{green}20*| |*\color{green}a1*| |*\color{green}26*| 
+|*\color{yellow}00f0:*| |*\color{green}a1*| |*\color{green}34*| |*\color{green}81*| |*\color{green}22*| |*\color{green}41*| |*\color{green}50*| |*\color{green}91*| |*\color{green}22*| |*\color{green}81*| |*\color{green}44*| |*\color{green}51*| |*\color{green}50*| |*\color{green}91*| |*\color{green}44*| |*\color{green}11*| |*\color{green}02*| 
+|*\color{yellow}0100:*| |*\color{green}00*| |*\color{green}ec*| |*\color{green}81*| |*\color{green}46*| |*\color{green}61*| |*\color{green}52*| |*\color{green}71*| |*\color{green}52*| |*\color{green}91*| |*\color{green}48*| |*\color{green}81*| |*\color{green}4c*| |*\color{green}51*| |*\color{green}48*| |*\color{green}c0*| |*\color{green}04*| 
+|*\color{yellow}0110:*| |*\color{green}30*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}91*| |*\color{green}56*| |*\color{green}81*| |*\color{green}4a*| |*\color{green}61*| |*\color{green}54*| |*\color{green}41*| |*\color{green}56*| |*\color{green}91*| |*\color{green}22*| |*\color{green}01*| |*\color{green}12*| 
+|*\color{yellow}0120:*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}01*| |*\color{green}20*| |*\color{green}00*| |*\color{green}00*| |*\color{green}91*| |*\color{green}56*| |*\color{green}71*| |*\color{green}52*| |*\color{green}c0*| |*\color{green}04*| |*\color{green}81*| |*\color{green}56*| 
+|*\color{yellow}0130:*| |*\color{green}c0*| |*\color{green}04*| |*\color{green}01*| |*\color{green}26*| |*\color{green}00*| |*\color{green}00*| |*\color{green}91*| |*\color{green}56*| |*\color{green}41*| |*\color{green}46*| |*\color{green}91*| |*\color{green}46*| |*\color{green}81*| |*\color{green}56*| |*\color{green}01*| |*\color{green}34*| 
+|*\color{yellow}0140:*| |*\color{green}00*| |*\color{green}b6*| |*\color{green}00*| |*\color{green}b4*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}08*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}01*| 
+|*\color{yellow}0150:*| |*\color{green}00*| |*\color{green}02*| |*\color{green}01*| |*\color{green}00*| |*\color{green}10*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| 00 00 00 00 00 00 00 00 
+|*\color{yellow}0160:*| 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+|*\color{yellow}0170:*| 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+|*\color{yellow}0180:*| 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+|*\color{yellow}0190:*| 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+|*\color{yellow}01a0:*| 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+|*\color{yellow}01b0:*| 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+|*\color{yellow}01c0:*| 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+|*\color{yellow}01d0:*| 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+|*\color{yellow}01e0:*| 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+|*\color{yellow}01f0:*| 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+
+Registradores
+-------------
+Acumulador:	 0000
+PC:		 0000
+
+|*\color{blue!60!white}>> Iniciando carregamento do programa na memória*|
+
+Depuração
+*********
+
+Instrução: |*\color{cyan}LD 09A*|
+    PC: 0	ACC: 0 (0x0000)
+    MEM: |*\color{yellow}0090:*| 00 8A 00 00 D1 90 D0 05 00 92 |*\color{green}00 00 *|00 01 00 02 
+
+Instrução: |*\color{cyan}ST 0A8*|
+    PC: 2	ACC: 0 (0x0000)
+    MEM: |*\color{yellow}00A0:*| 00 04 01 00 10 00 00 09 |*\color{green}00 00 *|00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}GD 004*|
+    PC: 4	ACC: 1 (0x0001)
+
+Instrução: |*\color{cyan}ST 0AC*|
+    PC: 6	ACC: 1 (0x0001)
+    MEM: |*\color{yellow}00A0:*| 00 04 01 00 10 00 00 09 00 00 00 00 |*\color{green}00 01 *|00 00 
+
+Instrução: |*\color{cyan}SC 08A*|
+    PC: 140	ACC: 1 (0x0001)
+
+Instrução: |*\color{cyan}AD 0A8*|
+    PC: 140	ACC: 1 (0x0001)
+
+Instrução: |*\color{cyan}ST 0A8*|
+    PC: 142	ACC: 1 (0x0001)
+    MEM: |*\color{yellow}00A0:*| 00 04 01 00 10 00 00 09 |*\color{green}00 01 *|00 00 00 01 00 00 
+
+Instrução: |*\color{cyan}JP 08A*|
+    PC: 138	ACC: 1 (0x0001)
+
+Instrução: |*\color{cyan}JP 00A*|
+    PC: 10	ACC: 1 (0x0001)
+
+Instrução: |*\color{cyan}GD 004*|
+    PC: 10	ACC: 144 (0x0090)
+
+Instrução: |*\color{cyan}ST 0AE*|
+    PC: 12	ACC: 144 (0x0090)
+    MEM: |*\color{yellow}00A0:*| 00 04 01 00 10 00 00 09 00 01 00 00 00 01 |*\color{green}00 90 *|
+
+Instrução: |*\color{cyan}SC 08A*|
+    PC: 140	ACC: 144 (0x0090)
+
+Instrução: |*\color{cyan}AD 0A8*|
+    PC: 140	ACC: 145 (0x0091)
+
+Instrução: |*\color{cyan}ST 0A8*|
+    PC: 142	ACC: 145 (0x0091)
+    MEM: |*\color{yellow}00A0:*| 00 04 01 00 10 00 00 09 |*\color{green}00 91 *|00 00 00 01 00 90 
+
+Instrução: |*\color{cyan}JP 08A*|
+    PC: 138	ACC: 145 (0x0091)
+
+Instrução: |*\color{cyan}JP 010*|
+    PC: 16	ACC: 145 (0x0091)
+
+Instrução: |*\color{cyan}SC 05E*|
+    PC: 96	ACC: 145 (0x0091)
+    MEM: |*\color{yellow}00A0:*| 00 04 01 00 10 00 00 09 00 91 00 00 |*\color{green}00 01 *|00 90 
+
+Instrução: |*\color{cyan}LD 0AC*|
+    PC: 96	ACC: 1 (0x0001)
+    MEM: |*\color{yellow}00A0:*| 00 04 01 00 10 00 00 09 00 91 00 00 |*\color{green}00 01 *|00 90 
+
+Instrução: |*\color{cyan}ML 0A2*|
+    PC: 98	ACC: 256 (0x0100)
+
+Instrução: |*\color{cyan}AD 0AE*|
+    PC: 100	ACC: 400 (0x0190)
+
+Instrução: |*\color{cyan}ST 0B2*|
+    PC: 102	ACC: 400 (0x0190)
+    MEM: |*\color{yellow}00B0:*| 00 00 |*\color{green}01 90 *|00 00 00 00 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}JP 05E*|
+    PC: 94	ACC: 400 (0x0190)
+
+Instrução: |*\color{cyan}JP 012*|
+    PC: 18	ACC: 400 (0x0190)
+    MEM: |*\color{yellow}00B0:*| 00 00 |*\color{green}01 90 *|00 00 00 00 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}LD 0B2*|
+    PC: 18	ACC: 400 (0x0190)
+    MEM: |*\color{yellow}00B0:*| 00 00 |*\color{green}01 90 *|00 00 00 00 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}ST 0B6*|
+    PC: 20	ACC: 400 (0x0190)
+    MEM: |*\color{yellow}00B0:*| 00 00 01 90 00 00 |*\color{green}01 90 *|00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}GD 004*|
+    PC: 22	ACC: 18 (0x0012)
+
+Instrução: |*\color{cyan}ST 0B4*|
+    PC: 24	ACC: 18 (0x0012)
+    MEM: |*\color{yellow}00B0:*| 00 00 01 90 |*\color{green}00 12 *|01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}SC 08A*|
+    PC: 140	ACC: 18 (0x0012)
+
+Instrução: |*\color{cyan}AD 0A8*|
+    PC: 140	ACC: 163 (0x00A3)
+
+Instrução: |*\color{cyan}ST 0A8*|
+    PC: 142	ACC: 163 (0x00A3)
+    MEM: |*\color{yellow}00A0:*| 00 04 01 00 10 00 00 09 |*\color{green}00 A3 *|00 00 00 01 00 90 
+
+Instrução: |*\color{cyan}JP 08A*|
+    PC: 138	ACC: 163 (0x00A3)
+
+Instrução: |*\color{cyan}JP 01C*|
+    PC: 28	ACC: 163 (0x00A3)
+    MEM: |*\color{yellow}00B0:*| 00 00 01 90 |*\color{green}00 12 *|01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}LD 0B4*|
+    PC: 28	ACC: 18 (0x0012)
+    MEM: |*\color{yellow}00B0:*| 00 00 01 90 |*\color{green}00 12 *|01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}SB 0A0*|
+    PC: 30	ACC: 14 (0x000E)
+
+Instrução: |*\color{cyan}ST 0B0*|
+    PC: 32	ACC: 14 (0x000E)
+    MEM: |*\color{yellow}00B0:*| |*\color{green}00 0E *|01 90 00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}SC 06A*|
+    PC: 108	ACC: 14 (0x000E)
+    MEM: |*\color{yellow}00A0:*| 00 04 01 00 10 00 |*\color{green}00 09 *|00 A3 00 00 00 01 00 90 
+
+Instrução: |*\color{cyan}LD 0A6*|
+    PC: 108	ACC: 9 (0x0009)
+    MEM: |*\color{yellow}00A0:*| 00 04 01 00 10 00 |*\color{green}00 09 *|00 A3 00 00 00 01 00 90 
+
+Instrução: |*\color{cyan}ML 0A4*|
+    PC: 110	ACC: -28672 (0x9000)
+
+Instrução: |*\color{cyan}AD 0B6*|
+    PC: 112	ACC: -28272 (0x9190)
+
+Instrução: |*\color{cyan}ST 058*|
+    PC: 114	ACC: -28272 (0x9190)
+    MEM: |*\color{yellow}0050:*| 10 54 A0 92 30 00 00 00 |*\color{green}91 90 *|A0 76 00 56 00 12 
+
+Instrução: |*\color{cyan}JP 06A*|
+    PC: 106	ACC: -28272 (0x9190)
+
+Instrução: |*\color{cyan}JP 024*|
+    PC: 36	ACC: -28272 (0x9190)
+    MEM: |*\color{yellow}00B0:*| |*\color{green}00 0E *|01 90 00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}LD 0B0*|
+    PC: 36	ACC: 14 (0x000E)
+    MEM: |*\color{yellow}00B0:*| |*\color{green}00 0E *|01 90 00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}JZ 040*|
+    PC: 38	ACC: 14 (0x000E)
+
+Instrução: |*\color{cyan}GD 004*|
+    PC: 40	ACC: 176 (0x00B0)
+
+Instrução: |*\color{cyan}ST 0AC*|
+    PC: 42	ACC: 176 (0x00B0)
+    MEM: |*\color{yellow}00A0:*| 00 04 01 00 10 00 00 09 00 A3 00 00 |*\color{green}00 B0 *|00 90 
+
+Instrução: |*\color{cyan}SC 08A*|
+    PC: 140	ACC: 176 (0x00B0)
+
+Instrução: |*\color{cyan}AD 0A8*|
+    PC: 140	ACC: 339 (0x0153)
+
+Instrução: |*\color{cyan}ST 0A8*|
+    PC: 142	ACC: 339 (0x0153)
+    MEM: |*\color{yellow}00A0:*| 00 04 01 00 10 00 00 09 |*\color{green}01 53 *|00 00 00 B0 00 90 
+
+Instrução: |*\color{cyan}JP 08A*|
+    PC: 138	ACC: 339 (0x0153)
+
+Instrução: |*\color{cyan}JP 02E*|
+    PC: 46	ACC: 339 (0x0153)
+
+Instrução: |*\color{cyan}SC 080*|
+    PC: 130	ACC: 339 (0x0153)
+    MEM: |*\color{yellow}00B0:*| |*\color{green}00 0E *|01 90 00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}LD 0B0*|
+    PC: 130	ACC: 14 (0x000E)
+    MEM: |*\color{yellow}00B0:*| |*\color{green}00 0E *|01 90 00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}SB 09C*|
+    PC: 132	ACC: 13 (0x000D)
+
+Instrução: |*\color{cyan}ST 0B0*|
+    PC: 134	ACC: 13 (0x000D)
+    MEM: |*\color{yellow}00B0:*| |*\color{green}00 0D *|01 90 00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}JP 080*|
+    PC: 128	ACC: 13 (0x000D)
+
+Instrução: |*\color{cyan}JP 030*|
+    PC: 48	ACC: 13 (0x000D)
+
+Instrução: |*\color{cyan}GD 004*|
+    PC: 48	ACC: 1 (0x0001)
+
+Instrução: |*\color{cyan}ST 0AE*|
+    PC: 50	ACC: 1 (0x0001)
+    MEM: |*\color{yellow}00A0:*| 00 04 01 00 10 00 00 09 01 53 00 00 00 B0 |*\color{green}00 01 *|
+
+Instrução: |*\color{cyan}SC 08A*|
+    PC: 140	ACC: 1 (0x0001)
+
+Instrução: |*\color{cyan}AD 0A8*|
+    PC: 140	ACC: 340 (0x0154)
+
+Instrução: |*\color{cyan}ST 0A8*|
+    PC: 142	ACC: 340 (0x0154)
+    MEM: |*\color{yellow}00A0:*| 00 04 01 00 10 00 00 09 |*\color{green}01 54 *|00 00 00 B0 00 01 
+
+Instrução: |*\color{cyan}JP 08A*|
+    PC: 138	ACC: 340 (0x0154)
+
+Instrução: |*\color{cyan}JP 036*|
+    PC: 54	ACC: 340 (0x0154)
+
+Instrução: |*\color{cyan}SC 080*|
+    PC: 130	ACC: 340 (0x0154)
+    MEM: |*\color{yellow}00B0:*| |*\color{green}00 0D *|01 90 00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}LD 0B0*|
+    PC: 130	ACC: 13 (0x000D)
+    MEM: |*\color{yellow}00B0:*| |*\color{green}00 0D *|01 90 00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}SB 09C*|
+    PC: 132	ACC: 12 (0x000C)
+
+Instrução: |*\color{cyan}ST 0B0*|
+    PC: 134	ACC: 12 (0x000C)
+    MEM: |*\color{yellow}00B0:*| |*\color{green}00 0C *|01 90 00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}JP 080*|
+    PC: 128	ACC: 12 (0x000C)
+
+Instrução: |*\color{cyan}JP 038*|
+    PC: 56	ACC: 12 (0x000C)
+
+Instrução: |*\color{cyan}SC 05E*|
+    PC: 96	ACC: 12 (0x000C)
+    MEM: |*\color{yellow}00A0:*| 00 04 01 00 10 00 00 09 01 54 00 00 |*\color{green}00 B0 *|00 01 
+
+Instrução: |*\color{cyan}LD 0AC*|
+    PC: 96	ACC: 176 (0x00B0)
+    MEM: |*\color{yellow}00A0:*| 00 04 01 00 10 00 00 09 01 54 00 00 |*\color{green}00 B0 *|00 01 
+
+Instrução: |*\color{cyan}ML 0A2*|
+    PC: 98	ACC: -20480 (0xB000)
+
+Instrução: |*\color{cyan}AD 0AE*|
+    PC: 100	ACC: -20479 (0xB001)
+
+Instrução: |*\color{cyan}ST 0B2*|
+    PC: 102	ACC: -20479 (0xB001)
+    MEM: |*\color{yellow}00B0:*| 00 0C |*\color{green}B0 01 *|00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}JP 05E*|
+    PC: 94	ACC: -20479 (0xB001)
+
+Instrução: |*\color{cyan}JP 03A*|
+    PC: 58	ACC: -20479 (0xB001)
+    MEM: |*\color{yellow}00B0:*| 00 0C |*\color{green}B0 01 *|00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}LD 0B2*|
+    PC: 58	ACC: -20479 (0xB001)
+    MEM: |*\color{yellow}00B0:*| 00 0C |*\color{green}B0 01 *|00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}SC 056*|
+    PC: 88	ACC: -20479 (0xB001)
+    MEM: |*\color{yellow}0190:*| 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}ST 190*|
+    PC: 88	ACC: -20479 (0xB001)
+    MEM: |*\color{yellow}0190:*| |*\color{green}B0 01 *|00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}SC 076*|
+    PC: 120	ACC: -20479 (0xB001)
+    MEM: |*\color{yellow}0050:*| 10 54 A0 92 30 00 00 3E |*\color{green}91 90 *|A0 76 00 56 00 3A 
+
+Instrução: |*\color{cyan}LD 058*|
+    PC: 120	ACC: -28272 (0x9190)
+    MEM: |*\color{yellow}0050:*| 10 54 A0 92 30 00 00 3E |*\color{green}91 90 *|A0 76 00 56 00 3A 
+
+Instrução: |*\color{cyan}AD 09E*|
+    PC: 122	ACC: -28270 (0x9192)
+
+Instrução: |*\color{cyan}ST 058*|
+    PC: 124	ACC: -28270 (0x9192)
+    MEM: |*\color{yellow}0050:*| 10 54 A0 92 30 00 00 3E |*\color{green}91 92 *|A0 76 00 56 00 3A 
+
+Instrução: |*\color{cyan}JP 076*|
+    PC: 118	ACC: -28270 (0x9192)
+
+Instrução: |*\color{cyan}JP 05C*|
+    PC: 92	ACC: -28270 (0x9192)
+
+Instrução: |*\color{cyan}JP 056*|
+    PC: 86	ACC: -28270 (0x9192)
+
+Instrução: |*\color{cyan}JP 03E*|
+    PC: 62	ACC: -28270 (0x9192)
+
+Instrução: |*\color{cyan}JP 024*|
+    PC: 36	ACC: -28270 (0x9192)
+    MEM: |*\color{yellow}00B0:*| |*\color{green}00 0C *|B0 01 00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}LD 0B0*|
+    PC: 36	ACC: 12 (0x000C)
+    MEM: |*\color{yellow}00B0:*| |*\color{green}00 0C *|B0 01 00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}JZ 040*|
+    PC: 38	ACC: 12 (0x000C)
+
+Instrução: |*\color{cyan}GD 004*|
+    PC: 40	ACC: 145 (0x0091)
+
+Instrução: |*\color{cyan}ST 0AC*|
+    PC: 42	ACC: 145 (0x0091)
+    MEM: |*\color{yellow}00A0:*| 00 04 01 00 10 00 00 09 01 54 00 00 |*\color{green}00 91 *|00 01 
+
+Instrução: |*\color{cyan}SC 08A*|
+    PC: 140	ACC: 145 (0x0091)
+
+Instrução: |*\color{cyan}AD 0A8*|
+    PC: 140	ACC: 485 (0x01E5)
+
+Instrução: |*\color{cyan}ST 0A8*|
+    PC: 142	ACC: 485 (0x01E5)
+    MEM: |*\color{yellow}00A0:*| 00 04 01 00 10 00 00 09 |*\color{green}01 E5 *|00 00 00 91 00 01 
+
+Instrução: |*\color{cyan}JP 08A*|
+    PC: 138	ACC: 485 (0x01E5)
+
+Instrução: |*\color{cyan}JP 02E*|
+    PC: 46	ACC: 485 (0x01E5)
+
+Instrução: |*\color{cyan}SC 080*|
+    PC: 130	ACC: 485 (0x01E5)
+    MEM: |*\color{yellow}00B0:*| |*\color{green}00 0C *|B0 01 00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}LD 0B0*|
+    PC: 130	ACC: 12 (0x000C)
+    MEM: |*\color{yellow}00B0:*| |*\color{green}00 0C *|B0 01 00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}SB 09C*|
+    PC: 132	ACC: 11 (0x000B)
+
+Instrução: |*\color{cyan}ST 0B0*|
+    PC: 134	ACC: 11 (0x000B)
+    MEM: |*\color{yellow}00B0:*| |*\color{green}00 0B *|B0 01 00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}JP 080*|
+    PC: 128	ACC: 11 (0x000B)
+
+Instrução: |*\color{cyan}JP 030*|
+    PC: 48	ACC: 11 (0x000B)
+
+Instrução: |*\color{cyan}GD 004*|
+    PC: 48	ACC: 156 (0x009C)
+
+Instrução: |*\color{cyan}ST 0AE*|
+    PC: 50	ACC: 156 (0x009C)
+    MEM: |*\color{yellow}00A0:*| 00 04 01 00 10 00 00 09 01 E5 00 00 00 91 |*\color{green}00 9C *|
+
+Instrução: |*\color{cyan}SC 08A*|
+    PC: 140	ACC: 156 (0x009C)
+
+Instrução: |*\color{cyan}AD 0A8*|
+    PC: 140	ACC: 641 (0x0281)
+
+Instrução: |*\color{cyan}ST 0A8*|
+    PC: 142	ACC: 641 (0x0281)
+    MEM: |*\color{yellow}00A0:*| 00 04 01 00 10 00 00 09 |*\color{green}02 81 *|00 00 00 91 00 9C 
+
+Instrução: |*\color{cyan}JP 08A*|
+    PC: 138	ACC: 641 (0x0281)
+
+Instrução: |*\color{cyan}JP 036*|
+    PC: 54	ACC: 641 (0x0281)
+
+Instrução: |*\color{cyan}SC 080*|
+    PC: 130	ACC: 641 (0x0281)
+    MEM: |*\color{yellow}00B0:*| |*\color{green}00 0B *|B0 01 00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}LD 0B0*|
+    PC: 130	ACC: 11 (0x000B)
+    MEM: |*\color{yellow}00B0:*| |*\color{green}00 0B *|B0 01 00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}SB 09C*|
+    PC: 132	ACC: 10 (0x000A)
+
+Instrução: |*\color{cyan}ST 0B0*|
+    PC: 134	ACC: 10 (0x000A)
+    MEM: |*\color{yellow}00B0:*| |*\color{green}00 0A *|B0 01 00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}JP 080*|
+    PC: 128	ACC: 10 (0x000A)
+
+Instrução: |*\color{cyan}JP 038*|
+    PC: 56	ACC: 10 (0x000A)
+
+Instrução: |*\color{cyan}SC 05E*|
+    PC: 96	ACC: 10 (0x000A)
+    MEM: |*\color{yellow}00A0:*| 00 04 01 00 10 00 00 09 02 81 00 00 |*\color{green}00 91 *|00 9C 
+
+Instrução: |*\color{cyan}LD 0AC*|
+    PC: 96	ACC: 145 (0x0091)
+    MEM: |*\color{yellow}00A0:*| 00 04 01 00 10 00 00 09 02 81 00 00 |*\color{green}00 91 *|00 9C 
+
+Instrução: |*\color{cyan}ML 0A2*|
+    PC: 98	ACC: -28416 (0x9100)
+
+Instrução: |*\color{cyan}AD 0AE*|
+    PC: 100	ACC: -28260 (0x919C)
+
+Instrução: |*\color{cyan}ST 0B2*|
+    PC: 102	ACC: -28260 (0x919C)
+    MEM: |*\color{yellow}00B0:*| 00 0A |*\color{green}91 9C *|00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}JP 05E*|
+    PC: 94	ACC: -28260 (0x919C)
+
+Instrução: |*\color{cyan}JP 03A*|
+    PC: 58	ACC: -28260 (0x919C)
+    MEM: |*\color{yellow}00B0:*| 00 0A |*\color{green}91 9C *|00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}LD 0B2*|
+    PC: 58	ACC: -28260 (0x919C)
+    MEM: |*\color{yellow}00B0:*| 00 0A |*\color{green}91 9C *|00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}SC 056*|
+    PC: 88	ACC: -28260 (0x919C)
+    MEM: |*\color{yellow}0190:*| B0 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}ST 192*|
+    PC: 88	ACC: -28260 (0x919C)
+    MEM: |*\color{yellow}0190:*| B0 01 |*\color{green}91 9C *|00 00 00 00 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}SC 076*|
+    PC: 120	ACC: -28260 (0x919C)
+    MEM: |*\color{yellow}0050:*| 10 54 A0 92 30 00 00 3E |*\color{green}91 92 *|A0 76 00 56 00 3A 
+
+Instrução: |*\color{cyan}LD 058*|
+    PC: 120	ACC: -28270 (0x9192)
+    MEM: |*\color{yellow}0050:*| 10 54 A0 92 30 00 00 3E |*\color{green}91 92 *|A0 76 00 56 00 3A 
+
+Instrução: |*\color{cyan}AD 09E*|
+    PC: 122	ACC: -28268 (0x9194)
+
+Instrução: |*\color{cyan}ST 058*|
+    PC: 124	ACC: -28268 (0x9194)
+    MEM: |*\color{yellow}0050:*| 10 54 A0 92 30 00 00 3E |*\color{green}91 94 *|A0 76 00 56 00 3A 
+
+Instrução: |*\color{cyan}JP 076*|
+    PC: 118	ACC: -28268 (0x9194)
+
+Instrução: |*\color{cyan}JP 05C*|
+    PC: 92	ACC: -28268 (0x9194)
+
+Instrução: |*\color{cyan}JP 056*|
+    PC: 86	ACC: -28268 (0x9194)
+
+Instrução: |*\color{cyan}JP 03E*|
+    PC: 62	ACC: -28268 (0x9194)
+
+Instrução: |*\color{cyan}JP 024*|
+    PC: 36	ACC: -28268 (0x9194)
+    MEM: |*\color{yellow}00B0:*| |*\color{green}00 0A *|91 9C 00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}LD 0B0*|
+    PC: 36	ACC: 10 (0x000A)
+    MEM: |*\color{yellow}00B0:*| |*\color{green}00 0A *|91 9C 00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}JZ 040*|
+    PC: 38	ACC: 10 (0x000A)
+
+Instrução: |*\color{cyan}GD 004*|
+    PC: 40	ACC: 176 (0x00B0)
+
+Instrução: |*\color{cyan}ST 0AC*|
+    PC: 42	ACC: 176 (0x00B0)
+    MEM: |*\color{yellow}00A0:*| 00 04 01 00 10 00 00 09 02 81 00 00 |*\color{green}00 B0 *|00 9C 
+
+Instrução: |*\color{cyan}SC 08A*|
+    PC: 140	ACC: 176 (0x00B0)
+
+Instrução: |*\color{cyan}AD 0A8*|
+    PC: 140	ACC: 817 (0x0331)
+
+Instrução: |*\color{cyan}ST 0A8*|
+    PC: 142	ACC: 817 (0x0331)
+    MEM: |*\color{yellow}00A0:*| 00 04 01 00 10 00 00 09 |*\color{green}03 31 *|00 00 00 B0 00 9C 
+
+Instrução: |*\color{cyan}JP 08A*|
+    PC: 138	ACC: 817 (0x0331)
+
+Instrução: |*\color{cyan}JP 02E*|
+    PC: 46	ACC: 817 (0x0331)
+
+Instrução: |*\color{cyan}SC 080*|
+    PC: 130	ACC: 817 (0x0331)
+    MEM: |*\color{yellow}00B0:*| |*\color{green}00 0A *|91 9C 00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}LD 0B0*|
+    PC: 130	ACC: 10 (0x000A)
+    MEM: |*\color{yellow}00B0:*| |*\color{green}00 0A *|91 9C 00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}SB 09C*|
+    PC: 132	ACC: 9 (0x0009)
+
+Instrução: |*\color{cyan}ST 0B0*|
+    PC: 134	ACC: 9 (0x0009)
+    MEM: |*\color{yellow}00B0:*| |*\color{green}00 09 *|91 9C 00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}JP 080*|
+    PC: 128	ACC: 9 (0x0009)
+
+Instrução: |*\color{cyan}JP 030*|
+    PC: 48	ACC: 9 (0x0009)
+
+Instrução: |*\color{cyan}GD 004*|
+    PC: 48	ACC: 1 (0x0001)
+
+Instrução: |*\color{cyan}ST 0AE*|
+    PC: 50	ACC: 1 (0x0001)
+    MEM: |*\color{yellow}00A0:*| 00 04 01 00 10 00 00 09 03 31 00 00 00 B0 |*\color{green}00 01 *|
+
+Instrução: |*\color{cyan}SC 08A*|
+    PC: 140	ACC: 1 (0x0001)
+
+Instrução: |*\color{cyan}AD 0A8*|
+    PC: 140	ACC: 818 (0x0332)
+
+Instrução: |*\color{cyan}ST 0A8*|
+    PC: 142	ACC: 818 (0x0332)
+    MEM: |*\color{yellow}00A0:*| 00 04 01 00 10 00 00 09 |*\color{green}03 32 *|00 00 00 B0 00 01 
+
+Instrução: |*\color{cyan}JP 08A*|
+    PC: 138	ACC: 818 (0x0332)
+
+Instrução: |*\color{cyan}JP 036*|
+    PC: 54	ACC: 818 (0x0332)
+
+Instrução: |*\color{cyan}SC 080*|
+    PC: 130	ACC: 818 (0x0332)
+    MEM: |*\color{yellow}00B0:*| |*\color{green}00 09 *|91 9C 00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}LD 0B0*|
+    PC: 130	ACC: 9 (0x0009)
+    MEM: |*\color{yellow}00B0:*| |*\color{green}00 09 *|91 9C 00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}SB 09C*|
+    PC: 132	ACC: 8 (0x0008)
+
+Instrução: |*\color{cyan}ST 0B0*|
+    PC: 134	ACC: 8 (0x0008)
+    MEM: |*\color{yellow}00B0:*| |*\color{green}00 08 *|91 9C 00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}JP 080*|
+    PC: 128	ACC: 8 (0x0008)
+
+Instrução: |*\color{cyan}JP 038*|
+    PC: 56	ACC: 8 (0x0008)
+
+Instrução: |*\color{cyan}SC 05E*|
+    PC: 96	ACC: 8 (0x0008)
+    MEM: |*\color{yellow}00A0:*| 00 04 01 00 10 00 00 09 03 32 00 00 |*\color{green}00 B0 *|00 01 
+
+Instrução: |*\color{cyan}LD 0AC*|
+    PC: 96	ACC: 176 (0x00B0)
+    MEM: |*\color{yellow}00A0:*| 00 04 01 00 10 00 00 09 03 32 00 00 |*\color{green}00 B0 *|00 01 
+
+Instrução: |*\color{cyan}ML 0A2*|
+    PC: 98	ACC: -20480 (0xB000)
+
+Instrução: |*\color{cyan}AD 0AE*|
+    PC: 100	ACC: -20479 (0xB001)
+
+Instrução: |*\color{cyan}ST 0B2*|
+    PC: 102	ACC: -20479 (0xB001)
+    MEM: |*\color{yellow}00B0:*| 00 08 |*\color{green}B0 01 *|00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}JP 05E*|
+    PC: 94	ACC: -20479 (0xB001)
+
+Instrução: |*\color{cyan}JP 03A*|
+    PC: 58	ACC: -20479 (0xB001)
+    MEM: |*\color{yellow}00B0:*| 00 08 |*\color{green}B0 01 *|00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}LD 0B2*|
+    PC: 58	ACC: -20479 (0xB001)
+    MEM: |*\color{yellow}00B0:*| 00 08 |*\color{green}B0 01 *|00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}SC 056*|
+    PC: 88	ACC: -20479 (0xB001)
+    MEM: |*\color{yellow}0190:*| B0 01 91 9C 00 00 00 00 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}ST 194*|
+    PC: 88	ACC: -20479 (0xB001)
+    MEM: |*\color{yellow}0190:*| B0 01 91 9C |*\color{green}B0 01 *|00 00 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}SC 076*|
+    PC: 120	ACC: -20479 (0xB001)
+    MEM: |*\color{yellow}0050:*| 10 54 A0 92 30 00 00 3E |*\color{green}91 94 *|A0 76 00 56 00 3A 
+
+Instrução: |*\color{cyan}LD 058*|
+    PC: 120	ACC: -28268 (0x9194)
+    MEM: |*\color{yellow}0050:*| 10 54 A0 92 30 00 00 3E |*\color{green}91 94 *|A0 76 00 56 00 3A 
+
+Instrução: |*\color{cyan}AD 09E*|
+    PC: 122	ACC: -28266 (0x9196)
+
+Instrução: |*\color{cyan}ST 058*|
+    PC: 124	ACC: -28266 (0x9196)
+    MEM: |*\color{yellow}0050:*| 10 54 A0 92 30 00 00 3E |*\color{green}91 96 *|A0 76 00 56 00 3A 
+
+Instrução: |*\color{cyan}JP 076*|
+    PC: 118	ACC: -28266 (0x9196)
+
+Instrução: |*\color{cyan}JP 05C*|
+    PC: 92	ACC: -28266 (0x9196)
+
+Instrução: |*\color{cyan}JP 056*|
+    PC: 86	ACC: -28266 (0x9196)
+
+Instrução: |*\color{cyan}JP 03E*|
+    PC: 62	ACC: -28266 (0x9196)
+
+Instrução: |*\color{cyan}JP 024*|
+    PC: 36	ACC: -28266 (0x9196)
+    MEM: |*\color{yellow}00B0:*| |*\color{green}00 08 *|B0 01 00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}LD 0B0*|
+    PC: 36	ACC: 8 (0x0008)
+    MEM: |*\color{yellow}00B0:*| |*\color{green}00 08 *|B0 01 00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}JZ 040*|
+    PC: 38	ACC: 8 (0x0008)
+
+Instrução: |*\color{cyan}GD 004*|
+    PC: 40	ACC: 65 (0x0041)
+
+Instrução: |*\color{cyan}ST 0AC*|
+    PC: 42	ACC: 65 (0x0041)
+    MEM: |*\color{yellow}00A0:*| 00 04 01 00 10 00 00 09 03 32 00 00 |*\color{green}00 41 *|00 01 
+
+Instrução: |*\color{cyan}SC 08A*|
+    PC: 140	ACC: 65 (0x0041)
+
+Instrução: |*\color{cyan}AD 0A8*|
+    PC: 140	ACC: 883 (0x0373)
+
+Instrução: |*\color{cyan}ST 0A8*|
+    PC: 142	ACC: 883 (0x0373)
+    MEM: |*\color{yellow}00A0:*| 00 04 01 00 10 00 00 09 |*\color{green}03 73 *|00 00 00 41 00 01 
+
+Instrução: |*\color{cyan}JP 08A*|
+    PC: 138	ACC: 883 (0x0373)
+
+Instrução: |*\color{cyan}JP 02E*|
+    PC: 46	ACC: 883 (0x0373)
+
+Instrução: |*\color{cyan}SC 080*|
+    PC: 130	ACC: 883 (0x0373)
+    MEM: |*\color{yellow}00B0:*| |*\color{green}00 08 *|B0 01 00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}LD 0B0*|
+    PC: 130	ACC: 8 (0x0008)
+    MEM: |*\color{yellow}00B0:*| |*\color{green}00 08 *|B0 01 00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}SB 09C*|
+    PC: 132	ACC: 7 (0x0007)
+
+Instrução: |*\color{cyan}ST 0B0*|
+    PC: 134	ACC: 7 (0x0007)
+    MEM: |*\color{yellow}00B0:*| |*\color{green}00 07 *|B0 01 00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}JP 080*|
+    PC: 128	ACC: 7 (0x0007)
+
+Instrução: |*\color{cyan}JP 030*|
+    PC: 48	ACC: 7 (0x0007)
+
+Instrução: |*\color{cyan}GD 004*|
+    PC: 48	ACC: 156 (0x009C)
+
+Instrução: |*\color{cyan}ST 0AE*|
+    PC: 50	ACC: 156 (0x009C)
+    MEM: |*\color{yellow}00A0:*| 00 04 01 00 10 00 00 09 03 73 00 00 00 41 |*\color{green}00 9C *|
+
+Instrução: |*\color{cyan}SC 08A*|
+    PC: 140	ACC: 156 (0x009C)
+
+Instrução: |*\color{cyan}AD 0A8*|
+    PC: 140	ACC: 1039 (0x040F)
+
+Instrução: |*\color{cyan}ST 0A8*|
+    PC: 142	ACC: 1039 (0x040F)
+    MEM: |*\color{yellow}00A0:*| 00 04 01 00 10 00 00 09 |*\color{green}04 0F *|00 00 00 41 00 9C 
+
+Instrução: |*\color{cyan}JP 08A*|
+    PC: 138	ACC: 1039 (0x040F)
+
+Instrução: |*\color{cyan}JP 036*|
+    PC: 54	ACC: 1039 (0x040F)
+
+Instrução: |*\color{cyan}SC 080*|
+    PC: 130	ACC: 1039 (0x040F)
+    MEM: |*\color{yellow}00B0:*| |*\color{green}00 07 *|B0 01 00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}LD 0B0*|
+    PC: 130	ACC: 7 (0x0007)
+    MEM: |*\color{yellow}00B0:*| |*\color{green}00 07 *|B0 01 00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}SB 09C*|
+    PC: 132	ACC: 6 (0x0006)
+
+Instrução: |*\color{cyan}ST 0B0*|
+    PC: 134	ACC: 6 (0x0006)
+    MEM: |*\color{yellow}00B0:*| |*\color{green}00 06 *|B0 01 00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}JP 080*|
+    PC: 128	ACC: 6 (0x0006)
+
+Instrução: |*\color{cyan}JP 038*|
+    PC: 56	ACC: 6 (0x0006)
+
+Instrução: |*\color{cyan}SC 05E*|
+    PC: 96	ACC: 6 (0x0006)
+    MEM: |*\color{yellow}00A0:*| 00 04 01 00 10 00 00 09 04 0F 00 00 |*\color{green}00 41 *|00 9C 
+
+Instrução: |*\color{cyan}LD 0AC*|
+    PC: 96	ACC: 65 (0x0041)
+    MEM: |*\color{yellow}00A0:*| 00 04 01 00 10 00 00 09 04 0F 00 00 |*\color{green}00 41 *|00 9C 
+
+Instrução: |*\color{cyan}ML 0A2*|
+    PC: 98	ACC: 16640 (0x4100)
+
+Instrução: |*\color{cyan}AD 0AE*|
+    PC: 100	ACC: 16796 (0x419C)
+
+Instrução: |*\color{cyan}ST 0B2*|
+    PC: 102	ACC: 16796 (0x419C)
+    MEM: |*\color{yellow}00B0:*| 00 06 |*\color{green}41 9C *|00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}JP 05E*|
+    PC: 94	ACC: 16796 (0x419C)
+
+Instrução: |*\color{cyan}JP 03A*|
+    PC: 58	ACC: 16796 (0x419C)
+    MEM: |*\color{yellow}00B0:*| 00 06 |*\color{green}41 9C *|00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}LD 0B2*|
+    PC: 58	ACC: 16796 (0x419C)
+    MEM: |*\color{yellow}00B0:*| 00 06 |*\color{green}41 9C *|00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}SC 056*|
+    PC: 88	ACC: 16796 (0x419C)
+    MEM: |*\color{yellow}0190:*| B0 01 91 9C B0 01 00 00 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}ST 196*|
+    PC: 88	ACC: 16796 (0x419C)
+    MEM: |*\color{yellow}0190:*| B0 01 91 9C B0 01 |*\color{green}41 9C *|00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}SC 076*|
+    PC: 120	ACC: 16796 (0x419C)
+    MEM: |*\color{yellow}0050:*| 10 54 A0 92 30 00 00 3E |*\color{green}91 96 *|A0 76 00 56 00 3A 
+
+Instrução: |*\color{cyan}LD 058*|
+    PC: 120	ACC: -28266 (0x9196)
+    MEM: |*\color{yellow}0050:*| 10 54 A0 92 30 00 00 3E |*\color{green}91 96 *|A0 76 00 56 00 3A 
+
+Instrução: |*\color{cyan}AD 09E*|
+    PC: 122	ACC: -28264 (0x9198)
+
+Instrução: |*\color{cyan}ST 058*|
+    PC: 124	ACC: -28264 (0x9198)
+    MEM: |*\color{yellow}0050:*| 10 54 A0 92 30 00 00 3E |*\color{green}91 98 *|A0 76 00 56 00 3A 
+
+Instrução: |*\color{cyan}JP 076*|
+    PC: 118	ACC: -28264 (0x9198)
+
+Instrução: |*\color{cyan}JP 05C*|
+    PC: 92	ACC: -28264 (0x9198)
+
+Instrução: |*\color{cyan}JP 056*|
+    PC: 86	ACC: -28264 (0x9198)
+
+Instrução: |*\color{cyan}JP 03E*|
+    PC: 62	ACC: -28264 (0x9198)
+
+Instrução: |*\color{cyan}JP 024*|
+    PC: 36	ACC: -28264 (0x9198)
+    MEM: |*\color{yellow}00B0:*| |*\color{green}00 06 *|41 9C 00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}LD 0B0*|
+    PC: 36	ACC: 6 (0x0006)
+    MEM: |*\color{yellow}00B0:*| |*\color{green}00 06 *|41 9C 00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}JZ 040*|
+    PC: 38	ACC: 6 (0x0006)
+
+Instrução: |*\color{cyan}GD 004*|
+    PC: 40	ACC: 192 (0x00C0)
+
+Instrução: |*\color{cyan}ST 0AC*|
+    PC: 42	ACC: 192 (0x00C0)
+    MEM: |*\color{yellow}00A0:*| 00 04 01 00 10 00 00 09 04 0F 00 00 |*\color{green}00 C0 *|00 9C 
+
+Instrução: |*\color{cyan}SC 08A*|
+    PC: 140	ACC: 192 (0x00C0)
+
+Instrução: |*\color{cyan}AD 0A8*|
+    PC: 140	ACC: 1231 (0x04CF)
+
+Instrução: |*\color{cyan}ST 0A8*|
+    PC: 142	ACC: 1231 (0x04CF)
+    MEM: |*\color{yellow}00A0:*| 00 04 01 00 10 00 00 09 |*\color{green}04 CF *|00 00 00 C0 00 9C 
+
+Instrução: |*\color{cyan}JP 08A*|
+    PC: 138	ACC: 1231 (0x04CF)
+
+Instrução: |*\color{cyan}JP 02E*|
+    PC: 46	ACC: 1231 (0x04CF)
+
+Instrução: |*\color{cyan}SC 080*|
+    PC: 130	ACC: 1231 (0x04CF)
+    MEM: |*\color{yellow}00B0:*| |*\color{green}00 06 *|41 9C 00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}LD 0B0*|
+    PC: 130	ACC: 6 (0x0006)
+    MEM: |*\color{yellow}00B0:*| |*\color{green}00 06 *|41 9C 00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}SB 09C*|
+    PC: 132	ACC: 5 (0x0005)
+
+Instrução: |*\color{cyan}ST 0B0*|
+    PC: 134	ACC: 5 (0x0005)
+    MEM: |*\color{yellow}00B0:*| |*\color{green}00 05 *|41 9C 00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}JP 080*|
+    PC: 128	ACC: 5 (0x0005)
+
+Instrução: |*\color{cyan}JP 030*|
+    PC: 48	ACC: 5 (0x0005)
+
+Instrução: |*\color{cyan}GD 004*|
+    PC: 48	ACC: 2 (0x0002)
+
+Instrução: |*\color{cyan}ST 0AE*|
+    PC: 50	ACC: 2 (0x0002)
+    MEM: |*\color{yellow}00A0:*| 00 04 01 00 10 00 00 09 04 CF 00 00 00 C0 |*\color{green}00 02 *|
+
+Instrução: |*\color{cyan}SC 08A*|
+    PC: 140	ACC: 2 (0x0002)
+
+Instrução: |*\color{cyan}AD 0A8*|
+    PC: 140	ACC: 1233 (0x04D1)
+
+Instrução: |*\color{cyan}ST 0A8*|
+    PC: 142	ACC: 1233 (0x04D1)
+    MEM: |*\color{yellow}00A0:*| 00 04 01 00 10 00 00 09 |*\color{green}04 D1 *|00 00 00 C0 00 02 
+
+Instrução: |*\color{cyan}JP 08A*|
+    PC: 138	ACC: 1233 (0x04D1)
+
+Instrução: |*\color{cyan}JP 036*|
+    PC: 54	ACC: 1233 (0x04D1)
+
+Instrução: |*\color{cyan}SC 080*|
+    PC: 130	ACC: 1233 (0x04D1)
+    MEM: |*\color{yellow}00B0:*| |*\color{green}00 05 *|41 9C 00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}LD 0B0*|
+    PC: 130	ACC: 5 (0x0005)
+    MEM: |*\color{yellow}00B0:*| |*\color{green}00 05 *|41 9C 00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}SB 09C*|
+    PC: 132	ACC: 4 (0x0004)
+
+Instrução: |*\color{cyan}ST 0B0*|
+    PC: 134	ACC: 4 (0x0004)
+    MEM: |*\color{yellow}00B0:*| |*\color{green}00 04 *|41 9C 00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}JP 080*|
+    PC: 128	ACC: 4 (0x0004)
+
+Instrução: |*\color{cyan}JP 038*|
+    PC: 56	ACC: 4 (0x0004)
+
+Instrução: |*\color{cyan}SC 05E*|
+    PC: 96	ACC: 4 (0x0004)
+    MEM: |*\color{yellow}00A0:*| 00 04 01 00 10 00 00 09 04 D1 00 00 |*\color{green}00 C0 *|00 02 
+
+Instrução: |*\color{cyan}LD 0AC*|
+    PC: 96	ACC: 192 (0x00C0)
+    MEM: |*\color{yellow}00A0:*| 00 04 01 00 10 00 00 09 04 D1 00 00 |*\color{green}00 C0 *|00 02 
+
+Instrução: |*\color{cyan}ML 0A2*|
+    PC: 98	ACC: -16384 (0xC000)
+
+Instrução: |*\color{cyan}AD 0AE*|
+    PC: 100	ACC: -16382 (0xC002)
+
+Instrução: |*\color{cyan}ST 0B2*|
+    PC: 102	ACC: -16382 (0xC002)
+    MEM: |*\color{yellow}00B0:*| 00 04 |*\color{green}C0 02 *|00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}JP 05E*|
+    PC: 94	ACC: -16382 (0xC002)
+
+Instrução: |*\color{cyan}JP 03A*|
+    PC: 58	ACC: -16382 (0xC002)
+    MEM: |*\color{yellow}00B0:*| 00 04 |*\color{green}C0 02 *|00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}LD 0B2*|
+    PC: 58	ACC: -16382 (0xC002)
+    MEM: |*\color{yellow}00B0:*| 00 04 |*\color{green}C0 02 *|00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}SC 056*|
+    PC: 88	ACC: -16382 (0xC002)
+    MEM: |*\color{yellow}0190:*| B0 01 91 9C B0 01 41 9C 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}ST 198*|
+    PC: 88	ACC: -16382 (0xC002)
+    MEM: |*\color{yellow}0190:*| B0 01 91 9C B0 01 41 9C |*\color{green}C0 02 *|00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}SC 076*|
+    PC: 120	ACC: -16382 (0xC002)
+    MEM: |*\color{yellow}0050:*| 10 54 A0 92 30 00 00 3E |*\color{green}91 98 *|A0 76 00 56 00 3A 
+
+Instrução: |*\color{cyan}LD 058*|
+    PC: 120	ACC: -28264 (0x9198)
+    MEM: |*\color{yellow}0050:*| 10 54 A0 92 30 00 00 3E |*\color{green}91 98 *|A0 76 00 56 00 3A 
+
+Instrução: |*\color{cyan}AD 09E*|
+    PC: 122	ACC: -28262 (0x919A)
+
+Instrução: |*\color{cyan}ST 058*|
+    PC: 124	ACC: -28262 (0x919A)
+    MEM: |*\color{yellow}0050:*| 10 54 A0 92 30 00 00 3E |*\color{green}91 9A *|A0 76 00 56 00 3A 
+
+Instrução: |*\color{cyan}JP 076*|
+    PC: 118	ACC: -28262 (0x919A)
+
+Instrução: |*\color{cyan}JP 05C*|
+    PC: 92	ACC: -28262 (0x919A)
+
+Instrução: |*\color{cyan}JP 056*|
+    PC: 86	ACC: -28262 (0x919A)
+
+Instrução: |*\color{cyan}JP 03E*|
+    PC: 62	ACC: -28262 (0x919A)
+
+Instrução: |*\color{cyan}JP 024*|
+    PC: 36	ACC: -28262 (0x919A)
+    MEM: |*\color{yellow}00B0:*| |*\color{green}00 04 *|C0 02 00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}LD 0B0*|
+    PC: 36	ACC: 4 (0x0004)
+    MEM: |*\color{yellow}00B0:*| |*\color{green}00 04 *|C0 02 00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}JZ 040*|
+    PC: 38	ACC: 4 (0x0004)
+
+Instrução: |*\color{cyan}GD 004*|
+    PC: 40	ACC: 48 (0x0030)
+
+Instrução: |*\color{cyan}ST 0AC*|
+    PC: 42	ACC: 48 (0x0030)
+    MEM: |*\color{yellow}00A0:*| 00 04 01 00 10 00 00 09 04 D1 00 00 |*\color{green}00 30 *|00 02 
+
+Instrução: |*\color{cyan}SC 08A*|
+    PC: 140	ACC: 48 (0x0030)
+
+Instrução: |*\color{cyan}AD 0A8*|
+    PC: 140	ACC: 1281 (0x0501)
+
+Instrução: |*\color{cyan}ST 0A8*|
+    PC: 142	ACC: 1281 (0x0501)
+    MEM: |*\color{yellow}00A0:*| 00 04 01 00 10 00 00 09 |*\color{green}05 01 *|00 00 00 30 00 02 
+
+Instrução: |*\color{cyan}JP 08A*|
+    PC: 138	ACC: 1281 (0x0501)
+
+Instrução: |*\color{cyan}JP 02E*|
+    PC: 46	ACC: 1281 (0x0501)
+
+Instrução: |*\color{cyan}SC 080*|
+    PC: 130	ACC: 1281 (0x0501)
+    MEM: |*\color{yellow}00B0:*| |*\color{green}00 04 *|C0 02 00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}LD 0B0*|
+    PC: 130	ACC: 4 (0x0004)
+    MEM: |*\color{yellow}00B0:*| |*\color{green}00 04 *|C0 02 00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}SB 09C*|
+    PC: 132	ACC: 3 (0x0003)
+
+Instrução: |*\color{cyan}ST 0B0*|
+    PC: 134	ACC: 3 (0x0003)
+    MEM: |*\color{yellow}00B0:*| |*\color{green}00 03 *|C0 02 00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}JP 080*|
+    PC: 128	ACC: 3 (0x0003)
+
+Instrução: |*\color{cyan}JP 030*|
+    PC: 48	ACC: 3 (0x0003)
+
+Instrução: |*\color{cyan}GD 004*|
+    PC: 48	ACC: 0 (0x0000)
+
+Instrução: |*\color{cyan}ST 0AE*|
+    PC: 50	ACC: 0 (0x0000)
+    MEM: |*\color{yellow}00A0:*| 00 04 01 00 10 00 00 09 05 01 00 00 00 30 |*\color{green}00 00 *|
+
+Instrução: |*\color{cyan}SC 08A*|
+    PC: 140	ACC: 0 (0x0000)
+
+Instrução: |*\color{cyan}AD 0A8*|
+    PC: 140	ACC: 1281 (0x0501)
+
+Instrução: |*\color{cyan}ST 0A8*|
+    PC: 142	ACC: 1281 (0x0501)
+    MEM: |*\color{yellow}00A0:*| 00 04 01 00 10 00 00 09 |*\color{green}05 01 *|00 00 00 30 00 00 
+
+Instrução: |*\color{cyan}JP 08A*|
+    PC: 138	ACC: 1281 (0x0501)
+
+Instrução: |*\color{cyan}JP 036*|
+    PC: 54	ACC: 1281 (0x0501)
+
+Instrução: |*\color{cyan}SC 080*|
+    PC: 130	ACC: 1281 (0x0501)
+    MEM: |*\color{yellow}00B0:*| |*\color{green}00 03 *|C0 02 00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}LD 0B0*|
+    PC: 130	ACC: 3 (0x0003)
+    MEM: |*\color{yellow}00B0:*| |*\color{green}00 03 *|C0 02 00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}SB 09C*|
+    PC: 132	ACC: 2 (0x0002)
+
+Instrução: |*\color{cyan}ST 0B0*|
+    PC: 134	ACC: 2 (0x0002)
+    MEM: |*\color{yellow}00B0:*| |*\color{green}00 02 *|C0 02 00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}JP 080*|
+    PC: 128	ACC: 2 (0x0002)
+
+Instrução: |*\color{cyan}JP 038*|
+    PC: 56	ACC: 2 (0x0002)
+
+Instrução: |*\color{cyan}SC 05E*|
+    PC: 96	ACC: 2 (0x0002)
+    MEM: |*\color{yellow}00A0:*| 00 04 01 00 10 00 00 09 05 01 00 00 |*\color{green}00 30 *|00 00 
+
+Instrução: |*\color{cyan}LD 0AC*|
+    PC: 96	ACC: 48 (0x0030)
+    MEM: |*\color{yellow}00A0:*| 00 04 01 00 10 00 00 09 05 01 00 00 |*\color{green}00 30 *|00 00 
+
+Instrução: |*\color{cyan}ML 0A2*|
+    PC: 98	ACC: 12288 (0x3000)
+
+Instrução: |*\color{cyan}AD 0AE*|
+    PC: 100	ACC: 12288 (0x3000)
+
+Instrução: |*\color{cyan}ST 0B2*|
+    PC: 102	ACC: 12288 (0x3000)
+    MEM: |*\color{yellow}00B0:*| 00 02 |*\color{green}30 00 *|00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}JP 05E*|
+    PC: 94	ACC: 12288 (0x3000)
+
+Instrução: |*\color{cyan}JP 03A*|
+    PC: 58	ACC: 12288 (0x3000)
+    MEM: |*\color{yellow}00B0:*| 00 02 |*\color{green}30 00 *|00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}LD 0B2*|
+    PC: 58	ACC: 12288 (0x3000)
+    MEM: |*\color{yellow}00B0:*| 00 02 |*\color{green}30 00 *|00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}SC 056*|
+    PC: 88	ACC: 12288 (0x3000)
+    MEM: |*\color{yellow}0190:*| B0 01 91 9C B0 01 41 9C C0 02 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}ST 19A*|
+    PC: 88	ACC: 12288 (0x3000)
+    MEM: |*\color{yellow}0190:*| B0 01 91 9C B0 01 41 9C C0 02 |*\color{green}30 00 *|00 00 00 00 
+
+Instrução: |*\color{cyan}SC 076*|
+    PC: 120	ACC: 12288 (0x3000)
+    MEM: |*\color{yellow}0050:*| 10 54 A0 92 30 00 00 3E |*\color{green}91 9A *|A0 76 00 56 00 3A 
+
+Instrução: |*\color{cyan}LD 058*|
+    PC: 120	ACC: -28262 (0x919A)
+    MEM: |*\color{yellow}0050:*| 10 54 A0 92 30 00 00 3E |*\color{green}91 9A *|A0 76 00 56 00 3A 
+
+Instrução: |*\color{cyan}AD 09E*|
+    PC: 122	ACC: -28260 (0x919C)
+
+Instrução: |*\color{cyan}ST 058*|
+    PC: 124	ACC: -28260 (0x919C)
+    MEM: |*\color{yellow}0050:*| 10 54 A0 92 30 00 00 3E |*\color{green}91 9C *|A0 76 00 56 00 3A 
+
+Instrução: |*\color{cyan}JP 076*|
+    PC: 118	ACC: -28260 (0x919C)
+
+Instrução: |*\color{cyan}JP 05C*|
+    PC: 92	ACC: -28260 (0x919C)
+
+Instrução: |*\color{cyan}JP 056*|
+    PC: 86	ACC: -28260 (0x919C)
+
+Instrução: |*\color{cyan}JP 03E*|
+    PC: 62	ACC: -28260 (0x919C)
+
+Instrução: |*\color{cyan}JP 024*|
+    PC: 36	ACC: -28260 (0x919C)
+    MEM: |*\color{yellow}00B0:*| |*\color{green}00 02 *|30 00 00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}LD 0B0*|
+    PC: 36	ACC: 2 (0x0002)
+    MEM: |*\color{yellow}00B0:*| |*\color{green}00 02 *|30 00 00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}JZ 040*|
+    PC: 38	ACC: 2 (0x0002)
+
+Instrução: |*\color{cyan}GD 004*|
+    PC: 40	ACC: 0 (0x0000)
+
+Instrução: |*\color{cyan}ST 0AC*|
+    PC: 42	ACC: 0 (0x0000)
+    MEM: |*\color{yellow}00A0:*| 00 04 01 00 10 00 00 09 05 01 00 00 |*\color{green}00 00 *|00 00 
+
+Instrução: |*\color{cyan}SC 08A*|
+    PC: 140	ACC: 0 (0x0000)
+
+Instrução: |*\color{cyan}AD 0A8*|
+    PC: 140	ACC: 1281 (0x0501)
+
+Instrução: |*\color{cyan}ST 0A8*|
+    PC: 142	ACC: 1281 (0x0501)
+    MEM: |*\color{yellow}00A0:*| 00 04 01 00 10 00 00 09 |*\color{green}05 01 *|00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}JP 08A*|
+    PC: 138	ACC: 1281 (0x0501)
+
+Instrução: |*\color{cyan}JP 02E*|
+    PC: 46	ACC: 1281 (0x0501)
+
+Instrução: |*\color{cyan}SC 080*|
+    PC: 130	ACC: 1281 (0x0501)
+    MEM: |*\color{yellow}00B0:*| |*\color{green}00 02 *|30 00 00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}LD 0B0*|
+    PC: 130	ACC: 2 (0x0002)
+    MEM: |*\color{yellow}00B0:*| |*\color{green}00 02 *|30 00 00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}SB 09C*|
+    PC: 132	ACC: 1 (0x0001)
+
+Instrução: |*\color{cyan}ST 0B0*|
+    PC: 134	ACC: 1 (0x0001)
+    MEM: |*\color{yellow}00B0:*| |*\color{green}00 01 *|30 00 00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}JP 080*|
+    PC: 128	ACC: 1 (0x0001)
+
+Instrução: |*\color{cyan}JP 030*|
+    PC: 48	ACC: 1 (0x0001)
+
+Instrução: |*\color{cyan}GD 004*|
+    PC: 48	ACC: 0 (0x0000)
+
+Instrução: |*\color{cyan}ST 0AE*|
+    PC: 50	ACC: 0 (0x0000)
+    MEM: |*\color{yellow}00A0:*| 00 04 01 00 10 00 00 09 05 01 00 00 00 00 |*\color{green}00 00 *|
+
+Instrução: |*\color{cyan}SC 08A*|
+    PC: 140	ACC: 0 (0x0000)
+
+Instrução: |*\color{cyan}AD 0A8*|
+    PC: 140	ACC: 1281 (0x0501)
+
+Instrução: |*\color{cyan}ST 0A8*|
+    PC: 142	ACC: 1281 (0x0501)
+    MEM: |*\color{yellow}00A0:*| 00 04 01 00 10 00 00 09 |*\color{green}05 01 *|00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}JP 08A*|
+    PC: 138	ACC: 1281 (0x0501)
+
+Instrução: |*\color{cyan}JP 036*|
+    PC: 54	ACC: 1281 (0x0501)
+
+Instrução: |*\color{cyan}SC 080*|
+    PC: 130	ACC: 1281 (0x0501)
+    MEM: |*\color{yellow}00B0:*| |*\color{green}00 01 *|30 00 00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}LD 0B0*|
+    PC: 130	ACC: 1 (0x0001)
+    MEM: |*\color{yellow}00B0:*| |*\color{green}00 01 *|30 00 00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}SB 09C*|
+    PC: 132	ACC: 0 (0x0000)
+
+Instrução: |*\color{cyan}ST 0B0*|
+    PC: 134	ACC: 0 (0x0000)
+    MEM: |*\color{yellow}00B0:*| |*\color{green}00 00 *|30 00 00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}JP 080*|
+    PC: 128	ACC: 0 (0x0000)
+
+Instrução: |*\color{cyan}JP 038*|
+    PC: 56	ACC: 0 (0x0000)
+
+Instrução: |*\color{cyan}SC 05E*|
+    PC: 96	ACC: 0 (0x0000)
+    MEM: |*\color{yellow}00A0:*| 00 04 01 00 10 00 00 09 05 01 00 00 |*\color{green}00 00 *|00 00 
+
+Instrução: |*\color{cyan}LD 0AC*|
+    PC: 96	ACC: 0 (0x0000)
+    MEM: |*\color{yellow}00A0:*| 00 04 01 00 10 00 00 09 05 01 00 00 |*\color{green}00 00 *|00 00 
+
+Instrução: |*\color{cyan}ML 0A2*|
+    PC: 98	ACC: 0 (0x0000)
+
+Instrução: |*\color{cyan}AD 0AE*|
+    PC: 100	ACC: 0 (0x0000)
+
+Instrução: |*\color{cyan}ST 0B2*|
+    PC: 102	ACC: 0 (0x0000)
+    MEM: |*\color{yellow}00B0:*| 00 00 |*\color{green}00 00 *|00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}JP 05E*|
+    PC: 94	ACC: 0 (0x0000)
+
+Instrução: |*\color{cyan}JP 03A*|
+    PC: 58	ACC: 0 (0x0000)
+    MEM: |*\color{yellow}00B0:*| 00 00 |*\color{green}00 00 *|00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}LD 0B2*|
+    PC: 58	ACC: 0 (0x0000)
+    MEM: |*\color{yellow}00B0:*| 00 00 |*\color{green}00 00 *|00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}SC 056*|
+    PC: 88	ACC: 0 (0x0000)
+    MEM: |*\color{yellow}0190:*| B0 01 91 9C B0 01 41 9C C0 02 30 00 00 00 00 00 
+
+Instrução: |*\color{cyan}ST 19C*|
+    PC: 88	ACC: 0 (0x0000)
+    MEM: |*\color{yellow}0190:*| B0 01 91 9C B0 01 41 9C C0 02 30 00 |*\color{green}00 00 *|00 00 
+
+Instrução: |*\color{cyan}SC 076*|
+    PC: 120	ACC: 0 (0x0000)
+    MEM: |*\color{yellow}0050:*| 10 54 A0 92 30 00 00 3E |*\color{green}91 9C *|A0 76 00 56 00 3A 
+
+Instrução: |*\color{cyan}LD 058*|
+    PC: 120	ACC: -28260 (0x919C)
+    MEM: |*\color{yellow}0050:*| 10 54 A0 92 30 00 00 3E |*\color{green}91 9C *|A0 76 00 56 00 3A 
+
+Instrução: |*\color{cyan}AD 09E*|
+    PC: 122	ACC: -28258 (0x919E)
+
+Instrução: |*\color{cyan}ST 058*|
+    PC: 124	ACC: -28258 (0x919E)
+    MEM: |*\color{yellow}0050:*| 10 54 A0 92 30 00 00 3E |*\color{green}91 9E *|A0 76 00 56 00 3A 
+
+Instrução: |*\color{cyan}JP 076*|
+    PC: 118	ACC: -28258 (0x919E)
+
+Instrução: |*\color{cyan}JP 05C*|
+    PC: 92	ACC: -28258 (0x919E)
+
+Instrução: |*\color{cyan}JP 056*|
+    PC: 86	ACC: -28258 (0x919E)
+
+Instrução: |*\color{cyan}JP 03E*|
+    PC: 62	ACC: -28258 (0x919E)
+
+Instrução: |*\color{cyan}JP 024*|
+    PC: 36	ACC: -28258 (0x919E)
+    MEM: |*\color{yellow}00B0:*| |*\color{green}00 00 *|00 00 00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}LD 0B0*|
+    PC: 36	ACC: 0 (0x0000)
+    MEM: |*\color{yellow}00B0:*| |*\color{green}00 00 *|00 00 00 12 01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}JZ 040*|
+    PC: 64	ACC: 0 (0x0000)
+
+Instrução: |*\color{cyan}GD 004*|
+    PC: 64	ACC: 255 (0x00FF)
+
+Instrução: |*\color{cyan}ST 0AA*|
+    PC: 66	ACC: 255 (0x00FF)
+    MEM: |*\color{yellow}00A0:*| 00 04 01 00 10 00 00 09 05 01 |*\color{green}00 FF *|00 00 00 00 
+
+Instrução: |*\color{cyan}LD 0A8*|
+    PC: 68	ACC: 1281 (0x0501)
+    MEM: |*\color{yellow}00A0:*| 00 04 01 00 10 00 00 09 |*\color{green}05 01 *|00 FF 00 00 00 00 
+
+Instrução: |*\color{cyan}ML 0A2*|
+    PC: 70	ACC: 256 (0x0100)
+
+Instrução: |*\color{cyan}DV 0A2*|
+    PC: 72	ACC: 1 (0x0001)
+
+Instrução: |*\color{cyan}AD 0AA*|
+    PC: 74	ACC: 256 (0x0100)
+
+Instrução: |*\color{cyan}ML 0A2*|
+    PC: 76	ACC: 0 (0x0000)
+
+Instrução: |*\color{cyan}DV 0A2*|
+    PC: 78	ACC: 0 (0x0000)
+
+Instrução: |*\color{cyan}JZ 054*|
+    PC: 84	ACC: 0 (0x0000)
+
+Instrução: |*\color{cyan}HJ 000*|
+    PC: 0	ACC: 0 (0x0000)
+    MEM: |*\color{yellow}0090:*| 00 8A 00 00 D1 90 D0 05 00 92 |*\color{green}00 00 *|00 01 00 02 
+
+|*\color{blue!60!white}>> Programa carregado na memória com sucesso*|
+
+Memória
+-------
+      |*\color{yellow}0*|  |*\color{yellow}1*|  |*\color{yellow}2*|  |*\color{yellow}3*|  |*\color{yellow}4*|  |*\color{yellow}5*|  |*\color{yellow}6*|  |*\color{yellow}7*|  |*\color{yellow}8*|  |*\color{yellow}9*|  |*\color{yellow}a*|  |*\color{yellow}b*|  |*\color{yellow}c*|  |*\color{yellow}d*|  |*\color{yellow}e*|  |*\color{yellow}f*|  
+|*\color{yellow}0000:*| |*\color{green}80*| |*\color{green}9a*| |*\color{green}90*| |*\color{green}a8*| |*\color{green}b0*| |*\color{green}04*| |*\color{green}90*| |*\color{green}ac*| |*\color{green}a0*| |*\color{green}8a*| |*\color{green}b0*| |*\color{green}04*| |*\color{green}90*| |*\color{green}ae*| |*\color{green}a0*| |*\color{green}8a*| 
+|*\color{yellow}0010:*| |*\color{green}a0*| |*\color{green}5e*| |*\color{green}80*| |*\color{green}b2*| |*\color{green}90*| |*\color{green}b6*| |*\color{green}b0*| |*\color{green}04*| |*\color{green}90*| |*\color{green}b4*| |*\color{green}a0*| |*\color{green}8a*| |*\color{green}80*| |*\color{green}b4*| |*\color{green}50*| |*\color{green}a0*| 
+|*\color{yellow}0020:*| |*\color{green}90*| |*\color{green}b0*| |*\color{green}a0*| |*\color{green}6a*| |*\color{green}80*| |*\color{green}b0*| |*\color{green}10*| |*\color{green}40*| |*\color{green}b0*| |*\color{green}04*| |*\color{green}90*| |*\color{green}ac*| |*\color{green}a0*| |*\color{green}8a*| |*\color{green}a0*| |*\color{green}80*| 
+|*\color{yellow}0030:*| |*\color{green}b0*| |*\color{green}04*| |*\color{green}90*| |*\color{green}ae*| |*\color{green}a0*| |*\color{green}8a*| |*\color{green}a0*| |*\color{green}80*| |*\color{green}a0*| |*\color{green}5e*| |*\color{green}80*| |*\color{green}b2*| |*\color{green}a0*| |*\color{green}56*| |*\color{green}00*| |*\color{green}24*| 
+|*\color{yellow}0040:*| |*\color{green}b0*| |*\color{green}04*| |*\color{green}90*| |*\color{green}aa*| |*\color{green}80*| |*\color{green}a8*| |*\color{green}60*| |*\color{green}a2*| |*\color{green}70*| |*\color{green}a2*| |*\color{green}40*| |*\color{green}aa*| |*\color{green}60*| |*\color{green}a2*| |*\color{green}70*| |*\color{green}a2*| 
+|*\color{yellow}0050:*| |*\color{green}10*| |*\color{green}54*| |*\color{green}a0*| |*\color{green}92*| |*\color{green}30*| |*\color{green}00*| |*\color{green}00*| |*\color{green}3e*| |*\color{green}91*| |*\color{green}9e*| |*\color{green}a0*| |*\color{green}76*| |*\color{green}00*| |*\color{green}56*| |*\color{green}00*| |*\color{green}3a*| 
+|*\color{yellow}0060:*| |*\color{green}80*| |*\color{green}ac*| |*\color{green}60*| |*\color{green}a2*| |*\color{green}40*| |*\color{green}ae*| |*\color{green}90*| |*\color{green}b2*| |*\color{green}00*| |*\color{green}5e*| |*\color{green}00*| |*\color{green}24*| |*\color{green}80*| |*\color{green}a6*| |*\color{green}60*| |*\color{green}a4*| 
+|*\color{yellow}0070:*| |*\color{green}40*| |*\color{green}b6*| |*\color{green}90*| |*\color{green}58*| |*\color{green}00*| |*\color{green}6a*| |*\color{green}00*| |*\color{green}5c*| |*\color{green}80*| |*\color{green}58*| |*\color{green}40*| |*\color{green}9e*| |*\color{green}90*| |*\color{green}58*| |*\color{green}00*| |*\color{green}76*| 
+|*\color{yellow}0080:*| |*\color{green}00*| |*\color{green}38*| |*\color{green}80*| |*\color{green}b0*| |*\color{green}50*| |*\color{green}9c*| |*\color{green}90*| |*\color{green}b0*| |*\color{green}00*| |*\color{green}80*| |*\color{green}00*| |*\color{green}36*| |*\color{green}40*| |*\color{green}a8*| |*\color{green}90*| |*\color{green}a8*| 
+|*\color{yellow}0090:*| |*\color{green}00*| |*\color{green}8a*| |*\color{green}00*| |*\color{green}00*| |*\color{green}d1*| |*\color{green}90*| |*\color{green}d0*| |*\color{green}05*| |*\color{green}00*| |*\color{green}92*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}01*| |*\color{green}00*| |*\color{green}02*| 
+|*\color{yellow}00a0:*| |*\color{green}00*| |*\color{green}04*| |*\color{green}01*| |*\color{green}00*| |*\color{green}10*| |*\color{green}00*| |*\color{green}00*| |*\color{green}09*| |*\color{green}05*| |*\color{green}01*| |*\color{green}00*| |*\color{green}ff*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| 
+|*\color{yellow}00b0:*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}12*| |*\color{green}01*| |*\color{green}90*| 00 00 00 00 00 00 00 00 
+|*\color{yellow}00c0:*| 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+|*\color{yellow}00d0:*| |*\color{green}81*| |*\color{green}40*| |*\color{green}a1*| |*\color{green}12*| |*\color{green}a1*| |*\color{green}20*| |*\color{green}a1*| |*\color{green}34*| |*\color{green}a1*| |*\color{green}26*| |*\color{green}80*| |*\color{green}b4*| |*\color{green}a1*| |*\color{green}34*| |*\color{green}c0*| |*\color{green}04*| 
+|*\color{yellow}00e0:*| |*\color{green}51*| |*\color{green}50*| |*\color{green}51*| |*\color{green}4e*| |*\color{green}51*| |*\color{green}4e*| |*\color{green}91*| |*\color{green}44*| |*\color{green}80*| |*\color{green}b6*| |*\color{green}a1*| |*\color{green}12*| |*\color{green}a1*| |*\color{green}20*| |*\color{green}a1*| |*\color{green}26*| 
+|*\color{yellow}00f0:*| |*\color{green}a1*| |*\color{green}34*| |*\color{green}81*| |*\color{green}22*| |*\color{green}41*| |*\color{green}50*| |*\color{green}91*| |*\color{green}22*| |*\color{green}81*| |*\color{green}44*| |*\color{green}51*| |*\color{green}50*| |*\color{green}91*| |*\color{green}44*| |*\color{green}11*| |*\color{green}02*| 
+|*\color{yellow}0100:*| |*\color{green}00*| |*\color{green}ec*| |*\color{green}81*| |*\color{green}46*| |*\color{green}61*| |*\color{green}52*| |*\color{green}71*| |*\color{green}52*| |*\color{green}91*| |*\color{green}48*| |*\color{green}81*| |*\color{green}4c*| |*\color{green}51*| |*\color{green}48*| |*\color{green}c0*| |*\color{green}04*| 
+|*\color{yellow}0110:*| |*\color{green}30*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}91*| |*\color{green}56*| |*\color{green}81*| |*\color{green}4a*| |*\color{green}61*| |*\color{green}54*| |*\color{green}41*| |*\color{green}56*| |*\color{green}91*| |*\color{green}22*| |*\color{green}01*| |*\color{green}12*| 
+|*\color{yellow}0120:*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}01*| |*\color{green}20*| |*\color{green}00*| |*\color{green}00*| |*\color{green}91*| |*\color{green}56*| |*\color{green}71*| |*\color{green}52*| |*\color{green}c0*| |*\color{green}04*| |*\color{green}81*| |*\color{green}56*| 
+|*\color{yellow}0130:*| |*\color{green}c0*| |*\color{green}04*| |*\color{green}01*| |*\color{green}26*| |*\color{green}00*| |*\color{green}00*| |*\color{green}91*| |*\color{green}56*| |*\color{green}41*| |*\color{green}46*| |*\color{green}91*| |*\color{green}46*| |*\color{green}81*| |*\color{green}56*| |*\color{green}01*| |*\color{green}34*| 
+|*\color{yellow}0140:*| |*\color{green}00*| |*\color{green}b6*| |*\color{green}00*| |*\color{green}b4*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}08*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}01*| 
+|*\color{yellow}0150:*| |*\color{green}00*| |*\color{green}02*| |*\color{green}01*| |*\color{green}00*| |*\color{green}10*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| 00 00 00 00 00 00 00 00 
+|*\color{yellow}0160:*| 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+|*\color{yellow}0170:*| 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+|*\color{yellow}0180:*| 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+|*\color{yellow}0190:*| |*\color{green}b0*| |*\color{green}01*| |*\color{green}91*| |*\color{green}9c*| |*\color{green}b0*| |*\color{green}01*| |*\color{green}41*| |*\color{green}9c*| |*\color{green}c0*| |*\color{green}02*| |*\color{green}30*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| 00 00 
+|*\color{yellow}01a0:*| 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+|*\color{yellow}01b0:*| 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+|*\color{yellow}01c0:*| 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+|*\color{yellow}01d0:*| 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+|*\color{yellow}01e0:*| 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+|*\color{yellow}01f0:*| 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+
+Registradores
+-------------
+Acumulador:	 0000
+PC:		 0000
+
+|*\color{blue!60!white}>> Iniciando execução do programa*|
+
+Depuração
+*********
+
+Instrução: |*\color{cyan}GD 001*|
+>> Digite um numero:     PC: 400	ACC: 15 (0x000F)
+
+Instrução: |*\color{cyan}ST 19C*|
+    PC: 402	ACC: 15 (0x000F)
+    MEM: |*\color{yellow}0190:*| B0 01 91 9C B0 01 41 9C C0 02 30 00 |*\color{green}00 0F *|00 00 
+
+Instrução: |*\color{cyan}GD 001*|
+>> Digite um numero:     PC: 404	ACC: -10 (0xFFF6)
+
+Instrução: |*\color{cyan}AD 19C*|
+    PC: 406	ACC: 5 (0x0005)
+
+Instrução: |*\color{cyan}PD 002*|
+>> Saída: 5
+    PC: 408	ACC: 5 (0x0005)
+
+Instrução: |*\color{cyan}HJ 000*|
+    PC: 0	ACC: 5 (0x0005)
+    MEM: |*\color{yellow}0090:*| 00 8A 00 00 D1 90 D0 05 00 92 |*\color{green}00 00 *|00 01 00 02 
+
+
+|*\color{blue!60!white}>> Fim da execução do programa*|
+
+Memória
+-------
+      |*\color{yellow}0*|  |*\color{yellow}1*|  |*\color{yellow}2*|  |*\color{yellow}3*|  |*\color{yellow}4*|  |*\color{yellow}5*|  |*\color{yellow}6*|  |*\color{yellow}7*|  |*\color{yellow}8*|  |*\color{yellow}9*|  |*\color{yellow}a*|  |*\color{yellow}b*|  |*\color{yellow}c*|  |*\color{yellow}d*|  |*\color{yellow}e*|  |*\color{yellow}f*|  
+|*\color{yellow}0000:*| |*\color{green}80*| |*\color{green}9a*| |*\color{green}90*| |*\color{green}a8*| |*\color{green}b0*| |*\color{green}04*| |*\color{green}90*| |*\color{green}ac*| |*\color{green}a0*| |*\color{green}8a*| |*\color{green}b0*| |*\color{green}04*| |*\color{green}90*| |*\color{green}ae*| |*\color{green}a0*| |*\color{green}8a*| 
+|*\color{yellow}0010:*| |*\color{green}a0*| |*\color{green}5e*| |*\color{green}80*| |*\color{green}b2*| |*\color{green}90*| |*\color{green}b6*| |*\color{green}b0*| |*\color{green}04*| |*\color{green}90*| |*\color{green}b4*| |*\color{green}a0*| |*\color{green}8a*| |*\color{green}80*| |*\color{green}b4*| |*\color{green}50*| |*\color{green}a0*| 
+|*\color{yellow}0020:*| |*\color{green}90*| |*\color{green}b0*| |*\color{green}a0*| |*\color{green}6a*| |*\color{green}80*| |*\color{green}b0*| |*\color{green}10*| |*\color{green}40*| |*\color{green}b0*| |*\color{green}04*| |*\color{green}90*| |*\color{green}ac*| |*\color{green}a0*| |*\color{green}8a*| |*\color{green}a0*| |*\color{green}80*| 
+|*\color{yellow}0030:*| |*\color{green}b0*| |*\color{green}04*| |*\color{green}90*| |*\color{green}ae*| |*\color{green}a0*| |*\color{green}8a*| |*\color{green}a0*| |*\color{green}80*| |*\color{green}a0*| |*\color{green}5e*| |*\color{green}80*| |*\color{green}b2*| |*\color{green}a0*| |*\color{green}56*| |*\color{green}00*| |*\color{green}24*| 
+|*\color{yellow}0040:*| |*\color{green}b0*| |*\color{green}04*| |*\color{green}90*| |*\color{green}aa*| |*\color{green}80*| |*\color{green}a8*| |*\color{green}60*| |*\color{green}a2*| |*\color{green}70*| |*\color{green}a2*| |*\color{green}40*| |*\color{green}aa*| |*\color{green}60*| |*\color{green}a2*| |*\color{green}70*| |*\color{green}a2*| 
+|*\color{yellow}0050:*| |*\color{green}10*| |*\color{green}54*| |*\color{green}a0*| |*\color{green}92*| |*\color{green}30*| |*\color{green}00*| |*\color{green}00*| |*\color{green}3e*| |*\color{green}91*| |*\color{green}9e*| |*\color{green}a0*| |*\color{green}76*| |*\color{green}00*| |*\color{green}56*| |*\color{green}00*| |*\color{green}3a*| 
+|*\color{yellow}0060:*| |*\color{green}80*| |*\color{green}ac*| |*\color{green}60*| |*\color{green}a2*| |*\color{green}40*| |*\color{green}ae*| |*\color{green}90*| |*\color{green}b2*| |*\color{green}00*| |*\color{green}5e*| |*\color{green}00*| |*\color{green}24*| |*\color{green}80*| |*\color{green}a6*| |*\color{green}60*| |*\color{green}a4*| 
+|*\color{yellow}0070:*| |*\color{green}40*| |*\color{green}b6*| |*\color{green}90*| |*\color{green}58*| |*\color{green}00*| |*\color{green}6a*| |*\color{green}00*| |*\color{green}5c*| |*\color{green}80*| |*\color{green}58*| |*\color{green}40*| |*\color{green}9e*| |*\color{green}90*| |*\color{green}58*| |*\color{green}00*| |*\color{green}76*| 
+|*\color{yellow}0080:*| |*\color{green}00*| |*\color{green}38*| |*\color{green}80*| |*\color{green}b0*| |*\color{green}50*| |*\color{green}9c*| |*\color{green}90*| |*\color{green}b0*| |*\color{green}00*| |*\color{green}80*| |*\color{green}00*| |*\color{green}36*| |*\color{green}40*| |*\color{green}a8*| |*\color{green}90*| |*\color{green}a8*| 
+|*\color{yellow}0090:*| |*\color{green}00*| |*\color{green}8a*| |*\color{green}00*| |*\color{green}00*| |*\color{green}d1*| |*\color{green}90*| |*\color{green}d0*| |*\color{green}05*| |*\color{green}00*| |*\color{green}92*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}01*| |*\color{green}00*| |*\color{green}02*| 
+|*\color{yellow}00a0:*| |*\color{green}00*| |*\color{green}04*| |*\color{green}01*| |*\color{green}00*| |*\color{green}10*| |*\color{green}00*| |*\color{green}00*| |*\color{green}09*| |*\color{green}05*| |*\color{green}01*| |*\color{green}00*| |*\color{green}ff*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| 
+|*\color{yellow}00b0:*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}12*| |*\color{green}01*| |*\color{green}90*| 00 00 00 00 00 00 00 00 
+|*\color{yellow}00c0:*| 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+|*\color{yellow}00d0:*| |*\color{green}81*| |*\color{green}40*| |*\color{green}a1*| |*\color{green}12*| |*\color{green}a1*| |*\color{green}20*| |*\color{green}a1*| |*\color{green}34*| |*\color{green}a1*| |*\color{green}26*| |*\color{green}80*| |*\color{green}b4*| |*\color{green}a1*| |*\color{green}34*| |*\color{green}c0*| |*\color{green}04*| 
+|*\color{yellow}00e0:*| |*\color{green}51*| |*\color{green}50*| |*\color{green}51*| |*\color{green}4e*| |*\color{green}51*| |*\color{green}4e*| |*\color{green}91*| |*\color{green}44*| |*\color{green}80*| |*\color{green}b6*| |*\color{green}a1*| |*\color{green}12*| |*\color{green}a1*| |*\color{green}20*| |*\color{green}a1*| |*\color{green}26*| 
+|*\color{yellow}00f0:*| |*\color{green}a1*| |*\color{green}34*| |*\color{green}81*| |*\color{green}22*| |*\color{green}41*| |*\color{green}50*| |*\color{green}91*| |*\color{green}22*| |*\color{green}81*| |*\color{green}44*| |*\color{green}51*| |*\color{green}50*| |*\color{green}91*| |*\color{green}44*| |*\color{green}11*| |*\color{green}02*| 
+|*\color{yellow}0100:*| |*\color{green}00*| |*\color{green}ec*| |*\color{green}81*| |*\color{green}46*| |*\color{green}61*| |*\color{green}52*| |*\color{green}71*| |*\color{green}52*| |*\color{green}91*| |*\color{green}48*| |*\color{green}81*| |*\color{green}4c*| |*\color{green}51*| |*\color{green}48*| |*\color{green}c0*| |*\color{green}04*| 
+|*\color{yellow}0110:*| |*\color{green}30*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}91*| |*\color{green}56*| |*\color{green}81*| |*\color{green}4a*| |*\color{green}61*| |*\color{green}54*| |*\color{green}41*| |*\color{green}56*| |*\color{green}91*| |*\color{green}22*| |*\color{green}01*| |*\color{green}12*| 
+|*\color{yellow}0120:*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}01*| |*\color{green}20*| |*\color{green}00*| |*\color{green}00*| |*\color{green}91*| |*\color{green}56*| |*\color{green}71*| |*\color{green}52*| |*\color{green}c0*| |*\color{green}04*| |*\color{green}81*| |*\color{green}56*| 
+|*\color{yellow}0130:*| |*\color{green}c0*| |*\color{green}04*| |*\color{green}01*| |*\color{green}26*| |*\color{green}00*| |*\color{green}00*| |*\color{green}91*| |*\color{green}56*| |*\color{green}41*| |*\color{green}46*| |*\color{green}91*| |*\color{green}46*| |*\color{green}81*| |*\color{green}56*| |*\color{green}01*| |*\color{green}34*| 
+|*\color{yellow}0140:*| |*\color{green}00*| |*\color{green}b6*| |*\color{green}00*| |*\color{green}b4*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}08*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| |*\color{green}01*| 
+|*\color{yellow}0150:*| |*\color{green}00*| |*\color{green}02*| |*\color{green}01*| |*\color{green}00*| |*\color{green}10*| |*\color{green}00*| |*\color{green}00*| |*\color{green}00*| 00 00 00 00 00 00 00 00 
+|*\color{yellow}0160:*| 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+|*\color{yellow}0170:*| 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+|*\color{yellow}0180:*| 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+|*\color{yellow}0190:*| |*\color{green}b0*| |*\color{green}01*| |*\color{green}91*| |*\color{green}9c*| |*\color{green}b0*| |*\color{green}01*| |*\color{green}41*| |*\color{green}9c*| |*\color{green}c0*| |*\color{green}02*| |*\color{green}30*| |*\color{green}00*| |*\color{green}00*| |*\color{green}0f*| 00 00 
+|*\color{yellow}01a0:*| 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+|*\color{yellow}01b0:*| 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+|*\color{yellow}01c0:*| 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+|*\color{yellow}01d0:*| 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+|*\color{yellow}01e0:*| 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+|*\color{yellow}01f0:*| 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+
+Registradores
+-------------
+Acumulador:	 0005
+PC:		 0000
+
+|*\color{blue!60!white}>> Iniciando dump da memória*|
+
+Depuração
+*********
+
+Instrução: |*\color{cyan}LD 140*|
+    PC: 208	ACC: 182 (0x00B6)
+    MEM: |*\color{yellow}0140:*| |*\color{green}00 B6 *|00 B4 00 00 00 00 00 00 00 08 00 00 00 01 
+
+Instrução: |*\color{cyan}SC 112*|
+    PC: 276	ACC: 182 (0x00B6)
+    MEM: |*\color{yellow}0150:*| 00 02 01 00 10 00 |*\color{green}00 00 *|00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}ST 156*|
+    PC: 276	ACC: 182 (0x00B6)
+    MEM: |*\color{yellow}0150:*| 00 02 01 00 10 00 |*\color{green}00 B6 *|00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}LD 14A*|
+    PC: 278	ACC: 8 (0x0008)
+    MEM: |*\color{yellow}0140:*| 00 B6 00 B4 00 00 00 00 00 00 |*\color{green}00 08 *|00 00 00 01 
+
+Instrução: |*\color{cyan}ML 154*|
+    PC: 280	ACC: -32768 (0x8000)
+
+Instrução: |*\color{cyan}AD 156*|
+    PC: 282	ACC: -32586 (0x80B6)
+
+Instrução: |*\color{cyan}ST 122*|
+    PC: 284	ACC: -32586 (0x80B6)
+    MEM: |*\color{yellow}0120:*| 00 00 |*\color{green}80 B6 *|01 20 00 00 91 56 71 52 C0 04 81 56 
+
+Instrução: |*\color{cyan}JP 112*|
+    PC: 274	ACC: -32586 (0x80B6)
+
+Instrução: |*\color{cyan}JP 0D4*|
+    PC: 212	ACC: -32586 (0x80B6)
+
+Instrução: |*\color{cyan}SC 120*|
+    PC: 290	ACC: -32586 (0x80B6)
+    MEM: |*\color{yellow}00B0:*| 00 00 00 00 00 12 |*\color{green}01 90 *|00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}LD 0B6*|
+    PC: 290	ACC: 400 (0x0190)
+    MEM: |*\color{yellow}00B0:*| 00 00 00 00 00 12 |*\color{green}01 90 *|00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}JP 120*|
+    PC: 288	ACC: 400 (0x0190)
+
+Instrução: |*\color{cyan}JP 0D6*|
+    PC: 214	ACC: 400 (0x0190)
+
+Instrução: |*\color{cyan}SC 134*|
+    PC: 310	ACC: 400 (0x0190)
+    MEM: |*\color{yellow}0150:*| 00 02 01 00 10 00 |*\color{green}00 B6 *|00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}ST 156*|
+    PC: 310	ACC: 400 (0x0190)
+    MEM: |*\color{yellow}0150:*| 00 02 01 00 10 00 |*\color{green}01 90 *|00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}AD 146*|
+    PC: 312	ACC: 400 (0x0190)
+
+Instrução: |*\color{cyan}ST 146*|
+    PC: 314	ACC: 400 (0x0190)
+    MEM: |*\color{yellow}0140:*| 00 B6 00 B4 00 00 |*\color{green}01 90 *|00 00 00 08 00 00 00 01 
+
+Instrução: |*\color{cyan}LD 156*|
+    PC: 316	ACC: 400 (0x0190)
+    MEM: |*\color{yellow}0150:*| 00 02 01 00 10 00 |*\color{green}01 90 *|00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}JP 134*|
+    PC: 308	ACC: 400 (0x0190)
+
+Instrução: |*\color{cyan}JP 0D8*|
+    PC: 216	ACC: 400 (0x0190)
+
+Instrução: |*\color{cyan}SC 126*|
+    PC: 296	ACC: 400 (0x0190)
+    MEM: |*\color{yellow}0150:*| 00 02 01 00 10 00 |*\color{green}01 90 *|00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}ST 156*|
+    PC: 296	ACC: 400 (0x0190)
+    MEM: |*\color{yellow}0150:*| 00 02 01 00 10 00 |*\color{green}01 90 *|00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}DV 152*|
+    PC: 298	ACC: 1 (0x0001)
+
+Instrução: |*\color{cyan}PD 004*|
+    PC: 300	ACC: 1 (0x0001)
+
+Instrução: |*\color{cyan}LD 156*|
+    PC: 302	ACC: 400 (0x0190)
+    MEM: |*\color{yellow}0150:*| 00 02 01 00 10 00 |*\color{green}01 90 *|00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}PD 004*|
+    PC: 304	ACC: 400 (0x0190)
+
+Instrução: |*\color{cyan}JP 126*|
+    PC: 294	ACC: 400 (0x0190)
+
+Instrução: |*\color{cyan}JP 0DA*|
+    PC: 218	ACC: 400 (0x0190)
+    MEM: |*\color{yellow}00B0:*| 00 00 00 00 |*\color{green}00 12 *|01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}LD 0B4*|
+    PC: 218	ACC: 18 (0x0012)
+    MEM: |*\color{yellow}00B0:*| 00 00 00 00 |*\color{green}00 12 *|01 90 00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}SC 134*|
+    PC: 310	ACC: 18 (0x0012)
+    MEM: |*\color{yellow}0150:*| 00 02 01 00 10 00 |*\color{green}01 90 *|00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}ST 156*|
+    PC: 310	ACC: 18 (0x0012)
+    MEM: |*\color{yellow}0150:*| 00 02 01 00 10 00 |*\color{green}00 12 *|00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}AD 146*|
+    PC: 312	ACC: 418 (0x01A2)
+
+Instrução: |*\color{cyan}ST 146*|
+    PC: 314	ACC: 418 (0x01A2)
+    MEM: |*\color{yellow}0140:*| 00 B6 00 B4 00 00 |*\color{green}01 A2 *|00 00 00 08 00 00 00 01 
+
+Instrução: |*\color{cyan}LD 156*|
+    PC: 316	ACC: 18 (0x0012)
+    MEM: |*\color{yellow}0150:*| 00 02 01 00 10 00 |*\color{green}00 12 *|00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}JP 134*|
+    PC: 308	ACC: 18 (0x0012)
+
+Instrução: |*\color{cyan}JP 0DE*|
+    PC: 222	ACC: 18 (0x0012)
+
+Instrução: |*\color{cyan}PD 004*|
+    PC: 222	ACC: 18 (0x0012)
+
+Instrução: |*\color{cyan}SB 150*|
+    PC: 224	ACC: 16 (0x0010)
+
+Instrução: |*\color{cyan}SB 14E*|
+    PC: 226	ACC: 15 (0x000F)
+
+Instrução: |*\color{cyan}SB 14E*|
+    PC: 228	ACC: 14 (0x000E)
+
+Instrução: |*\color{cyan}ST 144*|
+    PC: 230	ACC: 14 (0x000E)
+    MEM: |*\color{yellow}0140:*| 00 B6 00 B4 |*\color{green}00 0E *|01 A2 00 00 00 08 00 00 00 01 
+
+Instrução: |*\color{cyan}LD 0B6*|
+    PC: 232	ACC: 400 (0x0190)
+    MEM: |*\color{yellow}00B0:*| 00 00 00 00 00 12 |*\color{green}01 90 *|00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}SC 112*|
+    PC: 276	ACC: 400 (0x0190)
+    MEM: |*\color{yellow}0150:*| 00 02 01 00 10 00 |*\color{green}00 12 *|00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}ST 156*|
+    PC: 276	ACC: 400 (0x0190)
+    MEM: |*\color{yellow}0150:*| 00 02 01 00 10 00 |*\color{green}01 90 *|00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}LD 14A*|
+    PC: 278	ACC: 8 (0x0008)
+    MEM: |*\color{yellow}0140:*| 00 B6 00 B4 00 0E 01 A2 00 00 |*\color{green}00 08 *|00 00 00 01 
+
+Instrução: |*\color{cyan}ML 154*|
+    PC: 280	ACC: -32768 (0x8000)
+
+Instrução: |*\color{cyan}AD 156*|
+    PC: 282	ACC: -32368 (0x8190)
+
+Instrução: |*\color{cyan}ST 122*|
+    PC: 284	ACC: -32368 (0x8190)
+    MEM: |*\color{yellow}0120:*| 00 D6 |*\color{green}81 90 *|01 20 00 DA 91 56 71 52 C0 04 81 56 
+
+Instrução: |*\color{cyan}JP 112*|
+    PC: 274	ACC: -32368 (0x8190)
+
+Instrução: |*\color{cyan}JP 0EC*|
+    PC: 236	ACC: -32368 (0x8190)
+
+Instrução: |*\color{cyan}SC 120*|
+    PC: 290	ACC: -32368 (0x8190)
+    MEM: |*\color{yellow}0190:*| |*\color{green}B0 01 *|91 9C B0 01 41 9C C0 02 30 00 00 0F 00 00 
+
+Instrução: |*\color{cyan}LD 190*|
+    PC: 290	ACC: -20479 (0xB001)
+    MEM: |*\color{yellow}0190:*| |*\color{green}B0 01 *|91 9C B0 01 41 9C C0 02 30 00 00 0F 00 00 
+
+Instrução: |*\color{cyan}JP 120*|
+    PC: 288	ACC: -20479 (0xB001)
+
+Instrução: |*\color{cyan}JP 0EE*|
+    PC: 238	ACC: -20479 (0xB001)
+
+Instrução: |*\color{cyan}SC 126*|
+    PC: 296	ACC: -20479 (0xB001)
+    MEM: |*\color{yellow}0150:*| 00 02 01 00 10 00 |*\color{green}01 90 *|00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}ST 156*|
+    PC: 296	ACC: -20479 (0xB001)
+    MEM: |*\color{yellow}0150:*| 00 02 01 00 10 00 |*\color{green}B0 01 *|00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}DV 152*|
+    PC: 298	ACC: 176 (0x00B0)
+
+Instrução: |*\color{cyan}PD 004*|
+    PC: 300	ACC: 176 (0x00B0)
+
+Instrução: |*\color{cyan}LD 156*|
+    PC: 302	ACC: -20479 (0xB001)
+    MEM: |*\color{yellow}0150:*| 00 02 01 00 10 00 |*\color{green}B0 01 *|00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}PD 004*|
+    PC: 304	ACC: -20479 (0xB001)
+
+Instrução: |*\color{cyan}JP 126*|
+    PC: 294	ACC: -20479 (0xB001)
+
+Instrução: |*\color{cyan}JP 0F0*|
+    PC: 240	ACC: -20479 (0xB001)
+
+Instrução: |*\color{cyan}SC 134*|
+    PC: 310	ACC: -20479 (0xB001)
+    MEM: |*\color{yellow}0150:*| 00 02 01 00 10 00 |*\color{green}B0 01 *|00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}ST 156*|
+    PC: 310	ACC: -20479 (0xB001)
+    MEM: |*\color{yellow}0150:*| 00 02 01 00 10 00 |*\color{green}B0 01 *|00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}AD 146*|
+    PC: 312	ACC: -20061 (0xB1A3)
+
+Instrução: |*\color{cyan}ST 146*|
+    PC: 314	ACC: -20061 (0xB1A3)
+    MEM: |*\color{yellow}0140:*| 00 B6 00 B4 00 0E |*\color{green}B1 A3 *|00 00 00 08 00 00 00 01 
+
+Instrução: |*\color{cyan}LD 156*|
+    PC: 316	ACC: -20479 (0xB001)
+    MEM: |*\color{yellow}0150:*| 00 02 01 00 10 00 |*\color{green}B0 01 *|00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}JP 134*|
+    PC: 308	ACC: -20479 (0xB001)
+
+Instrução: |*\color{cyan}JP 0F2*|
+    PC: 242	ACC: -20479 (0xB001)
+    MEM: |*\color{yellow}0120:*| 00 EE |*\color{green}81 90 *|01 20 00 F0 91 56 71 52 C0 04 81 56 
+
+Instrução: |*\color{cyan}LD 122*|
+    PC: 242	ACC: -32368 (0x8190)
+    MEM: |*\color{yellow}0120:*| 00 EE |*\color{green}81 90 *|01 20 00 F0 91 56 71 52 C0 04 81 56 
+
+Instrução: |*\color{cyan}AD 150*|
+    PC: 244	ACC: -32366 (0x8192)
+
+Instrução: |*\color{cyan}ST 122*|
+    PC: 246	ACC: -32366 (0x8192)
+    MEM: |*\color{yellow}0120:*| 00 EE |*\color{green}81 92 *|01 20 00 F0 91 56 71 52 C0 04 81 56 
+
+Instrução: |*\color{cyan}LD 144*|
+    PC: 248	ACC: 14 (0x000E)
+    MEM: |*\color{yellow}0140:*| 00 B6 00 B4 |*\color{green}00 0E *|B1 A3 00 00 00 08 00 00 00 01 
+
+Instrução: |*\color{cyan}SB 150*|
+    PC: 250	ACC: 12 (0x000C)
+
+Instrução: |*\color{cyan}ST 144*|
+    PC: 252	ACC: 12 (0x000C)
+    MEM: |*\color{yellow}0140:*| 00 B6 00 B4 |*\color{green}00 0C *|B1 A3 00 00 00 08 00 00 00 01 
+
+Instrução: |*\color{cyan}JZ 102*|
+    PC: 254	ACC: 12 (0x000C)
+
+Instrução: |*\color{cyan}JP 0EC*|
+    PC: 236	ACC: 12 (0x000C)
+
+Instrução: |*\color{cyan}SC 120*|
+    PC: 290	ACC: 12 (0x000C)
+    MEM: |*\color{yellow}0190:*| B0 01 |*\color{green}91 9C *|B0 01 41 9C C0 02 30 00 00 0F 00 00 
+
+Instrução: |*\color{cyan}LD 192*|
+    PC: 290	ACC: -28260 (0x919C)
+    MEM: |*\color{yellow}0190:*| B0 01 |*\color{green}91 9C *|B0 01 41 9C C0 02 30 00 00 0F 00 00 
+
+Instrução: |*\color{cyan}JP 120*|
+    PC: 288	ACC: -28260 (0x919C)
+
+Instrução: |*\color{cyan}JP 0EE*|
+    PC: 238	ACC: -28260 (0x919C)
+
+Instrução: |*\color{cyan}SC 126*|
+    PC: 296	ACC: -28260 (0x919C)
+    MEM: |*\color{yellow}0150:*| 00 02 01 00 10 00 |*\color{green}B0 01 *|00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}ST 156*|
+    PC: 296	ACC: -28260 (0x919C)
+    MEM: |*\color{yellow}0150:*| 00 02 01 00 10 00 |*\color{green}91 9C *|00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}DV 152*|
+    PC: 298	ACC: 145 (0x0091)
+
+Instrução: |*\color{cyan}PD 004*|
+    PC: 300	ACC: 145 (0x0091)
+
+Instrução: |*\color{cyan}LD 156*|
+    PC: 302	ACC: -28260 (0x919C)
+    MEM: |*\color{yellow}0150:*| 00 02 01 00 10 00 |*\color{green}91 9C *|00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}PD 004*|
+    PC: 304	ACC: -28260 (0x919C)
+
+Instrução: |*\color{cyan}JP 126*|
+    PC: 294	ACC: -28260 (0x919C)
+
+Instrução: |*\color{cyan}JP 0F0*|
+    PC: 240	ACC: -28260 (0x919C)
+
+Instrução: |*\color{cyan}SC 134*|
+    PC: 310	ACC: -28260 (0x919C)
+    MEM: |*\color{yellow}0150:*| 00 02 01 00 10 00 |*\color{green}91 9C *|00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}ST 156*|
+    PC: 310	ACC: -28260 (0x919C)
+    MEM: |*\color{yellow}0150:*| 00 02 01 00 10 00 |*\color{green}91 9C *|00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}AD 146*|
+    PC: 312	ACC: 17215 (0x433F)
+
+Instrução: |*\color{cyan}ST 146*|
+    PC: 314	ACC: 17215 (0x433F)
+    MEM: |*\color{yellow}0140:*| 00 B6 00 B4 00 0C |*\color{green}43 3F *|00 00 00 08 00 00 00 01 
+
+Instrução: |*\color{cyan}LD 156*|
+    PC: 316	ACC: -28260 (0x919C)
+    MEM: |*\color{yellow}0150:*| 00 02 01 00 10 00 |*\color{green}91 9C *|00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}JP 134*|
+    PC: 308	ACC: -28260 (0x919C)
+
+Instrução: |*\color{cyan}JP 0F2*|
+    PC: 242	ACC: -28260 (0x919C)
+    MEM: |*\color{yellow}0120:*| 00 EE |*\color{green}81 92 *|01 20 00 F0 91 56 71 52 C0 04 81 56 
+
+Instrução: |*\color{cyan}LD 122*|
+    PC: 242	ACC: -32366 (0x8192)
+    MEM: |*\color{yellow}0120:*| 00 EE |*\color{green}81 92 *|01 20 00 F0 91 56 71 52 C0 04 81 56 
+
+Instrução: |*\color{cyan}AD 150*|
+    PC: 244	ACC: -32364 (0x8194)
+
+Instrução: |*\color{cyan}ST 122*|
+    PC: 246	ACC: -32364 (0x8194)
+    MEM: |*\color{yellow}0120:*| 00 EE |*\color{green}81 94 *|01 20 00 F0 91 56 71 52 C0 04 81 56 
+
+Instrução: |*\color{cyan}LD 144*|
+    PC: 248	ACC: 12 (0x000C)
+    MEM: |*\color{yellow}0140:*| 00 B6 00 B4 |*\color{green}00 0C *|43 3F 00 00 00 08 00 00 00 01 
+
+Instrução: |*\color{cyan}SB 150*|
+    PC: 250	ACC: 10 (0x000A)
+
+Instrução: |*\color{cyan}ST 144*|
+    PC: 252	ACC: 10 (0x000A)
+    MEM: |*\color{yellow}0140:*| 00 B6 00 B4 |*\color{green}00 0A *|43 3F 00 00 00 08 00 00 00 01 
+
+Instrução: |*\color{cyan}JZ 102*|
+    PC: 254	ACC: 10 (0x000A)
+
+Instrução: |*\color{cyan}JP 0EC*|
+    PC: 236	ACC: 10 (0x000A)
+
+Instrução: |*\color{cyan}SC 120*|
+    PC: 290	ACC: 10 (0x000A)
+    MEM: |*\color{yellow}0190:*| B0 01 91 9C |*\color{green}B0 01 *|41 9C C0 02 30 00 00 0F 00 00 
+
+Instrução: |*\color{cyan}LD 194*|
+    PC: 290	ACC: -20479 (0xB001)
+    MEM: |*\color{yellow}0190:*| B0 01 91 9C |*\color{green}B0 01 *|41 9C C0 02 30 00 00 0F 00 00 
+
+Instrução: |*\color{cyan}JP 120*|
+    PC: 288	ACC: -20479 (0xB001)
+
+Instrução: |*\color{cyan}JP 0EE*|
+    PC: 238	ACC: -20479 (0xB001)
+
+Instrução: |*\color{cyan}SC 126*|
+    PC: 296	ACC: -20479 (0xB001)
+    MEM: |*\color{yellow}0150:*| 00 02 01 00 10 00 |*\color{green}91 9C *|00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}ST 156*|
+    PC: 296	ACC: -20479 (0xB001)
+    MEM: |*\color{yellow}0150:*| 00 02 01 00 10 00 |*\color{green}B0 01 *|00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}DV 152*|
+    PC: 298	ACC: 176 (0x00B0)
+
+Instrução: |*\color{cyan}PD 004*|
+    PC: 300	ACC: 176 (0x00B0)
+
+Instrução: |*\color{cyan}LD 156*|
+    PC: 302	ACC: -20479 (0xB001)
+    MEM: |*\color{yellow}0150:*| 00 02 01 00 10 00 |*\color{green}B0 01 *|00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}PD 004*|
+    PC: 304	ACC: -20479 (0xB001)
+
+Instrução: |*\color{cyan}JP 126*|
+    PC: 294	ACC: -20479 (0xB001)
+
+Instrução: |*\color{cyan}JP 0F0*|
+    PC: 240	ACC: -20479 (0xB001)
+
+Instrução: |*\color{cyan}SC 134*|
+    PC: 310	ACC: -20479 (0xB001)
+    MEM: |*\color{yellow}0150:*| 00 02 01 00 10 00 |*\color{green}B0 01 *|00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}ST 156*|
+    PC: 310	ACC: -20479 (0xB001)
+    MEM: |*\color{yellow}0150:*| 00 02 01 00 10 00 |*\color{green}B0 01 *|00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}AD 146*|
+    PC: 312	ACC: -3264 (0xF340)
+
+Instrução: |*\color{cyan}ST 146*|
+    PC: 314	ACC: -3264 (0xF340)
+    MEM: |*\color{yellow}0140:*| 00 B6 00 B4 00 0A |*\color{green}F3 40 *|00 00 00 08 00 00 00 01 
+
+Instrução: |*\color{cyan}LD 156*|
+    PC: 316	ACC: -20479 (0xB001)
+    MEM: |*\color{yellow}0150:*| 00 02 01 00 10 00 |*\color{green}B0 01 *|00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}JP 134*|
+    PC: 308	ACC: -20479 (0xB001)
+
+Instrução: |*\color{cyan}JP 0F2*|
+    PC: 242	ACC: -20479 (0xB001)
+    MEM: |*\color{yellow}0120:*| 00 EE |*\color{green}81 94 *|01 20 00 F0 91 56 71 52 C0 04 81 56 
+
+Instrução: |*\color{cyan}LD 122*|
+    PC: 242	ACC: -32364 (0x8194)
+    MEM: |*\color{yellow}0120:*| 00 EE |*\color{green}81 94 *|01 20 00 F0 91 56 71 52 C0 04 81 56 
+
+Instrução: |*\color{cyan}AD 150*|
+    PC: 244	ACC: -32362 (0x8196)
+
+Instrução: |*\color{cyan}ST 122*|
+    PC: 246	ACC: -32362 (0x8196)
+    MEM: |*\color{yellow}0120:*| 00 EE |*\color{green}81 96 *|01 20 00 F0 91 56 71 52 C0 04 81 56 
+
+Instrução: |*\color{cyan}LD 144*|
+    PC: 248	ACC: 10 (0x000A)
+    MEM: |*\color{yellow}0140:*| 00 B6 00 B4 |*\color{green}00 0A *|F3 40 00 00 00 08 00 00 00 01 
+
+Instrução: |*\color{cyan}SB 150*|
+    PC: 250	ACC: 8 (0x0008)
+
+Instrução: |*\color{cyan}ST 144*|
+    PC: 252	ACC: 8 (0x0008)
+    MEM: |*\color{yellow}0140:*| 00 B6 00 B4 |*\color{green}00 08 *|F3 40 00 00 00 08 00 00 00 01 
+
+Instrução: |*\color{cyan}JZ 102*|
+    PC: 254	ACC: 8 (0x0008)
+
+Instrução: |*\color{cyan}JP 0EC*|
+    PC: 236	ACC: 8 (0x0008)
+
+Instrução: |*\color{cyan}SC 120*|
+    PC: 290	ACC: 8 (0x0008)
+    MEM: |*\color{yellow}0190:*| B0 01 91 9C B0 01 |*\color{green}41 9C *|C0 02 30 00 00 0F 00 00 
+
+Instrução: |*\color{cyan}LD 196*|
+    PC: 290	ACC: 16796 (0x419C)
+    MEM: |*\color{yellow}0190:*| B0 01 91 9C B0 01 |*\color{green}41 9C *|C0 02 30 00 00 0F 00 00 
+
+Instrução: |*\color{cyan}JP 120*|
+    PC: 288	ACC: 16796 (0x419C)
+
+Instrução: |*\color{cyan}JP 0EE*|
+    PC: 238	ACC: 16796 (0x419C)
+
+Instrução: |*\color{cyan}SC 126*|
+    PC: 296	ACC: 16796 (0x419C)
+    MEM: |*\color{yellow}0150:*| 00 02 01 00 10 00 |*\color{green}B0 01 *|00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}ST 156*|
+    PC: 296	ACC: 16796 (0x419C)
+    MEM: |*\color{yellow}0150:*| 00 02 01 00 10 00 |*\color{green}41 9C *|00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}DV 152*|
+    PC: 298	ACC: 65 (0x0041)
+
+Instrução: |*\color{cyan}PD 004*|
+    PC: 300	ACC: 65 (0x0041)
+
+Instrução: |*\color{cyan}LD 156*|
+    PC: 302	ACC: 16796 (0x419C)
+    MEM: |*\color{yellow}0150:*| 00 02 01 00 10 00 |*\color{green}41 9C *|00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}PD 004*|
+    PC: 304	ACC: 16796 (0x419C)
+
+Instrução: |*\color{cyan}JP 126*|
+    PC: 294	ACC: 16796 (0x419C)
+
+Instrução: |*\color{cyan}JP 0F0*|
+    PC: 240	ACC: 16796 (0x419C)
+
+Instrução: |*\color{cyan}SC 134*|
+    PC: 310	ACC: 16796 (0x419C)
+    MEM: |*\color{yellow}0150:*| 00 02 01 00 10 00 |*\color{green}41 9C *|00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}ST 156*|
+    PC: 310	ACC: 16796 (0x419C)
+    MEM: |*\color{yellow}0150:*| 00 02 01 00 10 00 |*\color{green}41 9C *|00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}AD 146*|
+    PC: 312	ACC: 13532 (0x34DC)
+
+Instrução: |*\color{cyan}ST 146*|
+    PC: 314	ACC: 13532 (0x34DC)
+    MEM: |*\color{yellow}0140:*| 00 B6 00 B4 00 08 |*\color{green}34 DC *|00 00 00 08 00 00 00 01 
+
+Instrução: |*\color{cyan}LD 156*|
+    PC: 316	ACC: 16796 (0x419C)
+    MEM: |*\color{yellow}0150:*| 00 02 01 00 10 00 |*\color{green}41 9C *|00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}JP 134*|
+    PC: 308	ACC: 16796 (0x419C)
+
+Instrução: |*\color{cyan}JP 0F2*|
+    PC: 242	ACC: 16796 (0x419C)
+    MEM: |*\color{yellow}0120:*| 00 EE |*\color{green}81 96 *|01 20 00 F0 91 56 71 52 C0 04 81 56 
+
+Instrução: |*\color{cyan}LD 122*|
+    PC: 242	ACC: -32362 (0x8196)
+    MEM: |*\color{yellow}0120:*| 00 EE |*\color{green}81 96 *|01 20 00 F0 91 56 71 52 C0 04 81 56 
+
+Instrução: |*\color{cyan}AD 150*|
+    PC: 244	ACC: -32360 (0x8198)
+
+Instrução: |*\color{cyan}ST 122*|
+    PC: 246	ACC: -32360 (0x8198)
+    MEM: |*\color{yellow}0120:*| 00 EE |*\color{green}81 98 *|01 20 00 F0 91 56 71 52 C0 04 81 56 
+
+Instrução: |*\color{cyan}LD 144*|
+    PC: 248	ACC: 8 (0x0008)
+    MEM: |*\color{yellow}0140:*| 00 B6 00 B4 |*\color{green}00 08 *|34 DC 00 00 00 08 00 00 00 01 
+
+Instrução: |*\color{cyan}SB 150*|
+    PC: 250	ACC: 6 (0x0006)
+
+Instrução: |*\color{cyan}ST 144*|
+    PC: 252	ACC: 6 (0x0006)
+    MEM: |*\color{yellow}0140:*| 00 B6 00 B4 |*\color{green}00 06 *|34 DC 00 00 00 08 00 00 00 01 
+
+Instrução: |*\color{cyan}JZ 102*|
+    PC: 254	ACC: 6 (0x0006)
+
+Instrução: |*\color{cyan}JP 0EC*|
+    PC: 236	ACC: 6 (0x0006)
+
+Instrução: |*\color{cyan}SC 120*|
+    PC: 290	ACC: 6 (0x0006)
+    MEM: |*\color{yellow}0190:*| B0 01 91 9C B0 01 41 9C |*\color{green}C0 02 *|30 00 00 0F 00 00 
+
+Instrução: |*\color{cyan}LD 198*|
+    PC: 290	ACC: -16382 (0xC002)
+    MEM: |*\color{yellow}0190:*| B0 01 91 9C B0 01 41 9C |*\color{green}C0 02 *|30 00 00 0F 00 00 
+
+Instrução: |*\color{cyan}JP 120*|
+    PC: 288	ACC: -16382 (0xC002)
+
+Instrução: |*\color{cyan}JP 0EE*|
+    PC: 238	ACC: -16382 (0xC002)
+
+Instrução: |*\color{cyan}SC 126*|
+    PC: 296	ACC: -16382 (0xC002)
+    MEM: |*\color{yellow}0150:*| 00 02 01 00 10 00 |*\color{green}41 9C *|00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}ST 156*|
+    PC: 296	ACC: -16382 (0xC002)
+    MEM: |*\color{yellow}0150:*| 00 02 01 00 10 00 |*\color{green}C0 02 *|00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}DV 152*|
+    PC: 298	ACC: 192 (0x00C0)
+
+Instrução: |*\color{cyan}PD 004*|
+    PC: 300	ACC: 192 (0x00C0)
+
+Instrução: |*\color{cyan}LD 156*|
+    PC: 302	ACC: -16382 (0xC002)
+    MEM: |*\color{yellow}0150:*| 00 02 01 00 10 00 |*\color{green}C0 02 *|00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}PD 004*|
+    PC: 304	ACC: -16382 (0xC002)
+
+Instrução: |*\color{cyan}JP 126*|
+    PC: 294	ACC: -16382 (0xC002)
+
+Instrução: |*\color{cyan}JP 0F0*|
+    PC: 240	ACC: -16382 (0xC002)
+
+Instrução: |*\color{cyan}SC 134*|
+    PC: 310	ACC: -16382 (0xC002)
+    MEM: |*\color{yellow}0150:*| 00 02 01 00 10 00 |*\color{green}C0 02 *|00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}ST 156*|
+    PC: 310	ACC: -16382 (0xC002)
+    MEM: |*\color{yellow}0150:*| 00 02 01 00 10 00 |*\color{green}C0 02 *|00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}AD 146*|
+    PC: 312	ACC: -2850 (0xF4DE)
+
+Instrução: |*\color{cyan}ST 146*|
+    PC: 314	ACC: -2850 (0xF4DE)
+    MEM: |*\color{yellow}0140:*| 00 B6 00 B4 00 06 |*\color{green}F4 DE *|00 00 00 08 00 00 00 01 
+
+Instrução: |*\color{cyan}LD 156*|
+    PC: 316	ACC: -16382 (0xC002)
+    MEM: |*\color{yellow}0150:*| 00 02 01 00 10 00 |*\color{green}C0 02 *|00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}JP 134*|
+    PC: 308	ACC: -16382 (0xC002)
+
+Instrução: |*\color{cyan}JP 0F2*|
+    PC: 242	ACC: -16382 (0xC002)
+    MEM: |*\color{yellow}0120:*| 00 EE |*\color{green}81 98 *|01 20 00 F0 91 56 71 52 C0 04 81 56 
+
+Instrução: |*\color{cyan}LD 122*|
+    PC: 242	ACC: -32360 (0x8198)
+    MEM: |*\color{yellow}0120:*| 00 EE |*\color{green}81 98 *|01 20 00 F0 91 56 71 52 C0 04 81 56 
+
+Instrução: |*\color{cyan}AD 150*|
+    PC: 244	ACC: -32358 (0x819A)
+
+Instrução: |*\color{cyan}ST 122*|
+    PC: 246	ACC: -32358 (0x819A)
+    MEM: |*\color{yellow}0120:*| 00 EE |*\color{green}81 9A *|01 20 00 F0 91 56 71 52 C0 04 81 56 
+
+Instrução: |*\color{cyan}LD 144*|
+    PC: 248	ACC: 6 (0x0006)
+    MEM: |*\color{yellow}0140:*| 00 B6 00 B4 |*\color{green}00 06 *|F4 DE 00 00 00 08 00 00 00 01 
+
+Instrução: |*\color{cyan}SB 150*|
+    PC: 250	ACC: 4 (0x0004)
+
+Instrução: |*\color{cyan}ST 144*|
+    PC: 252	ACC: 4 (0x0004)
+    MEM: |*\color{yellow}0140:*| 00 B6 00 B4 |*\color{green}00 04 *|F4 DE 00 00 00 08 00 00 00 01 
+
+Instrução: |*\color{cyan}JZ 102*|
+    PC: 254	ACC: 4 (0x0004)
+
+Instrução: |*\color{cyan}JP 0EC*|
+    PC: 236	ACC: 4 (0x0004)
+
+Instrução: |*\color{cyan}SC 120*|
+    PC: 290	ACC: 4 (0x0004)
+    MEM: |*\color{yellow}0190:*| B0 01 91 9C B0 01 41 9C C0 02 |*\color{green}30 00 *|00 0F 00 00 
+
+Instrução: |*\color{cyan}LD 19A*|
+    PC: 290	ACC: 12288 (0x3000)
+    MEM: |*\color{yellow}0190:*| B0 01 91 9C B0 01 41 9C C0 02 |*\color{green}30 00 *|00 0F 00 00 
+
+Instrução: |*\color{cyan}JP 120*|
+    PC: 288	ACC: 12288 (0x3000)
+
+Instrução: |*\color{cyan}JP 0EE*|
+    PC: 238	ACC: 12288 (0x3000)
+
+Instrução: |*\color{cyan}SC 126*|
+    PC: 296	ACC: 12288 (0x3000)
+    MEM: |*\color{yellow}0150:*| 00 02 01 00 10 00 |*\color{green}C0 02 *|00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}ST 156*|
+    PC: 296	ACC: 12288 (0x3000)
+    MEM: |*\color{yellow}0150:*| 00 02 01 00 10 00 |*\color{green}30 00 *|00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}DV 152*|
+    PC: 298	ACC: 48 (0x0030)
+
+Instrução: |*\color{cyan}PD 004*|
+    PC: 300	ACC: 48 (0x0030)
+
+Instrução: |*\color{cyan}LD 156*|
+    PC: 302	ACC: 12288 (0x3000)
+    MEM: |*\color{yellow}0150:*| 00 02 01 00 10 00 |*\color{green}30 00 *|00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}PD 004*|
+    PC: 304	ACC: 12288 (0x3000)
+
+Instrução: |*\color{cyan}JP 126*|
+    PC: 294	ACC: 12288 (0x3000)
+
+Instrução: |*\color{cyan}JP 0F0*|
+    PC: 240	ACC: 12288 (0x3000)
+
+Instrução: |*\color{cyan}SC 134*|
+    PC: 310	ACC: 12288 (0x3000)
+    MEM: |*\color{yellow}0150:*| 00 02 01 00 10 00 |*\color{green}30 00 *|00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}ST 156*|
+    PC: 310	ACC: 12288 (0x3000)
+    MEM: |*\color{yellow}0150:*| 00 02 01 00 10 00 |*\color{green}30 00 *|00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}AD 146*|
+    PC: 312	ACC: 9438 (0x24DE)
+
+Instrução: |*\color{cyan}ST 146*|
+    PC: 314	ACC: 9438 (0x24DE)
+    MEM: |*\color{yellow}0140:*| 00 B6 00 B4 00 04 |*\color{green}24 DE *|00 00 00 08 00 00 00 01 
+
+Instrução: |*\color{cyan}LD 156*|
+    PC: 316	ACC: 12288 (0x3000)
+    MEM: |*\color{yellow}0150:*| 00 02 01 00 10 00 |*\color{green}30 00 *|00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}JP 134*|
+    PC: 308	ACC: 12288 (0x3000)
+
+Instrução: |*\color{cyan}JP 0F2*|
+    PC: 242	ACC: 12288 (0x3000)
+    MEM: |*\color{yellow}0120:*| 00 EE |*\color{green}81 9A *|01 20 00 F0 91 56 71 52 C0 04 81 56 
+
+Instrução: |*\color{cyan}LD 122*|
+    PC: 242	ACC: -32358 (0x819A)
+    MEM: |*\color{yellow}0120:*| 00 EE |*\color{green}81 9A *|01 20 00 F0 91 56 71 52 C0 04 81 56 
+
+Instrução: |*\color{cyan}AD 150*|
+    PC: 244	ACC: -32356 (0x819C)
+
+Instrução: |*\color{cyan}ST 122*|
+    PC: 246	ACC: -32356 (0x819C)
+    MEM: |*\color{yellow}0120:*| 00 EE |*\color{green}81 9C *|01 20 00 F0 91 56 71 52 C0 04 81 56 
+
+Instrução: |*\color{cyan}LD 144*|
+    PC: 248	ACC: 4 (0x0004)
+    MEM: |*\color{yellow}0140:*| 00 B6 00 B4 |*\color{green}00 04 *|24 DE 00 00 00 08 00 00 00 01 
+
+Instrução: |*\color{cyan}SB 150*|
+    PC: 250	ACC: 2 (0x0002)
+
+Instrução: |*\color{cyan}ST 144*|
+    PC: 252	ACC: 2 (0x0002)
+    MEM: |*\color{yellow}0140:*| 00 B6 00 B4 |*\color{green}00 02 *|24 DE 00 00 00 08 00 00 00 01 
+
+Instrução: |*\color{cyan}JZ 102*|
+    PC: 254	ACC: 2 (0x0002)
+
+Instrução: |*\color{cyan}JP 0EC*|
+    PC: 236	ACC: 2 (0x0002)
+
+Instrução: |*\color{cyan}SC 120*|
+    PC: 290	ACC: 2 (0x0002)
+    MEM: |*\color{yellow}0190:*| B0 01 91 9C B0 01 41 9C C0 02 30 00 |*\color{green}00 0F *|00 00 
+
+Instrução: |*\color{cyan}LD 19C*|
+    PC: 290	ACC: 15 (0x000F)
+    MEM: |*\color{yellow}0190:*| B0 01 91 9C B0 01 41 9C C0 02 30 00 |*\color{green}00 0F *|00 00 
+
+Instrução: |*\color{cyan}JP 120*|
+    PC: 288	ACC: 15 (0x000F)
+
+Instrução: |*\color{cyan}JP 0EE*|
+    PC: 238	ACC: 15 (0x000F)
+
+Instrução: |*\color{cyan}SC 126*|
+    PC: 296	ACC: 15 (0x000F)
+    MEM: |*\color{yellow}0150:*| 00 02 01 00 10 00 |*\color{green}30 00 *|00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}ST 156*|
+    PC: 296	ACC: 15 (0x000F)
+    MEM: |*\color{yellow}0150:*| 00 02 01 00 10 00 |*\color{green}00 0F *|00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}DV 152*|
+    PC: 298	ACC: 0 (0x0000)
+
+Instrução: |*\color{cyan}PD 004*|
+    PC: 300	ACC: 0 (0x0000)
+
+Instrução: |*\color{cyan}LD 156*|
+    PC: 302	ACC: 15 (0x000F)
+    MEM: |*\color{yellow}0150:*| 00 02 01 00 10 00 |*\color{green}00 0F *|00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}PD 004*|
+    PC: 304	ACC: 15 (0x000F)
+
+Instrução: |*\color{cyan}JP 126*|
+    PC: 294	ACC: 15 (0x000F)
+
+Instrução: |*\color{cyan}JP 0F0*|
+    PC: 240	ACC: 15 (0x000F)
+
+Instrução: |*\color{cyan}SC 134*|
+    PC: 310	ACC: 15 (0x000F)
+    MEM: |*\color{yellow}0150:*| 00 02 01 00 10 00 |*\color{green}00 0F *|00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}ST 156*|
+    PC: 310	ACC: 15 (0x000F)
+    MEM: |*\color{yellow}0150:*| 00 02 01 00 10 00 |*\color{green}00 0F *|00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}AD 146*|
+    PC: 312	ACC: 9453 (0x24ED)
+
+Instrução: |*\color{cyan}ST 146*|
+    PC: 314	ACC: 9453 (0x24ED)
+    MEM: |*\color{yellow}0140:*| 00 B6 00 B4 00 02 |*\color{green}24 ED *|00 00 00 08 00 00 00 01 
+
+Instrução: |*\color{cyan}LD 156*|
+    PC: 316	ACC: 15 (0x000F)
+    MEM: |*\color{yellow}0150:*| 00 02 01 00 10 00 |*\color{green}00 0F *|00 00 00 00 00 00 00 00 
+
+Instrução: |*\color{cyan}JP 134*|
+    PC: 308	ACC: 15 (0x000F)
+
+Instrução: |*\color{cyan}JP 0F2*|
+    PC: 242	ACC: 15 (0x000F)
+    MEM: |*\color{yellow}0120:*| 00 EE |*\color{green}81 9C *|01 20 00 F0 91 56 71 52 C0 04 81 56 
+
+Instrução: |*\color{cyan}LD 122*|
+    PC: 242	ACC: -32356 (0x819C)
+    MEM: |*\color{yellow}0120:*| 00 EE |*\color{green}81 9C *|01 20 00 F0 91 56 71 52 C0 04 81 56 
+
+Instrução: |*\color{cyan}AD 150*|
+    PC: 244	ACC: -32354 (0x819E)
+
+Instrução: |*\color{cyan}ST 122*|
+    PC: 246	ACC: -32354 (0x819E)
+    MEM: |*\color{yellow}0120:*| 00 EE |*\color{green}81 9E *|01 20 00 F0 91 56 71 52 C0 04 81 56 
+
+Instrução: |*\color{cyan}LD 144*|
+    PC: 248	ACC: 2 (0x0002)
+    MEM: |*\color{yellow}0140:*| 00 B6 00 B4 |*\color{green}00 02 *|24 ED 00 00 00 08 00 00 00 01 
+
+Instrução: |*\color{cyan}SB 150*|
+    PC: 250	ACC: 0 (0x0000)
+
+Instrução: |*\color{cyan}ST 144*|
+    PC: 252	ACC: 0 (0x0000)
+    MEM: |*\color{yellow}0140:*| 00 B6 00 B4 |*\color{green}00 00 *|24 ED 00 00 00 08 00 00 00 01 
+
+Instrução: |*\color{cyan}JZ 102*|
+    PC: 258	ACC: 0 (0x0000)
+    MEM: |*\color{yellow}0140:*| 00 B6 00 B4 00 00 |*\color{green}24 ED *|00 00 00 08 00 00 00 01 
+
+Instrução: |*\color{cyan}LD 146*|
+    PC: 258	ACC: 9453 (0x24ED)
+    MEM: |*\color{yellow}0140:*| 00 B6 00 B4 00 00 |*\color{green}24 ED *|00 00 00 08 00 00 00 01 
+
+Instrução: |*\color{cyan}ML 152*|
+    PC: 260	ACC: -4864 (0xED00)
+
+Instrução: |*\color{cyan}DV 152*|
+    PC: 262	ACC: 237 (0x00ED)
+
+Instrução: |*\color{cyan}ST 148*|
+    PC: 264	ACC: 237 (0x00ED)
+    MEM: |*\color{yellow}0140:*| 00 B6 00 B4 00 00 24 ED |*\color{green}00 ED *|00 08 00 00 00 01 
+
+Instrução: |*\color{cyan}LD 14C*|
+    PC: 266	ACC: 0 (0x0000)
+    MEM: |*\color{yellow}0140:*| 00 B6 00 B4 00 00 24 ED 00 ED 00 08 |*\color{green}00 00 *|00 01 
+
+Instrução: |*\color{cyan}SB 148*|
+    PC: 268	ACC: -237 (0xFF13)
+
+Instrução: |*\color{cyan}PD 004*|
+    PC: 270	ACC: -237 (0xFF13)
+
+Instrução: |*\color{cyan}HJ 000*|
+    PC: 0	ACC: -237 (0xFF13)
+    MEM: |*\color{yellow}0090:*| 00 8A 00 00 D1 90 D0 05 00 92 |*\color{green}00 00 *|00 01 00 02 
+
+|*\color{blue!60!white}>> Memória descarregada com sucesso*|
+
+|*\color{blue!60!white}>> Fim da simulação*|
