@@ -78,7 +78,7 @@ class VonNeumannMachine:
     Aciona a Unidade de Controle para o início da execução do programa
     """
     self.cpu.callback = self._program_callback
-    self.cpu.state.pc.value = 0x160
+    self.cpu.state.pc.value = 400
     OS.flags.clear()
     self.cpu.event_loop()
     
