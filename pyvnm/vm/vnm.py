@@ -29,8 +29,14 @@ class VonNeumannMachine:
     memory_size: int, 
     load_path: str | Path, 
     dump_path: str | Path = None, 
-    cpu_callback: CPUCallback = CPUCallback()
+    loader_callback: CPUCallback = None,
+    program_callback: CPUCallback = None,
+    dumper_callback: CPUCallback = None,
   ):
+    self._loader_callback = loader_callback or CPUCallback()
+    self._program_callback = program_callback or CPUCallback()
+    self._dumper_callback = dumper_callback or CPUCallback()
+    
     load_path = Path(load_path) if load_path else load_path
     dump_path = Path(dump_path) if dump_path else dump_path
     
@@ -46,7 +52,7 @@ class VonNeumannMachine:
     
     # inicializa CPU
     cpu_state = CPUState(memory=memory, devices=devices)
-    self.cpu = CPU(cpu_state, cpu_callback)
+    self.cpu = CPU(cpu_state)
     
     
   def boot(self):
@@ -62,14 +68,18 @@ class VonNeumannMachine:
     
     
   def load(self):
-    self.cpu.state.pc = self.cpu.state.loader_addr
-    self.execute_program()
+    self.cpu.callback = self._loader_callback
+    self.cpu.state.pc.value = self.cpu.state.loader_addr
+    OS.flags.clear()
+    self.cpu.event_loop()
     
     
   def execute_program(self):
     """
     Aciona a Unidade de Controle para o início da execução do programa
     """
+    self.cpu.callback = self._program_callback
+    self.cpu.state.pc.value = 0x160
     OS.flags.clear()
     self.cpu.event_loop()
     
@@ -93,7 +103,9 @@ class VonNeumannMachine:
     str
       Valor da memória codificado na base especificada
     """
+    self.cpu.callback = self._dumper_callback
     self.cpu.state.pc.value = self.cpu.state.dumper_addr
-    self.execute_program()
+    OS.flags.clear()
+    self.cpu.event_loop()
     hd = self.cpu.state.devices.get(4)
     hd.save()

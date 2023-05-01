@@ -23,8 +23,9 @@ class Colors:
   LIGHT_YELLOW = ''
   LIGHT_MAGENTA = ''
   RESET = ''
-  
-  
+
+    
+
 class DebugCallback(CPUCallback):
   def _hexdump_line(self, state: CPUState, line: int, highlight: int):
     print(Colors.LIGHT_YELLOW + Word(line * 16).hex + ':' + Colors.RESET + ' ', end='')
@@ -38,7 +39,11 @@ class DebugCallback(CPUCallback):
       else:
         print(w.hex[:2] + ' ' + w.hex[2:], ' ', sep='', end='')
     print()
-  
+    
+    
+  def on_event_loop_begin(self, state: CPUState):
+    heading('Depuração', '~')
+
   
   def on_instruction_begin(self, state: CPUState):
     instruction = state.memory.read(state.pc.uint)
@@ -75,10 +80,17 @@ def heading(msg: str, sep: str = '-'):
     
     
     
-def show_registers(state: CPUState):
+def machine_summary(state: CPUState):
+  print()
+  heading('Memória')
+  state.memory.hexdump(Colors())
+  print()
+  heading('Registradores')
   print('Acumulador:\t', format(state.acc.value or 0, '0>4x'))
   print('PC:\t\t', format(state.pc.value or 0, '0>4x'))
-
+  print()
+    
+    
 
 def cli():
   p = argparse.ArgumentParser(prog='python3 main.py', description='Simulador da Máquina de Von Neumann')
@@ -95,13 +107,6 @@ def cli():
       'hexadecimal. Caso a extensão seja `.bin`, o arquivo será considerado '
       'um programa-objeto absoluto na base binária e será carregador na '
       'memória por um carregador binário.'
-    )
-  )
-  p.add_argument(
-    '-c',
-    action='store_true',
-    help=(
-      'Usa cores na saída do terminal para facilitar a legibilidade da saída.'
     )
   )
   p.add_argument(
@@ -125,6 +130,22 @@ def cli():
     help=(
       'Executa o programa no modo depuração. Este modo exibe detalhadamente '
       'as mudanças nos registradores e na memória em cada instrução'
+    )
+  )
+  p.add_argument(
+    '-s', '--sysdebug',
+    action='store_true',
+    help=(
+      'Executa o programa no modo depuração de sistema. Este modo exibe '
+      'detalhadamente as mudanças nos registradores e na memória em cada '
+      'instrução durante a execução dos programas de sistema LOADER e DUMPER'
+    )
+  )
+  p.add_argument(
+    '-c',
+    action='store_true',
+    help=(
+      'Usa cores na saída do terminal para facilitar a legibilidade da saída.'
     )
   )
   p.add_argument(
@@ -181,11 +202,17 @@ def main():
     Colors.LIGHT_YELLOW = '|*\color{yellow}'
     Colors.LIGHT_MAGENTA = '|*\color{magenta}'
     Colors.RESET = '*|'
-      
+  
+  program_callback = None
+  loader_callback = None
+  dumper_callback = None
+  
   if args.debug:
-    callback = DebugCallback()
-  else:
-    callback = CPUCallback()
+    program_callback = DebugCallback()
+  
+  if args.sysdebug:
+    loader_callback = DebugCallback()
+    dumper_callback = DebugCallback()
   
   heading('Simulador da Máquina de Von Neumann', '=')
   print()
@@ -194,20 +221,32 @@ def main():
     memory_size=int(args.m), 
     load_path=program_path,
     dump_path=args.dump,
-    cpu_callback=callback
+    loader_callback=loader_callback,
+    dumper_callback=dumper_callback,
+    program_callback=program_callback,
   )
   input_base = 'x' if program_path.suffix == '.hex' else 'b'
+  
+  print(Colors.LIGHT_BLUE + '>> Iniciando boot do sistema' + Colors.RESET)
+  print()
+  
   vnm.boot()
   
-  print(Colors.LIGHT_BLUE + '>> Programa carregado na memória com sucesso' + Colors.RESET)
+  print(Colors.LIGHT_BLUE + '>> Programas de sistema carregados com sucesso na memória' + Colors.RESET)
   print()
-  heading('Memória')
-  vnm.cpu.state.memory.hexdump(Colors())
+  
+  machine_summary(vnm.cpu.state)
+  
+  print(Colors.LIGHT_BLUE + '>> Iniciando carregamento do programa na memória' + Colors.RESET)
   print()
-  heading('Registradores')
-  show_registers(vnm.cpu.state)
+  
+  vnm.load()
   
   print()
+  print(Colors.LIGHT_BLUE + '>> Programa carregado na memória com sucesso' + Colors.RESET)
+  
+  machine_summary(vnm.cpu.state)
+  
   print(Colors.LIGHT_BLUE + '>> Iniciando execução do programa' + Colors.RESET)
   print()
   
@@ -219,19 +258,22 @@ def main():
     
     if OS.LOADER_CHECKSUM_MISSMATCH in OS.flags:
       print(Colors.LIGHT_RED + '>> O programa não pôde ser carregado pois o checksum calculado não corresponde ao informado' + Colors.RESET)
+  else:
+    print()
+    print(Colors.LIGHT_BLUE + '>> Fim da execução do programa' + Colors.RESET)
   
-  print()
-  print(Colors.LIGHT_BLUE + '>> Fim da execução do programa' + Colors.RESET)
-  print()
-  heading('Memória')
-  vnm.cpu.state.memory.hexdump(Colors())
-  print()
-  heading('Registradores')
-  show_registers(vnm.cpu.state)
-  
+  machine_summary(vnm.cpu.state)
   
   if args.dump:
+    print()
+    print(Colors.LIGHT_BLUE + f'>> Iniciando dump da memória' + Colors.RESET)
+    print()
+    
     vnm.dump()
+    
+    print()
+    print(Colors.LIGHT_BLUE + f'>> Memória descarregada com sucesso em {args.dump}' + Colors.RESET)
+    print()
   
   print()
   print(Colors.LIGHT_BLUE + '>> Fim da simulação' + Colors.RESET)
