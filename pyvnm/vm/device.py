@@ -77,13 +77,11 @@ class HardDisk(Device):
     
     
   def write(self, data: Word):
-    if len(self.output_data) > 0:
-      self.output_data += ' '
-    self.output_data += data.second_byte.hex
+    self.output_data += data.second_byte.hex + ' '
     
     
   def save(self):
-    self.output_path.write_text(self.output_data.strip())
+    self.output_path.write_text(self.output_data.rstrip())
     
 
 
