@@ -269,9 +269,7 @@ class CPU:
     operand : int
       Endereço da memória
     """
-    # print('\n', self.state.acc.value, '*', self.state.memory.read(operand).value, '=', self.state.acc.value * self.state.memory.read(operand).value)
     self.state.acc.value *= self.state.memory.read(operand).value
-    # print(Word(self.state.acc.value * self.state.memory.read(operand).value).bin)
     
     
   def _action_DV(self, operand: int):
