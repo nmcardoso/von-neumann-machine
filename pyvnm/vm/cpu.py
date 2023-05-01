@@ -113,7 +113,7 @@ class CPU:
   initial_state: MachineState
     Estado inicial da máquina, usualmente gerado pelo carregador
   """
-  def __init__(self, initial_state: CPUState, callback: CPUCallback = CPUCallback()):
+  def __init__(self, initial_state: CPUState, callback: CPUCallback = None):
     self._action_switcher = {
       InstructionSet.JP: self._action_JP,
       InstructionSet.RS: self._action_RS,
@@ -131,7 +131,7 @@ class CPU:
       InstructionSet.PD: self._action_PD,
       InstructionSet.OS: self._action_OS,
     }
-    self._callback = callback
+    self.callback = callback or CPUCallback()
     self.state = initial_state
     
   
@@ -141,19 +141,19 @@ class CPU:
     registrador PC.
     """
     stop_signals = {OS.SIG_TERM, OS.SIG_TRAP}
-    self._callback.on_event_loop_begin(self.state)
+    self.callback.on_event_loop_begin(self.state)
     while len(stop_signals & OS.flags) == 0:
       curr_inst = self.state.memory.read(self.state.pc.value)
       # print(self.state.pc.value // 2 + 2, '\t', InstructionSet.get_mnemonic(curr_inst.opcode), curr_inst.operand // 2 + 2, end='')
       if not curr_inst.is_instruction():
         break
-      self._callback.on_instruction_begin(self.state)
+      self.callback.on_instruction_begin(self.state)
       action = self._action_switcher.get(curr_inst.opcode)
       action(curr_inst.operand)
-      self._callback.on_instruction_end(self.state)
+      self.callback.on_instruction_end(self.state)
       # print('\t\tacc:', self.state.acc.int)
       self._increment_pc()
-    self._callback.on_event_loop_end(self.state)
+    self.callback.on_event_loop_end(self.state)
   
   
   def _increment_pc(self):
