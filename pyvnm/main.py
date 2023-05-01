@@ -60,7 +60,7 @@ class DebugCallback(CPUCallback):
   def on_instruction_end(self, state: CPUState):
     instruction = state.memory.read(state.pc.uint)
     print(f'    PC: {state.pc.uint}\tACC: {state.acc.int} (0x{state.acc.hex})')
-    if instruction.opcode == InstructionSet.ST or instruction.opcode == InstructionSet.LD:
+    if (instruction.opcode == InstructionSet.ST or instruction.opcode == InstructionSet.LD) and instruction.operand < state.memory.size:
       line = int(np.floor(instruction.operand / 16))
       highlight = instruction.operand
       print('    MEM: ', end='')
@@ -272,7 +272,7 @@ def main():
     
     vnm.dump()
     
-    print(Colors.LIGHT_BLUE + f'>> Memória descarregada com sucesso em {args.dump}' + Colors.RESET)
+    print(Colors.LIGHT_BLUE + f'>> Memória descarregada com sucesso' + Colors.RESET)
     print()
   
   print(Colors.LIGHT_BLUE + '>> Fim da simulação' + Colors.RESET)
