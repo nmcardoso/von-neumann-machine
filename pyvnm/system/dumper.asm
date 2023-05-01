@@ -1,13 +1,13 @@
-        ORG     196             @ carrega dumper após o loader
+        ORG     208             @ carrega dumper após o loader
 MAIN    LD      MEM_START       @ carrega posição inicial proveniente do loader
         SC      WRITE_BYTES     @ grava os bytes da posição inicial no disco
-        LD      176             @ carrega número de bytes proveniente do loader
+        LD      0xb4            @ carrega número de bytes proveniente do loader
         PD      0x4             @ grava o byte menos signif. de N_BYES no disco
         SB      NUM_2           @ subtrai os 2 bytes de endereço
         SB      NUM_1           @ subtrai 1 byte de N_BYTES
         SB      NUM_1           @ subtrai 1 byte correspondente ao checksum
         ST      BYTES_RESTANTES @ salva no contador de bytes restantes
-        LD      178             @ carrega posição inicial proveninete do loader
+        LD      0xb6            @ carrega posição inicial proveninete do loader
         SC      CREATE_LD       @ cria função LD apontando para posição inicial
 LOOP    SC      WRITE_BYTES     @ inicia o loop de escrita no disco
         SC      INC_CHECKSUM    @ incrementa o checksum
@@ -50,7 +50,7 @@ INC_CHECKSUM                    @ subrotina: inc. checksum sem causar side-effec
         ST      CHECKSUM        @ armazena novo valor do checksum
         LD      TMP             @ recarrega valor inicial do acc (evita SE)
         RS      INC_CHECKSUM
-MEM_START       DATA    178     @ endereço onde o loader armazena a posição inicial do programa carregado
+MEM_START       DATA    0xb6    @ endereço onde o loader armazena a posição inicial do programa carregado
 BYTES_RESTANTES DATA    0       @ contador de bytes restantes
 CHECKSUM        DATA    0       @ acumulador checksum
 CHECKSUM_BYTE   DATA    0       @ byte menos significativo do checksum
@@ -61,3 +61,4 @@ NUM_2           DATA    2       @ constante 2
 NUM_256         DATA    256     @ constante 256 = 2^8
 NUM_4096        DATA    4096    @ constante 4096 = 2^12
 TMP             DATA    0       @ variavel de trabalho temporária
+                END

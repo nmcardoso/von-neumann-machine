@@ -1,4 +1,4 @@
-        ORG      4      @ inicia carregamento na pos 4 da memória
+        ORG      0x160
 MAIN    JZ       JP1    @ pula pra JP1 se acc = 0
         JP       JP2    @ pula pra JP2
 

@@ -1,4 +1,4 @@
-        ORG     0x20
+        ORG     0x160
 MAIN    LD      NUM_8   @ carrega o numero 8 no acumulador
         ST      4       @ guarda o número 8 na posição 4 da memória
         LD      NUM_2   @ carrega o número 2 no acumulador

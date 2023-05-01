@@ -1,4 +1,4 @@
-        ORG     4       @ inicia carregamento na pos 4 da memória
+        ORG     0x160
 MAIN    SC      FUNC_A  @ chama função A
         HJ      0x1     @ termina o programa
 

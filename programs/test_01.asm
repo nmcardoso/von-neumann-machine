@@ -1,4 +1,4 @@
-        ORG     224
+        ORG     0x160
 MAIN    GD      1
         ST      1
         GD      1

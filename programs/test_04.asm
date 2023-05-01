@@ -1,4 +1,4 @@
-        ORG     0x6      @ Define o endereço de início do programa
+        ORG     0x160    @ Define o endereço de início do programa
 MAIN    GD      0b1      @ Aciona dispositivo de entrada (teclado) para obter um dado (valor 1) e armazena no acumulador
         ST      0x1      @ Armazena o valor do acumulador na posição de memória 0x1
         SB      0x1      @ Subtrai o valor armazenado na posição de memória 0x1 do conteúdo do acumulador

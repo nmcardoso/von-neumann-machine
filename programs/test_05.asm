@@ -1,4 +1,4 @@
-            ORG       0x16          @ Subrotina chamando outra Subrotina
+            ORG       0x160         @ Subrotina chamando outra Subrotina
 MAIN        SC        APRESENTACAO  @ imprime apresentacao
             HJ        0 
 APRESENTACAO
