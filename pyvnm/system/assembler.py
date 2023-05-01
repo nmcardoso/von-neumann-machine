@@ -97,6 +97,9 @@ class Assembler:
     # inclusão do checksum
     cs = self._compute_checksum(program_object)
     program_object += ' ' + cs.to(self._output_base)
+    
+    if self._output_path:
+      self._output_path.write_text(program_object)
 
     return program_object
   
@@ -209,8 +212,8 @@ class Assembler:
 if __name__ == '__main__':
   from pathlib import Path
 
-  prog = Path(__file__).parent.parent.parent / 'programs' / 'test_01.asm'
-  # prog = Path(__file__).parent / 'loader.asm'
+  prog = Path(__file__).parent.parent.parent / 'programs' / 'test_arit.asm'
+  # prog = Path(__file__).parent / 'dumper.asm'
   prog = prog.read_text()
   a = Assembler(prog, output_base='x')
   obj = a.assemble()
