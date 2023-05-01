@@ -1,4 +1,4 @@
-        ORG     0x160
+        ORG     400
 MAIN    GD      1
         ST      1
         GD      1

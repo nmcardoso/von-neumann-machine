@@ -1,4 +1,4 @@
-        ORG     0x160
+        ORG     400
 MAIN    GD      0b1
         AD      X
         SB      Y

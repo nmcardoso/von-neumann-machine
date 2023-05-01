@@ -1,4 +1,4 @@
-            ORG       0x160
+            ORG       400
 MAIN_LOOP   SC        MENU          @ imprime menu de opções
             GD        1             @ pergunta opção
             ST        OPT           @ salva opção

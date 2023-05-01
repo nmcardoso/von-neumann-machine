@@ -1,4 +1,4 @@
-        ORG     0x160
+        ORG     400
 MAIN    AD      X
         AD      Y
         PD      2

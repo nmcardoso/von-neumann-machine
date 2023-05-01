@@ -1,4 +1,4 @@
-        ORG     0x160
+        ORG     400
 MAIN    LD      NUM_8   @ carrega o numero 8 no acumulador
         ST      4       @ guarda o número 8 na posição 4 da memória
         LD      NUM_2   @ carrega o número 2 no acumulador
@@ -12,6 +12,7 @@ MAIN    LD      NUM_8   @ carrega o numero 8 no acumulador
         ST      9       @ guarda o resultado 3 na posição 9
         ML      NUM_8   @ multiplica o acumulador pelo número 8 (Acc = 24(decimal) = 18(hexadecimal))
         ST      10      @ guarda o resultado 18 na posiçao 10 
+        HJ      0x0     @ termina execução
 NUM_0   DATA    0
 NUM_2   DATA    2
 NUM_8   DATA    8

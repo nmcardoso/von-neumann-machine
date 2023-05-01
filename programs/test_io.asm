@@ -1,4 +1,4 @@
-        ORG      0x160
+        ORG      400
 MAIN    LD       A      @ carrega dado de A no acumulador
         ST       B      @ armazena valor carregado na memoria
         PD       3      @ adiciona letra P ao buffer do Monitor
