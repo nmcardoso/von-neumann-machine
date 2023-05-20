@@ -7,4 +7,5 @@ API Reference
    :recursive:
 
    pyvnm.vm
+   pyvnm.system
 

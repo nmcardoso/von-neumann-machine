@@ -43,10 +43,41 @@ class Word:
   
   
   def is_instruction(self) -> bool:
+    """
+    Verifica se a palavra é uma possível instrução válida
+
+    Returns
+    -------
+    bool
+      ``True`` se a palavra representar uma possível instrução, ``False``
+      caso contrário
+    """
     return self._value is not None
   
   
-  def to(self, base: Literal['x', 'hex', 'b', 'bin', 'd', 'dec', 'int', 'uint']):
+  def to(
+    self, 
+    base: Literal['x', 'hex', 'b', 'bin', 'd', 'dec', 'int', 'uint']
+  ) -> int | str:
+    """
+    Converte a palavra para uma base especificada
+
+    Parameters
+    ----------
+    base: str
+      A base numérica a ser convertida. As bases numéricas suportadas são:
+      - hexadecimal: ``'x'`` ou ``'hex'``
+      - binária: ``'b'`` ou ``'bin'``
+      - decimal com sinal: ``'d'``, ``'dec'`` ou ``'int'``
+      - decimal sem sinal: ``'uint'``
+
+    Returns
+    -------
+    str or int
+      Uma string binária caso a base escolhida seja ``'b'``, uma string
+      hexadecimanl caso a base escolhida seja ``'h'`` ou o valor inteiro
+      da palavra caso a base escolhida seja ``'d'`` ou ``'uint'``
+    """
     if base in ('x', 'hex'):
       return self.hex
     elif base in ('b', 'bin'):
@@ -125,6 +156,17 @@ class Word:
   
   @property
   def two_complement(self) -> int:
+    """
+    Calcula o complemento de dois da palavra condicionalmente. Isto é, o
+    o complemento de dois só é retornado se o valor da palavra for negativo,
+    caso seja positivo, o próprio valor da palavra é retornado. Isto é,
+    este método não modifica o valor numérico da palavra em nenhuma situação
+
+    Returns
+    -------
+    int
+      O valor inteiro com sinal da palavra
+    """
     if (self.uint & (1 << (self.size - 1))) != 0:
       return self.uint - (1 << self.size)
     return self.uint
@@ -158,6 +200,22 @@ class Word:
   
   @staticmethod
   def from_instruction(opcode: int, operand: int):
+    """
+    Método fábrica que cria uma instânica de palavra a partir dos componentes
+    de uma instrução: opcode e operando.
+
+    Parameters
+    ----------
+    opcode : int
+      O valor inteiro do opcode da instrução
+    operand : int
+      O valor inteiro do operando
+
+    Returns
+    -------
+    Word
+      Uma instância de ``Word``.
+    """
     opcode_bits = format(opcode, f'0>{4}b')[-4:]
     operand_bits = format(operand, f'0>{12}b')[-12:]
     instruction_bits = '0b' + opcode_bits + operand_bits
@@ -267,7 +325,7 @@ class Memory:
   
   def write(self, address: int, data: Word):
     """
-    Escrever conteúdo em um endereço específica da memória
+    Escreve uma palavra (dois bytes) em um endereço específica da memória
 
     Parameters
     ----------
@@ -282,10 +340,29 @@ class Memory:
       
       
   def write_byte(self, address: int, data: Byte):
+    """
+    Escreve um único byte em um endereço específica da memória
+
+    Parameters
+    ----------
+    address : int
+      Endereço a ser escrito
+    data: Word | List[Word]
+      Palavra ou lista de palavras a serem escritas na memória
+    """
     self._data[address] = list(map(int, data.bin))
     
     
   def hexdump(self, colors):
+    """
+    Imprime o conteúdo da memória em formato tabular usando a base hexadecimal. 
+    Inspirado no programa GNU Hexdump.
+
+    Parameters
+    ----------
+    colors : object
+      Objeto usado para colorir o texto
+    """
     print(' '*6, sep='', end='')
     for i in range(16):
       print(colors.LIGHT_YELLOW + format(i, '0>1x') + colors.RESET + '  ', sep='', end='')

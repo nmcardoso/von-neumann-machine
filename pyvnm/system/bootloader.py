@@ -57,11 +57,39 @@ class BootLoader:
     return initial_addr
     
   
-  def _to_byte(self, value) -> Byte:
+  def _to_byte(self, value: str) -> Byte:
+    """
+    Método fábrica auxiliar usado para criar instâncias do objeto Byte
+    a partir de um valor
+
+    Parameters
+    ----------
+    value : int
+      representação hexadecimal ou binária do byte
+
+    Returns
+    -------
+    Byte
+      Instância do objeto Byte que representa o valor estipulado
+    """
     b = '0x' + value if self._input_base == 'x' else '0b' + value
     return Byte(b)
   
   
-  def _to_word(self, value) -> Word:
+  def _to_word(self, value: str) -> Word:
+    """
+    Método fábrica auxiliar usado para criar instâncias do objeto Word
+    a partir de um valor
+
+    Parameters
+    ----------
+    value : int
+      representação hexadecimal ou binária da palavra
+
+    Returns
+    -------
+    Byte
+      Instância do objeto Word que representa o valor estipulado
+    """
     w = '0x' + value if self._input_base == 'x' else '0b' + value
     return Word(w)

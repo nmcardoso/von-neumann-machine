@@ -7,18 +7,28 @@ from ..vm.cpu import InstructionSet
 from ..vm.memory import Byte, Word
 
 LINE_PATTERN = r'^[ \t\f]*@.*$|(\w+)?[ \t\f]+(\w+)[ \t\f]*(\w+)?.*$'
+"""Padrão separa a linha em três grupos: rótulo, mnemônico e operando"""
 LINE_PATTERN = r'^[ \t\f]*@.*$|^(?:(\w+)?[ \t\f]*)?(?:(\w+)[ \t\f]*)?(\w+)?.*$'
+"""Padrão separa a linha em três grupos: rótulo, mnemônico e operando"""
 OPERAND_PATTERN = r'^(?:0[xb])?\d+$|^0c\w$'
+"""Padrão que detecta um operando no formato 0xA, 0b0110 ou 0cD"""
 
 
 @dataclass
 class LineTokens:
+  """
+  Entidade que representa uma linha de código separada em tokens
+  """
   label: str = None
+  """Valor do campo rótulo (primeiro campo)"""
   mnemonic: str = None
+  """Valor do campo mnemônico (segundo campo)"""
   operand: str = None
+  """Valor do campo operando (terceiro campo)"""
   index: int = None
+  """Índice da linha, posição da linha relativa ao início do programa"""
   mem_addr: int = None
-  empty: bool = None
+  """Endereço da linha na memória"""
   
   
 class AssemblerInstructions:
@@ -45,6 +55,15 @@ class Assembler:
   
     
   def assemble(self) -> str:
+    """
+    Executa montagem absoluta do código-fonte. A saída deste método é um
+    programa-objeto absoluto
+
+    Returns
+    -------
+    str
+      Programa objeto absoluto
+    """
     labels, instructions = self._tokenize() # primeiro passo
     self._decode_operands(lbl_tokens=labels, inst_tokens=instructions) # segundo passo
     
@@ -105,6 +124,20 @@ class Assembler:
   
   
   def _compute_checksum(self, program: str) -> Byte:
+    """
+    Calcula o checksum de um programa-objeto no formato de uma string
+
+    Parameters
+    ----------
+    program : str
+      Programa objeto no formato string com cada instrução separada por um
+      espaço
+
+    Returns
+    -------
+    Byte
+      Valor no checksum
+    """
     s = 0
     for byte in program.split(' '):
       s += Byte('0x' + byte).uint
@@ -112,6 +145,17 @@ class Assembler:
     
     
   def _tokenize(self) -> Tuple[List[LineTokens], List[LineTokens]]:
+    """
+    Transforma o código-fonte recebido em uma lista de tokens
+
+    Returns
+    -------
+    List[LineTokens], List[LineTokens]
+      Tupla no formato (labels, instrucions), onde instructions é uma lista
+      contendo todas as linhas do programa tokenizadas e labels é um subconjunto
+      de instructions onde ``Linetokens.label`` é diferente de ``None``.
+      A única vantagem da lista ``labels`` é poder iterar sob uma lista menor.
+    """
     labels = []
     instructions = []
     
