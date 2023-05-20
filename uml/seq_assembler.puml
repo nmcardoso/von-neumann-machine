@@ -1,0 +1,31 @@
+@startuml seq_assembler
+actor Usuário
+
+participant MontadorRealocavel
+participant MontadorAbsoluto
+
+activate Usuário
+Usuário -> MontadorRealocavel: solicita montagem do programa
+
+activate MontadorRealocavel
+MontadorRealocavel -> MontadorRealocavel: lê as instruções do programa
+MontadorRealocavel -> MontadorRealocavel: verifica a sintaxe e a semântica das instruções
+MontadorRealocavel -> MontadorRealocavel: aloca endereços relativos às instruções
+MontadorRealocavel -> MontadorRealocavel: gera o código objeto
+MontadorRealocavel -> Usuário: retorna o código objeto realocável
+
+deactivate MontadorRealocavel
+
+activate Usuário
+Usuário -> MontadorAbsoluto: solicita montagem do programa
+
+activate MontadorAbsoluto
+MontadorAbsoluto -> MontadorAbsoluto: lê as instruções do programa
+MontadorAbsoluto -> MontadorAbsoluto: verifica a sintaxe e a semântica das instruções
+MontadorAbsoluto -> MontadorAbsoluto: aloca endereços absolutos às instruções
+MontadorAbsoluto -> MontadorAbsoluto: gera o código objeto
+MontadorAbsoluto -> Usuário: retorna o código objeto absoluto
+
+deactivate MontadorAbsoluto
+
+@enduml
