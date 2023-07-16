@@ -1,0 +1,36 @@
+@startuml terminal_LRL
+start
+  :Lê o parâmetro P
+  Lê os parâmetros Q1-Qn
+  Lê o parâmetro R;
+  note right
+    P: nome do arquivo de saída do ligador
+    Q1-Qn: nome dos arquivos dos códigos-objeto relocáveis
+    R: base de relocação
+  end note
+  :filesystem <- Terminal.user.get_fs()
+  files <- [], i <- 0;
+  note right
+    Acessa o sistema de arquivos subjacente ao usuário
+    logado e inicializa o vetor files e o contador i
+  end note
+  while (enquanto i < n ?)
+    :files[i] <- filesystem.read(Qi)
+    i <- i + 1;
+  endwhile
+  note right
+    Lê os códigos relocáveis
+  end note
+  :absolute_code <- Terminal.vnm.link(files, R);
+  note right
+    Gera o código absoludo a partir da ligação dos
+    códigos relocáveis especificados por Qi a partir
+    do endereço R
+  end note
+  :filesystem.write(P, absolute_code);
+  note right
+    Escreve o código-objeto absoluto gerado no 
+    arquivo especificado pelo parâmetro P
+  end note
+stop
+@enduml

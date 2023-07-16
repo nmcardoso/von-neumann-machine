@@ -1,0 +1,37 @@
+@startuml gpt
+
+class MontadorRelocavel {
+  - nomeArquivo: string
+  - codigoObjeto: string
+  - tabelaSimbolos: Map<string, int>
+  - tabelaRelocacao: List<int>
+  + MontadorRelocavel(nomeArquivo: string)
+  + montar(): void
+  + obterCodigoObjeto(): string
+  + obterTabelaSimbolos(): Map<string, int>
+  + obterTabelaRelocacao(): List<int>
+}
+
+class Ligador {
+  - arquivosObjeto: List<string>
+  - codigoLigado: string
+  - tabelaSimbolosGlobal: Map<string, int>
+  + Ligador(arquivosObjeto: List<string>)
+  + ligar(): void
+  + obterCodigoLigado(): string
+  + obterTabelaSimbolosGlobal(): Map<string, int>
+}
+
+class Relocador {
+  - codigoRelocado: string
+  - tabelaRelocacaoGlobal: List<int>
+  + Relocador(codigoLigado: string, tabelaRelocacaoGlobal: List<int>)
+  + relocar(): void
+  + obterCodigoRelocado(): string
+  + obterTabelaRelocacaoGlobal(): List<int>
+}
+
+MontadorRelocavel --> Ligador
+Ligador --> Relocador
+
+@enduml

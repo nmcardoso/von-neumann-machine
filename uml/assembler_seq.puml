@@ -1,0 +1,45 @@
+@startuml assembler_seq
+
+actor Programador
+participant Montador
+participant Analisador
+participant GeradorCodigo
+participant ResolvedorReferencias
+
+Programador -> Montador: Código-fonte assembly
+activate Montador
+
+Montador -> Analisador: Passo 1 - Análise Léxica e Sintática
+activate Analisador
+Analisador -> Analisador: Realizar análise
+alt Erros?
+    Analisador -> Montador: Erros encontrados
+    deactivate Analisador
+else
+    Analisador -> Montador: Tabela de Símbolos
+    deactivate Analisador
+
+    Montador -> GeradorCodigo: Gerar Código Objeto
+    activate GeradorCodigo
+    GeradorCodigo -> GeradorCodigo: Processar código
+    deactivate GeradorCodigo
+
+    Montador -> ResolvedorReferencias: Passo 2 - Resolução de Referências
+    activate ResolvedorReferencias
+    ResolvedorReferencias -> ResolvedorReferencias: Resolver referências
+    deactivate ResolvedorReferencias
+    alt Erros?
+        ResolvedorReferencias -> Montador: Erros encontrados
+        deactivate ResolvedorReferencias
+    else
+        ResolvedorReferencias -> GeradorCodigo: Gerar Código Final
+        activate GeradorCodigo
+        GeradorCodigo -> GeradorCodigo: Processar código final
+        deactivate GeradorCodigo
+
+        Montador -> Programador: Código-objeto absoluto
+        deactivate Montador
+    end
+end
+
+@enduml

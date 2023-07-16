@@ -1,25 +1,37 @@
 @startuml project
 !include classes.iuml
 
-pyvnm.vm.control.ControlUnit <.. pyvnm.vm.isa.InstructionSet
-pyvnm.vm.device.Keyboard ..|> pyvnm.vm.device.Device
-pyvnm.vm.device.Screen ..|> pyvnm.vm.device.Device
-pyvnm.vm.device.CharScreen ..|> pyvnm.vm.device.Device
-pyvnm.vm.device.Device <|. pyvnm.vm.device.HardDrive
-' pyvnm.vm.isa.Instruction --|> pyvnm.vm.isa.Word
-pyvnm.vm.control.ControlUnit --* pyvnm.vm.vnm.VonNeumannMachine : control_unit
-pyvnm.vm.device.DeviceBus --o pyvnm.vm.state.MachineState : devices
-pyvnm.vm.device.Device --o pyvnm.vm.device.DeviceBus : devices
-pyvnm.vm.isa.Word --o pyvnm.vm.state.MachineState : acc
-pyvnm.vm.isa.Word --o pyvnm.vm.state.MachineState : pc
-pyvnm.vm.isa.Word ..> pyvnm.vm.memory.Memory
-pyvnm.vm.memory.Memory --o pyvnm.vm.state.MachineState : memory
-pyvnm.vm.state.MachineState o- pyvnm.vm.control.ControlUnit : state
-' pyvnm.vm.state.MachineState --o pyvnm.system.loader.Dumper : state
-' pyvnm.vm.state.MachineState --o pyvnm.system.loader.Loader : state
-pyvnm.vm.state.MachineState --* pyvnm.vm.vnm.VonNeumannMachine : state
-pyvnm.vm.utils.Lock *- pyvnm.vm.state.MachineState : pc_lock
-' pyvnm.system.loader.Dumper <. pyvnm.vm.vnm.VonNeumannMachine
-' pyvnm.vm.vnm.VonNeumannMachine .> pyvnm.system.loader.Loader
-pyvnm.system.bootloader.Bootloader .> pyvnm.vm.vnm.VonNeumannMachine
+pyvnm.vm.control.CPU <. pyvnm.vm.isa.InstructionSet
+pyvnm.system.assembler.Assembler <. pyvnm.vm.isa.InstructionSet
+pyvnm.vm.device.Keyboard .|> pyvnm.vm.device.Device
+pyvnm.vm.device.Device <|.. pyvnm.vm.device.Screen
+pyvnm.vm.device.Device <|.. pyvnm.vm.device.CharScreen
+pyvnm.vm.device.Device <|.. pyvnm.vm.device.HardDrive
+pyvnm.vm.control.CPU --* pyvnm.vm.vnm.VonNeumannMachine : cpu
+pyvnm.vm.device.DeviceBus --o pyvnm.vm.state.CPUState : devices
+pyvnm.vm.device.Device -o pyvnm.vm.device.DeviceBus : devices
+pyvnm.vm.state.CPUState o- pyvnm.vm.isa.Word : acc
+pyvnm.vm.state.CPUState o- pyvnm.vm.isa.Word : pc
+pyvnm.vm.memory.Memory <. pyvnm.vm.isa.Word
+pyvnm.vm.memory.Memory --o pyvnm.vm.state.CPUState : memory
+pyvnm.vm.state.CPUState --o pyvnm.vm.control.CPU : state
+pyvnm.vm.utils.Lock --* pyvnm.vm.state.CPUState : pc_lock
+
+
+pyvnm.vm.vnm.VonNeumannMachine <- pyvnm.system.bootloader.Bootloader
+pyvnm.vm.control.CPU --* pyvnm.system.bootloader.Bootloader : cpu
+
+
+pyvnm.system.assembler.PseudoInstructionSet .> pyvnm.system.assembler.Assembler
+pyvnm.system.assembler.Assembler <.. pyvnm.system.assembler.LineTokens
+pyvnm.system.assembler.Assembler *-- pyvnm.system.assembler.AssemblerState : state
+pyvnm.system.assembler.Assembler --> pyvnm.vm.vnm.VonNeumannMachine
+' pyvnm.vm.vnm.VonNeumannMachine <.up. pyvnm.system.assembler.Assembler
+pyvnm.system.relocator.Relocator -> pyvnm.vm.vnm.VonNeumannMachine
+pyvnm.vm.vnm.VonNeumannMachine <-- pyvnm.system.linker.Linker
+pyvnm.vm.vnm.VonNeumannMachine --[hidden]> pyvnm.system.fs.FileSytem
+
+pyvnm.vm.vnm.VonNeumannMachine --* pyvnm.system.cli.Terminal : vnm
+pyvnm.system.user.User -* pyvnm.system.cli.Terminal : user
+pyvnm.system.fs.FileSytem -* pyvnm.system.user.User : filesystem
 @enduml

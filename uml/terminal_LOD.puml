@@ -1,0 +1,22 @@
+@startuml terminal_LOD
+start
+  :Lê o parâmetro P1;
+  note right
+    P1: nome do arquivo do programa absoluto a 
+    ser carregado na memória pelo loader
+  end note
+  :filesystem <- Terminal.user.get_fs()
+  absolute_code <- filesystem.read(P1);
+  note right
+    Acessa o sistema de arquivos subjacente ao 
+    usuário logado e lê o arquivo especificado 
+    pelo parâmetro P1
+  end note
+  :Terminal.vnm.load(absolute_code);
+  note right
+    Carrega o programa objeto absoluto na memória 
+    a partir do método **load()** da classe 
+    VonNeumannMachine
+  end note
+stop
+@enduml

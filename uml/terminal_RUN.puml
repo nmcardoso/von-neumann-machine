@@ -1,0 +1,15 @@
+@startuml terminal_RUN
+start
+  :Lê parâmetro P1;
+  note right
+    P1: nome do código-objeto absoluto a ser carregado 
+    e executado
+  end note
+  :Terminal.action_LOD(P1)
+  Terminal.action_EXC();
+  note right
+    Executa as ações de carregamento e execução 
+    em sequência
+  end note
+stop
+@enduml

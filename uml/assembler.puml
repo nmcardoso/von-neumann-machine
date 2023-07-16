@@ -1,0 +1,10 @@
+@startuml assembler
+!include project.puml
+
+remove pyvnm.*
+restore pyvnm.system.assembler.Assembler
+restore pyvnm.system.assembler.PseudoInstructionSet
+restore pyvnm.system.assembler.LineTokens
+restore pyvnm.system.assembler.AssemblerState
+restore pyvnm.vm.isa.InstructionSet
+@enduml

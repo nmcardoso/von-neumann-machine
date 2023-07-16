@@ -1,0 +1,15 @@
+@startuml terminal_DLF
+start
+  :Lê parâmetro P1;
+  note right
+    P1: nome do arquivo a ser apagado
+  end note
+  :filesystem <- Terminal.user.get_fs()
+  filesystem.delete(P1);
+  note right
+    Acessa o sistema de arquivos subjacente ao usuário
+    logado e apaga o arquivo a partir da chamada do
+    método **delete()**
+  end note
+stop
+@enduml

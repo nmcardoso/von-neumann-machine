@@ -1,0 +1,8 @@
+@startuml terminal_END
+start
+  :Terminal.end_loop <- true;
+  note right
+  Finaliza loop de eventos
+  end note
+stop
+@enduml

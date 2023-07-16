@@ -1,0 +1,20 @@
+@startuml terminal_SET
+start
+  :Lê parâmetro P1;
+  note right
+    P1: expressão de definição de variável ambiente do tipo
+    NOME_VARIAVEL=VALOR  
+  end note
+  :var_name, var_value = extract_key_value(P1);
+  note right
+    Extrai o nome da variável e o valor definido
+    da expressão P1
+  end note
+  :Terminal.env[var_name] = var_value;
+  note right
+    Substitui o valor definido na respectiva chave
+    do dicionário (mapa) do atributo env da classe
+    Terminal
+  end note
+stop
+@enduml

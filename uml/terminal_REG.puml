@@ -1,0 +1,16 @@
+@startuml terminal_REG
+start
+  :acc <- Terminal.vnm.cpu.state.acc
+  pc <- Terminal.vnm.cpu.state.pc;
+  note right
+    Acessa os registradores acumulador e contador
+    de programa pela classe CPU
+  end note
+  :print(acc.hex)
+  print(pc.hex);
+  note right
+    Imprime no terminal os valores dos registradores acumulador
+    e contador de programa.
+  end note
+stop
+@enduml

@@ -1,0 +1,18 @@
+@startuml terminal_APA
+start
+  :Lê parâmetro P1
+  Lê parâmetro P2;
+  note right
+    P1: nome do arquivo a ser modificado
+    P2: conteúdo a ser acrescentado na próxima linha do arquivo
+  end note
+  :filesystem <- Terminal.user.get_fs()
+  filesystem.append(P1, P2);
+  note right
+    Acessa o sistema de arquivos subjacente ao usuário
+    logado e acrescenta uma linha de dado P2 no arquivo
+    especificado por P1 a partir da chamada do método 
+    **append()**
+  end note
+stop
+@enduml

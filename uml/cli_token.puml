@@ -1,0 +1,21 @@
+@startuml cli_token
+[*] --> S1
+S1 : Captura cadeia de caracteres
+S1 --> S1 : char = outros
+S1 --> S2 : char = espaço \nou enter
+
+
+
+S2: Salva cadeia de caracteres \nna lista de argumentos
+S2 --> S1 : char = outros
+S2 --> S3 : char = "
+
+
+
+S3: Captura da cadeira de \ncaracteres entre aspas
+S3 --> S2 : char = "
+S3 --> S3 : char = outros
+
+
+S2 --> [*] : char = enter
+@enduml

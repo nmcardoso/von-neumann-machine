@@ -1,0 +1,52 @@
+@startuml assembler_final
+!pragma useVerticalIf on
+
+start
+package "Setup" {
+  :Ler e tokenizar a
+  primeira instrução;
+
+  if (mnemonico == ORG?) then (Sim)
+    :tipo := A;
+  else (Não)
+    :tipo := R;
+  endif
+}
+
+package "Passo1" {
+  while (Há linhas a serem lidas?) is (Sim)
+    :Ler e tokenizar linha do código-fonte;
+    :Análise Léxica e Sintática;
+    if (Erros?) then (Sim)
+      :Exibir Erros;
+      end
+    else (Não)
+      :Gerar Tabela de Símbolos;
+    endif
+  endwhile (Não )
+}
+
+package "Passo2" {
+  while (Linhas a serem lidas?) is (Sim)
+    :Ler e tokenizar linha do código-fonte;
+    :Resolução de Endereços;
+    note right
+    usando a tabela 
+    de mnemônicos
+    end note
+    :Resolução de Referências;
+    note right
+    usando a tabela
+    de símbolos
+    end note
+    if (Erros?) then (Sim)
+      :Exibir Erros;
+      end
+    else (Não)
+    endif
+  endwhile (Não )
+  :Gerar Código-Objeto;
+}
+stop
+
+@enduml

@@ -3,5 +3,5 @@
 
 remove pyvnm.*
 restore pyvnm.vm.control.ControlUnit
-restore pyvnm.vm.state.MachineState
+restore pyvnm.vm.state.CPUState
 @enduml

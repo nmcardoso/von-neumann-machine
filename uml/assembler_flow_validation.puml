@@ -1,0 +1,21 @@
+@startuml assembler_flow_validation.puml
+!pragma useVerticalIf on
+
+start
+if (__Rótulo__ já definido na \ntabela de símbolos?) then ( não)
+else ( sim )
+  end
+endif
+
+if (__Mnemônico__ não definido na\n tabela de mnemônicos?) then ( não)
+else ( sim )
+  end
+endif
+
+if (__Operando__ inválido?) then ( não)
+else ( sim )
+ end
+endif
+
+stop
+@enduml

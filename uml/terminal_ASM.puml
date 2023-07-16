@@ -1,0 +1,27 @@
+@startuml terminal_ASM
+start
+  :Lê parâmetro P1
+  Lê parâmetro P2;
+  note right
+    P1: nome do arquivo contendo o código-fonte
+    P2: nome do arquivo a salvar o código de máquina
+  end note
+  :filesystem <- Terminal.user.get_fs();
+  note right
+  Acessa o sistema de arquivos subjacente 
+  ao usuário logado
+  end note
+  :source_code <- filesystem.read(P1)
+  machine_code <- Terminal.mvn.assemble(source_code);
+  note right
+    Lê o arquivo especificado pelo parâmetro 
+    P1 e gera o código de máquina a partir 
+    da chamada do montador
+  end note
+  :filesystem.write(P2, machine_code);
+  note right
+    Escreve o programa de máquina gerado no
+    arquivo especificado por P2
+  end note
+stop
+@enduml

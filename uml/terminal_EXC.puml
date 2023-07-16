@@ -1,0 +1,24 @@
+@startuml terminal_EXC
+start
+  :Lê o parâmetro P1;
+  note right
+    P1: posição inicial de execução
+  end note
+  if (Terminal.env.DEBUG == '1') then (verdadeiro)
+    :Terminal.vnm.cpu.set_callback(DebuggerCallback());
+    note right
+      Adiciona o debugger ao motor de
+      eventos da CPU se a variável
+      ambiente DEBUG for verdadeira
+    end note
+  else (falso)
+  end if;
+  :Terminal.vnm.execute_program(P1);
+  note right
+    Executa o programa carregado na memória a partir
+    do endereço especificado por P1 pela chamada do
+    método **execute_program()** da classe 
+    VonNeumannMachine
+  end note
+stop
+@enduml

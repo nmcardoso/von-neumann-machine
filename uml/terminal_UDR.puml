@@ -1,0 +1,13 @@
+@startuml terminal_UDR
+start
+  :filesystem <- Terminal.user.get_fs();
+  note right
+  Acessa o sistema de arquivos subjacente ao 
+  usuário autenticado
+  end note
+  :filesystem.list_user();
+  note right
+    Lista os programas de usuário existentes
+  end note
+stop
+@enduml

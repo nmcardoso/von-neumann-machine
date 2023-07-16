@@ -1,0 +1,23 @@
+@startuml terminal_SIO
+start
+  :Lê parâmetro P1
+  Lê parâmetro P2;
+  note right
+    P1: nome do arquivo da entrada padrão
+    P2: nome do arquivo da saída padrão
+  end note
+  :hd <- Terminal.vnm.cpu.state.devices.get(3);
+  note right
+    Obtém a instância do dispositivo HD 
+    criada durante a instanciação da classe 
+    VonNeumannMachine. O HD possui id=3 
+    no barramento de dispositivos.
+  end note
+  :hd.set_input_file(P1)
+  hd.set_output_file(P2);
+  note right
+    Configura o dispositivo HD para ler/escrever
+    nos arquivos especificados por P1 e P2
+  end note
+stop
+@enduml

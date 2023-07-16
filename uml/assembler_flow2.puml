@@ -1,0 +1,40 @@
+@startuml assembler_flow2
+!pragma useVerticalIf on
+
+|Passo 1|
+start
+while (Linhas a serem lidas?) is (Sim)
+  :Ler e tokenizar linha do código-fonte;
+  :Análise Léxica e Sintática;
+  if (Erros?) then (Sim)
+    :Exibir Erros;
+    end
+  else (Não)
+    :Gerar Tabela de Símbolos;
+  endif
+endwhile (Não )
+
+
+|Passo 2|
+while (Linhas a serem lidas?) is (Sim)
+  :Ler e tokenizar linha do código-fonte;
+  :Resolução de Endereços;
+  note right
+  usando a tabela 
+  de mnemônicos
+  end note
+  :Resolução de Referências;
+  note right
+  usando a tabela
+  de símbolos
+  end note
+  if (Erros?) then (Sim)
+    :Exibir Erros;
+    end
+  else (Não)
+  endif
+endwhile (Não )
+:Gerar Código-Objeto Absoluto;
+stop
+
+@enduml

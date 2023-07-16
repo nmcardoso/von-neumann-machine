@@ -1,0 +1,31 @@
+@startuml callback
+!include project.puml
+
+remove pyvnm.*
+' restore pyvnm.system.cli.Terminal
+' restore pyvnm.system.user.User
+' restore pyvnm.system.fs.FileSytem
+' restore pyvnm.vm.vnm.VonNeumannMachine
+restore pyvnm.vm.control.CPU
+restore pyvnm.vm.state.CPUState
+restore pyvnm.vnm.cpu.CPUCallback
+restore pyvnm.vnm.cpu.CPUDebuggerCallback
+
+
+abstract "CPUCallback" as pyvnm.vnm.cpu.CPUCallback <<Abstract Class>> {
+  +on_event_loop_begin(state: CPUState)
+  +on_instruction_begin(state: CPUState)
+  +on_instruction_end(state: CPUState)
+  +on_event_loop_end(state: CPUState)
+}
+
+class "CPUDebuggerCallback" as pyvnm.vnm.cpu.CPUDebuggerCallback <<Class>> {
+  +on_event_loop_begin(state: CPUState)
+  +on_instruction_begin(state: CPUState)
+  +on_instruction_end(state: CPUState)
+  +on_event_loop_end(state: CPUState)
+}
+
+pyvnm.vnm.cpu.CPUDebuggerCallback --|> pyvnm.vnm.cpu.CPUCallback  
+pyvnm.vnm.cpu.CPUCallback -* pyvnm.vm.control.CPU : callback
+@enduml

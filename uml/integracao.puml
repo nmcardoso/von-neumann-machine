@@ -1,0 +1,9 @@
+@startuml integracao
+!include project.puml
+
+remove pyvnm.*
+restore pyvnm.system.cli.Terminal
+restore pyvnm.system.user.User
+restore pyvnm.system.fs.FileSytem
+restore pyvnm.vm.vnm.VonNeumannMachine
+@enduml

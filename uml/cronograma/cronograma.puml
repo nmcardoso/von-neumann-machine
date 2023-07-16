@@ -1,0 +1,41 @@
+@startgantt cronograma
+title Cronograma do Projeto
+Project starts 2023-03-28
+projectscale monthly zoom 12
+
+-- Primeira entrega (MVN, Motor de Eventos & Bootloader) --
+[Maquina de Von Neumann] as [MVN] lasts 23 days
+[Motor de Eventos] as [ME] lasts 19 days
+[Bootloader] as [BL] lasts 14 days
+
+[MVN] starts 2023-03-28
+[ME] starts 2023-04-01
+[BL] starts 2023-04-06
+
+
+-- Segunda entrega (Loader & Dumper) --
+[Loader] as [L] lasts 10 days
+[Dumper] as [D] lasts 5 days
+
+[L] starts 2023-04-24
+[D] starts 2023-04-26
+
+
+-- Terceira entrega (Montador Absoluto) --
+[Montador Absoluto] as [MAbs] lasts 19 days
+
+' [MAbs] starts 2023-05-2
+[MAbs] starts 2023-04-27
+
+
+-- Terceira entrega (Montador Relocável) --
+[Montador Relocável] as [MRl] lasts 22 days
+
+[MRl] starts 2023-05-15
+
+2023-04-20 to 2023-04-20 are colored in green
+2023-05-01 to 2023-05-01 are colored in green
+2023-05-22 to 2023-05-22 are colored in green
+2023-05-29 to 2023-05-29 are colored in green
+' 2023-05-31 to 2023-05-31 are colored in green
+@endgantt

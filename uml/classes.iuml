@@ -1,13 +1,79 @@
 @startuml classes
 set namespaceSeparator none
 
+''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''' PACKAGE: CLI ''''''''''''''
+''''''''''''''''''''''''''''''''''''''''''
+
+class "Terminal" as pyvnm.system.cli.Terminal <<Class>> {
+  -user : User
+  -vnm : VonNeumannMachine
+  -env : Dict[str, str]
+  -action_LIN(args: str[])
+  -action_SDR(args: str[])
+  -action_UDR(args: str[])
+  -action_CRF(args: str[])
+  -action_DLF(args: str[])
+  -action_APA(args: str[])
+  -action_APH(args: str[])
+  -action_LOD(args: str[])
+  -action_EXC(args: str[])
+  -action_RUN(args: str[])
+  -action_DMP(args: str[])
+  -action_ASM(args: str[])
+  -action_LRL(args: str[])
+  -action_SIO(args: str[])
+  -action_SET(args: str[])
+  -action_MEM(args: str[])
+  -action_REG(args: str[])
+  -action_END(args: str[])
+  -tokenize(input: str)
+  +event_loop()
+}
+
+
+class "User" as pyvnm.system.user.User <<Class>> {
+  -{static}current_user: str
+  -filesystem: FileSystem
+  +{static}get_current_user() : User
+  +get_fs(): FileSystem
+}
+
+
+class "FileSystem" as pyvnm.system.fs.FileSytem <<Class>> {
+  -home_dir : str
+  -sys_dir : str
+  +FileSystem(username: str)
+  +create(data: str)
+  +delete(file: str)
+  +read(file: str) : str
+  +write(file: str, data: str)
+  +append(file: str, data: str)
+  +list_user()
+  +list_sys()
+}
+
+class "Linker" as pyvnm.system.linker.Linker <<Class>> {
+  -object_files: List[string]
+  -linked_code: str
+  -symbols_table: Table
+  +link(object_files: List[string]) : str
+}
+
+class "Relocator" as pyvnm.system.relocator.Relocator <<Class>> {
+  -relocated_code : str
+  -relocation_table: Table
+  +relocate(linked_code: str) : str
+}
+
+
 ''''''''''''''''''''''''''''''''''''''''''''''
 '''''''''''''' PACKAGE: CONTROL ''''''''''''''
 ''''''''''''''''''''''''''''''''''''''''''''''
 
-class "ControlUnit" as pyvnm.vm.control.ControlUnit <<Class>> {
-  -action_switcher : Dict[int, Callable]
-  +state : MachineState
+class "CPU" as pyvnm.vm.control.CPU <<Class>> {
+  -callback : CPUCallback
+  +state : CPUState
   -action_AD(operand: int)
   -action_DV(operand: int)
   -action_GD(operand: int)
@@ -25,6 +91,63 @@ class "ControlUnit" as pyvnm.vm.control.ControlUnit <<Class>> {
   -action_ST(operand: int)
   -increment_pc()
   +event_loop()
+  +set_callback(callback: CPUCallback)
+}
+
+
+''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''' PACKAGE: ASSEMBLER ''''''''''''''
+''''''''''''''''''''''''''''''''''''''''''''''''
+
+entity "AssemblerState" as pyvnm.system.assembler.AssemblerState <<Entity>> {
+  +line_index : int
+  +address : int
+  +addr_type : int
+  +step : int
+  +assemble_mode : int
+}
+
+class "Assembler" as pyvnm.system.assembler.Assembler <<Class>> {
+  -symbols_table : Table
+  -equivalence_table : Table
+  -state : AssemblerState
+  -action_ORG(tokens: LineTokens)
+  -action_DATA(tokens: LineTokens)
+  -action_AREA(tokens: LineTokens)
+  -action_ENTRY(tokens: LineTokens)
+  -action_EXTERNAL(tokens: LineTokens)
+  -action_NAME(tokens: LineTokens)
+  -action_EQU(tokens: LineTokens)
+  -action_DB(tokens: LineTokens)
+  -action_DW(tokens: LineTokens)
+  -action_DA(tokens: LineTokens)
+  -action_END(tokens: LineTokens)
+  -tokenize_line(line: str) : LineTokens
+  -compute_checksum(program: str) : Byte
+  -check_labels()
+  -check_mnemonics()
+  -check_operands()
+  +event_loop(program: str) : str
+}
+
+entity "LineTokens" as pyvnm.system.assembler.LineTokens <<Entity>> {
+  +label : str
+  +mnemonic : str
+  +operand : str
+}
+
+enum "PseudoInstructionSet" as pyvnm.system.assembler.PseudoInstructionSet <<Enum>> {
+  +{static}ORG : str
+  +{static}AREA : str
+  +{static}ENTRY : str
+  +{static}EXTERNAL : str
+  +{static}NAME : str
+  +{static}EQU : str
+  +{static}DB : str
+  +{static}DW : str
+  +{static}DA : str
+  +{static}DATA : str
+  +{static}END : str
 }
 
 
@@ -55,6 +178,8 @@ class "HardDrive" as pyvnm.vm.device.HardDrive <<Class>> {
   -output_file : str
   +read(data: Word)
   +write(data: Word)
+  +set_input_file(path: str)
+  +set_output_file(path: str)
 }
 
 class "DeviceBus" as pyvnm.vm.device.DeviceBus <<Class>> {
@@ -65,40 +190,13 @@ class "DeviceBus" as pyvnm.vm.device.DeviceBus <<Class>> {
 }
 
 
-'''''''''''''''''''''''''''''''''''''''''''''
-'''''''''''''' PACKAGE: LOADER ''''''''''''''
-'''''''''''''''''''''''''''''''''''''''''''''
-
-' class "Loader" as pyvnm.system.loader.Loader <<Class>> {
-'   -bytecode : str
-'   -input_base : str
-'   -state : MachineState
-'   -words : List[str]
-'   -get_instructions_range()
-'   +load()
-' }
-
-
-'''''''''''''''''''''''''''''''''''''''''''''
-'''''''''''''' PACKAGE: DUMPER ''''''''''''''
-'''''''''''''''''''''''''''''''''''''''''''''
-
-' class "Dumper" as pyvnm.system.loader.Dumper <<Class>> {
-'   -output_base : str
-'   -output_path : Path
-'   -state : MachineState
-'   +dump() : str
-' }
-
-
 '''''''''''''''''''''''''''''''''''''''''''''''''
 '''''''''''''' PACKAGE: BOOTLOADER ''''''''''''''
 '''''''''''''''''''''''''''''''''''''''''''''''''
 
 class "Bootloader" as pyvnm.system.bootloader.Bootloader <<Class>> {
-  -program_obj: str
-  -cursor: int
-  +get_byte() : Byte
+  -cpu: CPU
+  +load(program_obj: str) : int
 }
 
 
@@ -107,8 +205,8 @@ class "Bootloader" as pyvnm.system.bootloader.Bootloader <<Class>> {
 ''''''''''''''''''''''''''''''''''''''''''
 
 class "Word" as pyvnm.vm.isa.Word <<Class>> {
-  +{static}size : int
   -value : int
+  +{static}size : int
   +bin : str
   +hex : str
   +uint : int
@@ -127,7 +225,7 @@ class "Word" as pyvnm.vm.isa.Word <<Class>> {
 '   ' +{static}build(opcode: int, operand: int) : Instruction
 ' }
 
-class "InstructionSet" as pyvnm.vm.isa.InstructionSet <<Class>> {
+enum "InstructionSet" as pyvnm.vm.isa.InstructionSet <<Enum>> {
   +{static}AD : int
   +{static}DV : int
   +{static}GD : int
@@ -144,7 +242,7 @@ class "InstructionSet" as pyvnm.vm.isa.InstructionSet <<Class>> {
   +{static}SC : int
   +{static}ST : int
   +{static}get_name(opcode: int) : str
-  +{static}get_opcode(symbol: str) : int
+  +{static}get_opcode(name: str) : int
 }
 
 
@@ -164,17 +262,12 @@ class "Lock" as pyvnm.vm.utils.Lock <<Class>> {
 '''''''''''''' PACKAGE: STATE ''''''''''''''
 ''''''''''''''''''''''''''''''''''''''''''''
 
-entity "MachineState" as pyvnm.vm.state.MachineState <<Entity>> {
+entity "CPUState" as pyvnm.vm.state.CPUState <<Entity>> {
   +acc : Word
-  +code_entrypoint : int
-  +devices : DeviceBus
-  +instructions_begin : int
-  +instructions_end : int
-  +memory : Memory
-  +memory_start : int
   +pc : Word
   +pc_lock : Lock
-  +sig_term: bool
+  +memory : Memory
+  +devices : DeviceBus
 }
 
 
@@ -189,6 +282,7 @@ class "Memory" as pyvnm.vm.memory.Memory <<Class>> {
   +get_size() : int
   +read(address: int) : Word
   +write(address: int, data: Word)
+  +hexdump()
 }
 
 
@@ -197,10 +291,14 @@ class "Memory" as pyvnm.vm.memory.Memory <<Class>> {
 ''''''''''''''''''''''''''''''''''''''''''
 
 class "VonNeumannMachine" as pyvnm.vm.vnm.VonNeumannMachine <<Class>> {
-  +control_unit : ControlUnit
-  +state : MachineState
-  +dump() : str
-  +execute_program()
+  +cpu : CPU
+  -loader_addr : int
+  -dumper_addr : int
+  +assemble(program: str) : str
+  +link(object_files: List[str]) : str
+  +relocate(linked_program : str) : str
   +load(bytecode: str)
+  +dump(init_pos: int, end_pos: int) : str
+  +execute_program(init_pos: int)
 }
 @enduml

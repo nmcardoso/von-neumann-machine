@@ -1,0 +1,21 @@
+@startuml terminal_LIN
+start
+  :Lê parâmetro P1;
+  :Terminal.vnm <- new VonNeumannMachine();
+  note right
+    Cria uma nova instância da máquina de Vonn 
+    Neumann com o estado da memória e dos 
+    registradores resetados
+  end note
+  :Terminal.user <- new User(P1);
+  note right
+    Cria uma nova instância de Usuário passando P1 
+    no construtor da classe User.
+  end note
+  :Terminal.env <- new Dict();
+  note right
+    Limpa as variáveis independentes criando uma 
+    nova instância de dicionário (map)
+  end note
+stop
+@enduml

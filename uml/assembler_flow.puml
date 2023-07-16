@@ -4,7 +4,7 @@
 |Tokenizador|
 start
 :Ler arquivo do
-códugo fonte;
+código fonte;
 
 while (Linhas a serem lidas?) is ( sim)
   :Aplicar expressão

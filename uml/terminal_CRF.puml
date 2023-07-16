@@ -1,0 +1,15 @@
+@startuml terminal_CRF
+start
+  :Lê parâmetro P1;
+  note right
+    P1: nome do arquivo a ser criado
+  end note
+  :filesystem <- Terminal.user.get_fs()
+  filesystem.create(P1);
+  note right
+    Acessa o sistema de arquivos subjacente ao usuário
+    logado e cria um novo arquivo a partir da chamada 
+    do método **create()**
+  end note
+stop
+@enduml

@@ -1,0 +1,9 @@
+@startuml terminal_MEM
+start
+  :Terminal.vnm.cpu.state.memory.hexdump();
+  note right
+    Exibe o hexdump da memória na tela
+    do terminal
+  end note
+stop
+@enduml
