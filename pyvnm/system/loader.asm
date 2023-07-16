@@ -16,7 +16,7 @@ MAIN        LD      NUM_0
             LD      BYTES_TOTAIS             
             SB      NUM_4                    
             ST      BYTES_RESTANTES         @ guarda a quantidade de bytes restantes referentes ao codigo a ser carregado 
-            SC      CRIA_INSTRUCAO          @ subrotina que cria a instrucao de gravacao que sera incrementada a cada gravacao na memoria
+            SC      CRIA_ST          @ subrotina que cria a instrucao de gravacao que sera incrementada a cada gravacao na memoria
 LOOP        LD      BYTES_RESTANTES
             JZ      END_LOOP                @ verifica se e o final do arquivo
             GD      0x4                     @ le um byte do programa
@@ -41,10 +41,11 @@ END_LOOP    GD      0x4                     @ le o byte do check_sum do arquivo
             DV      NUM_256                 @ com essa multiplicacao e essa divisao eu pego os 8 bits menos significativos
             JZ      FIM                     @ pula para fim se o check_sum estiver OK
             SC      ERRO_DE_CHECK_SUM       @ chama a subrotina q identifica o erro de check_sum
-FIM         HJ      0x0                     @ para a maquina
+FIM         SC      CRIA_HJ
+            JP      INST_HJ
 GRAVA_INSTRUCAO
 INSTRUCAO   DATA    0
-            SC      INC_INSTRUCAO
+            SC      INC_ST
             RS      GRAVA_INSTRUCAO
 CONCATENA_BYTES
             LD      PRIMEIRO_BYTE
@@ -52,17 +53,23 @@ CONCATENA_BYTES
             AD      SEGUNDO_BYTE
             ST      WORD
             RS      CONCATENA_BYTES
-CRIA_INSTRUCAO
+CRIA_ST
             LD      OPCODE_ST
             ML      NUM_4096
             AD      INICIO_MEMORIA
             ST      INSTRUCAO
-            RS      CRIA_INSTRUCAO
-INC_INSTRUCAO
+            RS      CRIA_ST
+CRIA_HJ
+            LD      OPCODE_HJ
+            ML      NUM_4096
+            AD      INICIO_MEMORIA
+            ST      INST_HJ
+            RS      CRIA_HJ
+INC_ST
             LD      INSTRUCAO
             AD      NUM_2
             ST      INSTRUCAO
-            RS      INC_INSTRUCAO
+            RS      INC_ST
 DEC_BYTES_RESTANTES
             LD      BYTES_RESTANTES
             SB      NUM_1
@@ -76,19 +83,21 @@ ERRO_DE_CHECK_SUM
             OS      400
             OS      5
             RS      ERRO_DE_CHECK_SUM
-NUM_0       DATA    0
-NUM_1       DATA    1
-NUM_2       DATA    2
-NUM_4       DATA    4
-NUM_256     DATA    256
-NUM_4096    DATA    4096
-OPCODE_ST   DATA    9
-CHECK_SUM_CALCULADO DATA 0
-CHECK_SUM_FORNECIDO DATA 0
-PRIMEIRO_BYTE DATA 0
-SEGUNDO_BYTE DATA 0
-BYTES_RESTANTES DATA 0
-WORD DATA 0
-BYTES_TOTAIS DATA 0
-INICIO_MEMORIA DATA 0
-            END
+INST_HJ     DATA    0
+NUM_0                 DATA    0
+NUM_1                 DATA    1
+NUM_2                 DATA    2
+NUM_4                 DATA    4
+NUM_256               DATA    256
+NUM_4096              DATA    4096
+OPCODE_ST             DATA    9
+OPCODE_HJ             DATA    3
+CHECK_SUM_CALCULADO   DATA    0
+CHECK_SUM_FORNECIDO   DATA    0
+PRIMEIRO_BYTE         DATA    0
+SEGUNDO_BYTE          DATA    0
+BYTES_RESTANTES       DATA    0
+WORD                  DATA    0
+BYTES_TOTAIS          DATA    0
+INICIO_MEMORIA        DATA    0
+                      END
