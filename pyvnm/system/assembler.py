@@ -197,8 +197,7 @@ class Assembler:
     if not m or not m.group(0).strip():
       return LineTokens(
         index=line_index, 
-        mem_addr=memory_offset + line_index, 
-        empty=True
+        mem_addr=memory_offset + line_index,
       )
     
     return LineTokens(
@@ -207,7 +206,6 @@ class Assembler:
       operand=m.group(3),
       index=line_index,
       mem_addr=memory_offset + line_index,
-      empty=False
     )
   
   
