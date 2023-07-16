@@ -61,10 +61,20 @@ class Keyboard(Device):
 
 
 class HardDisk(Device):
-  def __init__(self, input_path: Path = None, output_path: Path = None):
-    self.input_path = input_path
-    self.output_path = output_path
-    self.input_data = None if not input_path else input_path.read_text().split(' ')
+  """
+  Representa um disco rígido. Permite operações de entrada e saída a partir
+  de manipulação de arquivos no programa assembly pelas instruções PD e GD.
+
+  Parameters
+  ----------
+  input_data: str, optional
+    Dado de entrada a ser lido, geralmente o programa a ser executado.
+  output_path: str | Path, optional
+    Caminho da saída de dados.
+  """
+  def __init__(self, input_data: str = None, output_path: str | Path = None):
+    self.output_path = Path(output_path) if output_path else None
+    self.input_data = None if not input_data else input_data.split(' ')
     self.output_data = ''
     self._cursor = 0
     

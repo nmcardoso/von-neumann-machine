@@ -3,6 +3,7 @@ class OS:
   SIG_TRAP = 5
   LOADER_CHECKSUM_MISSMATCH = 400
   flags = set()
+  program_origin = 0
 
   
   @classmethod

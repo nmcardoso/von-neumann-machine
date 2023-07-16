@@ -27,7 +27,7 @@ class VonNeumannMachine:
   def __init__(
     self, 
     memory_size: int, 
-    load_path: str | Path, 
+    program: str,
     dump_path: str | Path = None, 
     loader_callback: CPUCallback = None,
     program_callback: CPUCallback = None,
@@ -36,8 +36,8 @@ class VonNeumannMachine:
     self._loader_callback = loader_callback or CPUCallback()
     self._program_callback = program_callback or CPUCallback()
     self._dumper_callback = dumper_callback or CPUCallback()
+    self._program = program
     
-    load_path = Path(load_path) if load_path else load_path
     dump_path = Path(dump_path) if dump_path else dump_path
     
     # inicializa memória
@@ -48,7 +48,7 @@ class VonNeumannMachine:
     devices.add(0x1, Keyboard())
     devices.add(0x2, Screen())
     devices.add(0x3, CharScreen())
-    devices.add(0x4, HardDisk(input_path=load_path, output_path=dump_path))
+    devices.add(0x4, HardDisk(input_data=program, output_path=dump_path))
     
     # inicializa CPU
     cpu_state = CPUState(memory=memory, devices=devices)
@@ -67,10 +67,19 @@ class VonNeumannMachine:
     
     
   def load(self):
-    self.cpu.callback = self._loader_callback
-    self.cpu.state.pc.value = self.cpu.state.loader_addr
-    OS.flags.clear()
-    self.cpu.event_loop()
+    bytes_list = self._program.split(' ')
+    if len(bytes_list) > 100:
+      addr = 400
+      for i in range(3, len(bytes_list)):
+        self.cpu.state.memory.write_byte(addr + i - 3, Byte('0x' + bytes_list[i]))
+      OS.flags.clear()
+      OS.program_origin = addr
+    else:
+      self.cpu.callback = self._loader_callback
+      self.cpu.state.pc.value = self.cpu.state.loader_addr
+      OS.flags.clear()
+      self.cpu.event_loop()
+      OS.program_origin = self.cpu.state.pc.value
     
     
   def execute_program(self):
@@ -78,8 +87,10 @@ class VonNeumannMachine:
     Aciona a Unidade de Controle para o início da execução do programa
     """
     self.cpu.callback = self._program_callback
-    self.cpu.state.pc.value = 400
+    self.cpu.state.pc.value = OS.program_origin
+    self.cpu.state.acc.value = 0
     OS.flags.clear()
+    print(self.cpu.state.pc, self.cpu.state.memory.read(self.cpu.state.pc.value))
     self.cpu.event_loop()
     
   

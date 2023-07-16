@@ -5,6 +5,7 @@ from pathlib import Path
 sys.path.append(str(Path(__file__).parent.parent))
 import numpy as np
 
+from pyvnm.system.assembler import Assembler
 from pyvnm.system.os import OS
 from pyvnm.vm.cpu import CPUCallback, CPUState, InstructionSet
 from pyvnm.vm.memory import Word
@@ -54,12 +55,12 @@ class DebugCallback(CPUCallback):
     mnemonic = InstructionSet.get_mnemonic(instruction.opcode)
     operand = Word(instruction.operand).hex
     print()
-    print('Instrução: ' + Colors.LIGHT_CYAN + mnemonic + ' ' + operand[1:] + Colors.RESET)
+    print('Instrução: ' + Colors.LIGHT_CYAN + str(mnemonic) + ' ' + operand[1:] + Colors.RESET)
   
   
   def on_instruction_end(self, state: CPUState):
     instruction = state.memory.read(state.pc.uint)
-    print(f'    PC: {state.pc.uint}\tACC: {state.acc.int} (0x{state.acc.hex})')
+    print(f'    PC: {state.pc.uint} (0x{state.pc.hex})\t\tACC: {state.acc.int} (0x{state.acc.hex})')
     if (instruction.opcode == InstructionSet.ST or instruction.opcode == InstructionSet.LD) and instruction.operand < state.memory.size:
       line = int(np.floor(instruction.operand / 16))
       highlight = instruction.operand
@@ -99,8 +100,7 @@ def machine_summary(state: CPUState):
 def cli():
   p = argparse.ArgumentParser(prog='python3 main.py', description='Simulador da Máquina de Von Neumann')
   p.add_argument(
-    '-e', '--exec', 
-    nargs=1,
+    '-e', '--exec',
     action='store', 
     help=(
       'Caminho relativo ou absoluto do programa a ser executado. '
@@ -110,7 +110,29 @@ def cli():
       'base hexadicimal e será carregado na memória por um carregador '
       'hexadecimal. Caso a extensão seja `.bin`, o arquivo será considerado '
       'um programa-objeto absoluto na base binária e será carregador na '
-      'memória por um carregador binário.'
+      'memória por um carregador binário. Caso seja `.asm`, o arquivo é '
+      'considerado um programa-objeto absoluto e o montador é acionado '
+      'antes da execução.'
+    )
+  )
+  p.add_argument(
+    '-a',
+    action='store',
+    help=(
+      'Caminho relativo ou absoluto do programa a ser montado. O programa '
+      'objeto absoluto é impresso na saída padrão e pode ser salvo em arquivo '
+      'com redirecionamento de stream.'
+    )
+  )
+  p.add_argument(
+    '--ob',
+    action='store',
+    default='x',
+    help=(
+      'Base numérica de saída (output base). Este parâmetro é usado caso '
+      'a ação performada seja montagem. O montador usa a base numérica '
+      'indicada neste parâmetro como base de saída. Os valores aceitos são '
+      '`x`, para hexadecimal e `b` para binário. Valor padrão: `x`.'
     )
   )
   p.add_argument(
@@ -129,7 +151,7 @@ def cli():
     )
   )
   p.add_argument(
-    '-b', '--debug',
+    '--debug',
     action='store_true',
     help=(
       'Executa o programa no modo depuração. Este modo exibe detalhadamente '
@@ -137,7 +159,7 @@ def cli():
     )
   )
   p.add_argument(
-    '-s', '--sysdebug',
+    '--sysdebug',
     action='store_true',
     help=(
       'Executa o programa no modo depuração de sistema. Este modo exibe '
@@ -163,12 +185,10 @@ def cli():
   return args
 
 
-def main():
-  args = cli()
-  
-  program_path = Path(args.exec[0])
+def handle_execution(args):
+  program_path = Path(args.exec)
   if not program_path.exists():
-    return print(f'Arquivo não encontrado: str(program_path)')
+    return print(f'Arquivo não encontrado: {str(program_path)}')
   
   if args.c:
     try:
@@ -221,9 +241,15 @@ def main():
   heading('Simulador da Máquina de Von Neumann', '=')
   print()
   
+  if program_path.suffix == '.asm':
+    assembler = Assembler(program_path.read_text(), output_base='x')
+    program = assembler.assemble()
+  else:
+    program = program_path.read_text()
+  
   vnm = VonNeumannMachine(
-    memory_size=int(args.m), 
-    load_path=program_path,
+    memory_size=int(args.m),
+    program=program,
     dump_path=args.dump,
     loader_callback=loader_callback,
     dumper_callback=dumper_callback,
@@ -276,6 +302,28 @@ def main():
     print()
   
   print(Colors.LIGHT_BLUE + '>> Fim da simulação' + Colors.RESET)
+  
+
+def handle_assembly(args):
+  program_path = Path(args.a)
+  if not program_path.exists():
+    return print(f'Arquivo não encontrado: {str(program_path)}')
+  
+  
+  assembler = Assembler(program=program_path, output_base=args.ob)
+  program_object = assembler.assemble()
+  
+  print(program_object)
+  
+  
+def main():
+  args = cli()
+  
+  if args.exec:
+    handle_execution(args)
+    
+  if args.a:
+    handle_assembly(args)
 
 
 

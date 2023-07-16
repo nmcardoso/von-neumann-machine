@@ -140,7 +140,8 @@ class CPU:
     Inicia a execução de um programa a partir da posição indicada pelo
     registrador PC.
     """
-    stop_signals = {OS.SIG_TERM, OS.SIG_TRAP}
+    # stop_signals = {OS.SIG_TERM, OS.SIG_TRAP}
+    stop_signals = {OS.SIG_TERM}
     self.callback.on_event_loop_begin(self.state)
     
     while len(stop_signals & OS.flags) == 0:
